@@ -1,8 +1,15 @@
 const fs = require('fs-extra');
 const colors = require('colors');
 const params = require('../config/params');
+const { defaultMode } = require('../config/defaults');
 const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
+const enviroments = require('dotenv');
+enviroments.config();
+const env = process && process.env;
+
+const mode = env.MODE || defaultMode;
+
 const {
   responseOpennebula,
   opennebulaConnect,
@@ -34,10 +41,22 @@ const createQueriesState = () => {
   return rtn;
 };
 
+const includeMAPSJSbyHTML = (path = '') => {
+  let scripts = '';
+  if (mode === defaultMode){
+    fs.readdirSync(path).map(file => {
+      if (file.match(/\w*\.js\.map+$\b/gi)) {
+        scripts += `<script src="/static/${file}" type="application/json"></script>`;
+      }
+    });
+  }
+  return scripts;
+};
+
 const includeJSbyHTML = (path = '') => {
   let scripts = '';
   fs.readdirSync(path).map(file => {
-    if (file.match(/\w*\.js\b/gi)) {
+    if (file.match(/\w*\.js+$\b/gi)) {
       scripts += `<script src="/static/${file}"></script>`;
     }
   });
@@ -86,6 +105,7 @@ module.exports = {
   getAllowedQueryParams,
   createQueriesState,
   opennebulaConnect,
+  includeMAPSJSbyHTML,
   includeJSbyHTML,
   messageTerminal,
   getRouteForOpennebulaCommand,

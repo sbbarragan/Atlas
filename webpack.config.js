@@ -2,12 +2,14 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const enviroments = require('dotenv');
+const { defaultMode } = require('./src/config/defaults');
 
 enviroments.config();
 const env = process && process.env;
 
 // settings
-const mode = env.MODE || 'development';
+const mode = env.MODE || defaultMode;
+const devtool = mode === defaultMode ? 'source-map' : '';
 const js = {
   test: /\.js$/,
   exclude: /node_modules/,
@@ -36,7 +38,8 @@ const serverConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]'
-  }
+  },
+  devtool
 };
 
 const clientConfig = {
@@ -56,7 +59,8 @@ const clientConfig = {
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name]'
-  }
+  },
+  devtool
 };
 
 module.exports = [serverConfig, clientConfig];

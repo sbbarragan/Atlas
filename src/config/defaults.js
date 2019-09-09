@@ -14,6 +14,7 @@ module.exports = {
       VNC: ''
     }
   ],
+  defaultMode: 'development',
   defaultNamespace: 'one.',
   defaultMessageInvalidZone: 'Invalid Zone',
   defaultGetMethod: 'info',

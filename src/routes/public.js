@@ -2,7 +2,7 @@ import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
 import App from '../public/routes';
-import { includeJSbyHTML } from '../utils';
+import { includeMAPSJSbyHTML, includeJSbyHTML } from '../utils';
 
 const router = express.Router();
 
@@ -24,7 +24,7 @@ router.get('*', (req, res) => {
     </head>
     <body>
       <div id="root">${component}</div>
-      ${includeJSbyHTML(pathPublic)}
+      ${includeJSbyHTML(pathPublic) + includeMAPSJSbyHTML(pathPublic)}
     </body>
     </html>
   `;
