@@ -81,7 +81,7 @@ const publicRoutes = {
                     ) {
                       // aca se debe de borrar los demas tokens generados no el que esta en la variable token
                       console.log('->', token, informationUser.LOGIN_TOKEN);
-                      
+
                     }
                   });
                 }
@@ -127,7 +127,6 @@ const publicRoutes = {
 
           // aca se puede hacer la valia para colocar el parametro post expire en 0 cuando no tenga JWT
           // tambien se tiene que colocar funcion que tome el tiempo de vida del JWT en segundos
-          console.log(getOpennebulaMethod(dataSource));
           connectOpennebula(
             defaultMethodLogin,
             getOpennebulaMethod(dataSource),
