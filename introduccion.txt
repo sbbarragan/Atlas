@@ -1,0 +1,51 @@
+El diseño del siguiente codigo esta basado en su totalidad en Javascript (ES6).
+
+- **NodeJS** con **Express** para el backend.
+- **React**, **Redux** para el front.
+- **Webpack** para el transpilado de la aplicacion.
+- **NPM** para la gestion de los packages.
+
+Cuando se transpila el código generado funciona tanto en el backend como en el frontend (Server-side Render)
+
+#Motivacion:
+
+en lo personal el sunstone actual esta lleno de inconvenientes los cuales mencionaré sin profundizar:
+
+- Dependencias: muchas de las mismas son muy viejas y actualizarlas seria un riesgo de que no funcionen partes del sistema. tampoco se usan las dependencias en su totalidad.
+- Estado global: en el front end no existe un estado global al cual hacer uso para los diferentes componentes del mismo.
+- Reactividad: no es reactivo. se hace uso de JQuery y de handlebars. esto hase que al querer hacer algun cambio debes de tambien instanciar los callback para que pueda funcionar despues. tambien hace complicado la busqueda de errores en el codigo.
+- Manejo del DOM: ya que su fuerte es el hacer uso de jQuery el manejo de Clases y Id son indispensables, esto tambien puede traer uns serie de consecuencias.
+- Respuestas del XMLRPC: hay llamadas que al ser cambiadas a JSON pueden mutar (en vez de ser objetos pasan a ser arrays y viceversa).
+- Configuracion: es simple la instalacion del sunstone, pero ya es mas complicado al momento de usar el memcache y demas cosas para usar en produccion.
+- Traza de errores: es dificil hacer el seguimiento del codigo ya que no hay herramientas especializadas para el debug.
+- Reglas de LINT: no posee.
+- Los test e2e: se usa readiness (Ruby).
+
+Ventajas:
+
+- Dependencias actualizadas y testeadas.
+- Eliminacion de recursos deprecados como Bower y Grunt, para el transpilado, JQuery y handlebars para el manejo de vistas.
+- Creacion de estado Global: al momento de querer hacer consulta a un resurso se puede saber conectando el componente a redux.
+- Reactividad: no se debe de manejar las vistas y las acciones por separado.
+- Uso de API REST: se puede usar tambien para otro tipo de aplicaciones.
+- Reglas de LINT: el codigo se hace mas legible.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
