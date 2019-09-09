@@ -52,6 +52,7 @@ const publicRoutes = {
             dataSource[fromData.postBody] &&
             dataSource[fromData.postBody].user) ||
           '';
+
         const pass =
           (dataSource &&
             fromData.postBody &&
@@ -64,15 +65,38 @@ const publicRoutes = {
 
           const getUserInfo = userData => {
             if (user && token && userData && userData.USER) {
-              // aca se debe de borrar los demas tokens generados no el que esta en la variable token
-              const { ID: id } = userData.USER;
-              const dataJWT = { id };
-              const jwt = createToken(dataJWT, false);
-              res.locals.httpCode.data = {};
-              if (jwt) {
-                const codeOK = Map(ok).toObject();
-                codeOK.data = { token: jwt };
-                updaterResponse(codeOK);
+              if (userData && userData.USER) {
+                const informationUser = userData.USER;
+
+                if (
+                  informationUser &&
+                  informationUser.LOGIN_TOKEN &&
+                  Array.isArray(informationUser.LOGIN_TOKEN)
+                ) {
+                  informationUser.LOGIN_TOKEN.map(loginToken => {
+                    if (
+                      loginToken &&
+                      loginToken.TOKEN &&
+                      loginToken.TOKEN !== token
+                    ) {
+                      // aca se debe de borrar los demas tokens generados no el que esta en la variable token
+                      console.log('->', token, informationUser.LOGIN_TOKEN);
+                      
+                    }
+                  });
+                }
+
+                const { ID: id } = informationUser;
+                const dataJWT = { id };
+                const jwt = createToken(dataJWT, false);
+                res.locals.httpCode.data = {};
+                if (jwt) {
+                  const codeOK = Map(ok).toObject();
+                  codeOK.data = { token: jwt };
+                  updaterResponse(codeOK);
+                  next();
+                }
+              } else {
                 next();
               }
             } else {
@@ -103,6 +127,7 @@ const publicRoutes = {
 
           // aca se puede hacer la valia para colocar el parametro post expire en 0 cuando no tenga JWT
           // tambien se tiene que colocar funcion que tome el tiempo de vida del JWT en segundos
+          console.log(getOpennebulaMethod(dataSource));
           connectOpennebula(
             defaultMethodLogin,
             getOpennebulaMethod(dataSource),
