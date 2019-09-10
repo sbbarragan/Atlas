@@ -5,18 +5,16 @@ const moment = require('moment');
 enviroments.config();
 const env = process && process.env;
 const tokenSecret = env.TOKEN_SECRET || null;
-const limitToken = JSON.parse(env.LIMIT_TOKEN);
 
-const createToken = ({ id }, extended = false) => {
+const createToken = ({ id, user, token }, start = '', expire = '') => {
   let rtn = null;
-  if (limitToken && limitToken.MIN && limitToken.MAX && tokenSecret) {
-    const { MIN, MAX } = limitToken;
+  if (start && expire && tokenSecret) {
     const payload = {
-      sub: id,
-      iat: moment().unix(),
-      exp: moment()
-        .add(extended ? MAX : MIN, 'days')
-        .unix()
+      id,
+      user,
+      token,
+      start,
+      expire
     };
     rtn = jwt.encode(payload, tokenSecret);
   }
@@ -31,9 +29,20 @@ const validateAuth = req => {
     const token = authorization.replace(removeBearer, '');
     try {
       const payload = jwt.decode(token, tokenSecret);
-      if (payload.exp >= moment().unix()) {
+      if (
+        payload &&
+        'id' in payload &&
+        'user' in payload &&
+        'token' in payload &&
+        'expire' in payload &&
+        payload.expire >= moment().unix()
+      ) {
+        const { user, id, token, start } = payload;
         rtn = {
-          id: payload.sub
+          id,
+          user,
+          token,
+          start
         };
       }
     } catch (error) {

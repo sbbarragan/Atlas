@@ -155,6 +155,7 @@ router.all(
     res.locals.httpCode = Map(internalServerError).toObject();
     const zone = getDataZone();
     if (zone) {
+      // USER y PASS tienen que venir del JWT (los posees en el middleware de auth variable session)
       const { RPC, USER, PASS } = zone;
       const connectOpennebula = opennebulaConnect(USER, PASS, RPC);
       const { resource } = req.params;

@@ -1,4 +1,6 @@
 const { Map } = require('immutable');
+const enviroments = require('dotenv');
+const moment = require('moment');
 const {
   httpMethod,
   defaultMethodLogin,
@@ -17,6 +19,10 @@ const {
   checkOpennebulaCommand,
   paramsDefaultByCommandOpennebula
 } = require('../utils/opennebula-functions');
+
+enviroments.config();
+const env = process && process.env;
+const limitToken = JSON.parse(env.LIMIT_TOKEN);
 
 const { POST, GET } = httpMethod;
 
@@ -59,44 +65,52 @@ const publicRoutes = {
             dataSource[fromData.postBody] &&
             dataSource[fromData.postBody].pass) ||
           '';
-        if (user && pass && rpc) {
+
+        const extended =
+          (dataSource &&
+            dataSource[fromData.postBody] &&
+            dataSource[fromData.postBody].extended) ||
+          '';
+
+        if (user && pass && rpc && limitToken) {
+          const { MIN, MAX } = limitToken;
+          const momentInstance = moment();
+          const momentUnix = momentInstance.unix();
+          const momentWithDays = momentInstance
+            .add(extended ? MAX : MIN, 'days')
+            .unix();
+
           let token;
           const connectOpennebula = opennebulaConnect(user, pass, rpc);
 
           const getUserInfo = userData => {
             if (user && token && userData && userData.USER) {
-              if (userData && userData.USER) {
-                const informationUser = userData.USER;
+              const informationUser = userData.USER;
+              if (
+                informationUser &&
+                informationUser.LOGIN_TOKEN &&
+                Array.isArray(informationUser.LOGIN_TOKEN)
+              ) {
+                informationUser.LOGIN_TOKEN.map(loginToken => {
+                  if (
+                    loginToken &&
+                    loginToken.TOKEN &&
+                    loginToken.TOKEN !== token
+                  ) {
+                    // aca se debe de borrar los demas tokens generados no el que esta en la variable token
+                    console.log('->', token, informationUser.LOGIN_TOKEN);
+                  }
+                });
+              }
 
-                if (
-                  informationUser &&
-                  informationUser.LOGIN_TOKEN &&
-                  Array.isArray(informationUser.LOGIN_TOKEN)
-                ) {
-                  informationUser.LOGIN_TOKEN.map(loginToken => {
-                    if (
-                      loginToken &&
-                      loginToken.TOKEN &&
-                      loginToken.TOKEN !== token
-                    ) {
-                      // aca se debe de borrar los demas tokens generados no el que esta en la variable token
-                      console.log('->', token, informationUser.LOGIN_TOKEN);
-
-                    }
-                  });
-                }
-
-                const { ID: id } = informationUser;
-                const dataJWT = { id };
-                const jwt = createToken(dataJWT, false);
-                res.locals.httpCode.data = {};
-                if (jwt) {
-                  const codeOK = Map(ok).toObject();
-                  codeOK.data = { token: jwt };
-                  updaterResponse(codeOK);
-                  next();
-                }
-              } else {
+              const { ID: id } = informationUser;
+              const dataJWT = { id, user, token };
+              const jwt = createToken(dataJWT, momentUnix, momentWithDays);
+              res.locals.httpCode.data = {};
+              if (jwt) {
+                const codeOK = Map(ok).toObject();
+                codeOK.data = { token: jwt };
+                updaterResponse(codeOK);
                 next();
               }
             } else {
@@ -125,11 +139,13 @@ const publicRoutes = {
             }
           };
 
-          // aca se puede hacer la valia para colocar el parametro post expire en 0 cuando no tenga JWT
-          // tambien se tiene que colocar funcion que tome el tiempo de vida del JWT en segundos
+          // add expire time unix
+          const dataSourceWithExpirateDate = Map(dataSource).toObject();
+          dataSourceWithExpirateDate[fromData.postBody].expire = momentWithDays;
+
           connectOpennebula(
             defaultMethodLogin,
-            getOpennebulaMethod(dataSource),
+            getOpennebulaMethod(dataSourceWithExpirateDate),
             (err, value) => {
               responseOpennebula(
                 updaterResponse,
