@@ -6,15 +6,19 @@ enviroments.config();
 const env = process && process.env;
 const tokenSecret = env.TOKEN_SECRET || null;
 
-const createToken = ({ id, user, token }, start = '', expire = '') => {
+const createToken = (
+  { id: iss, user: aud, token: jti },
+  iat = '',
+  exp = ''
+) => {
   let rtn = null;
-  if (start && expire && tokenSecret) {
+  if (iss && aud && jti && iat && exp && tokenSecret) {
     const payload = {
-      id,
-      user,
-      token,
-      start,
-      expire
+      iss,
+      aud,
+      jti,
+      iat,
+      exp
     };
     rtn = jwt.encode(payload, tokenSecret);
   }
@@ -31,18 +35,20 @@ const validateAuth = req => {
       const payload = jwt.decode(token, tokenSecret);
       if (
         payload &&
-        'id' in payload &&
-        'user' in payload &&
-        'token' in payload &&
-        'expire' in payload &&
-        payload.expire >= moment().unix()
+        'iss' in payload &&
+        'aud' in payload &&
+        'jti' in payload &&
+        'iat' in payload &&
+        'exp' in payload &&
+        payload.exp >= moment().unix()
       ) {
-        const { user, id, token, start } = payload;
+        const { iss, aud, jti, iat, exp } = payload;
         rtn = {
-          id,
-          user,
-          token,
-          start
+          iss,
+          aud,
+          jti,
+          iat,
+          exp
         };
       }
     } catch (error) {

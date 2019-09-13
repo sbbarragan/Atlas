@@ -37,6 +37,8 @@ const defaultQueries = Map(createQueriesState());
 
 let paramsState = defaultParams.toObject();
 let queriesState = defaultQueries.toObject();
+let userOpennebula = '';
+let passOpennebula = '';
 
 enviroments.config();
 const env = process && process.env;
@@ -48,6 +50,8 @@ const opennebulaZones =
 const clearStates = () => {
   paramsState = defaultParams.toObject();
   queriesState = defaultQueries.toObject();
+  userOpennebula = '';
+  passOpennebula = '';
 };
 
 const paramsToRoutes = () => {
@@ -68,7 +72,17 @@ const validateResource = (req, res, next) => {
     status = serviceUnavailable;
     if (authenticated.includes(resource)) {
       const session = validateAuth(req);
-      if (session) {
+      console.log('SESSION', session);
+      if (
+        session &&
+        'iss' in session &&
+        'aud' in session &&
+        'jti' in session &&
+        'iat' in session &&
+        'exp' in session
+      ) {
+        userOpennebula = session.aud;
+        passOpennebula = session.jti;
         next();
         return;
       }
@@ -156,8 +170,12 @@ router.all(
     const zone = getDataZone();
     if (zone) {
       // USER y PASS tienen que venir del JWT (los posees en el middleware de auth variable session)
-      const { RPC, USER, PASS } = zone;
-      const connectOpennebula = opennebulaConnect(USER, PASS, RPC);
+      const { RPC } = zone;
+      const connectOpennebula = opennebulaConnect(
+        userOpennebula,
+        passOpennebula,
+        RPC
+      );
       const { resource } = req.params;
       const routeFunction = checkRouteFunction(resource);
       res.locals.httpCode = Map(methodNotAllowed).toObject();

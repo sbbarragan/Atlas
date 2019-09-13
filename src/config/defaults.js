@@ -9,8 +9,6 @@ module.exports = {
     {
       ID: 0,
       RPC: 'http://localhost:2633/RPC2',
-      USER: 'oneadmin',
-      PASS: 'opennebula',
       VNC: ''
     }
   ],
