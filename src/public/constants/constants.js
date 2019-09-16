@@ -1,10 +1,5 @@
-import { createContext } from 'react';
-
-const reduxContext = createContext();
-
 const constants = {
-  NoFound: 'No found',
-  reduxContext
+  NoFound: 'No found'
 };
 
-export default { ...constants };
+export default constants;

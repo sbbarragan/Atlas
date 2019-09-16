@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { reduxContext } from '../../constants';
 import { fetchValidateAuthenticatedUser, removeStoreData } from '../../utils';
 import { setUser } from '../../actions';
 
@@ -63,10 +62,6 @@ const mapStateToProps = state => {
   return { state };
 };
 
-export default connect(
-  mapStateToProps,
-  null,
-  null,
-  { context: reduxContext }
-)(AuthLayout);
+export default connect(mapStateToProps)(AuthLayout);
+
 // export default AuthLayout;

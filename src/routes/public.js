@@ -1,6 +1,10 @@
 import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import root from 'window-or-global';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from '../public/reducers';
 import App from '../public/app';
 import { includeMAPSJSbyHTML, includeJSbyHTML } from '../utils';
 
@@ -10,8 +14,16 @@ router.get('*', (req, res) => {
   const context = {};
   const pathPublic = `${__dirname}/public`;
 
+  const composeEnhancer =
+    (root && root.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+
+  const store = createStore(
+    rootReducer,
+    composeEnhancer(applyMiddleware(thunk))
+  );
+
   const component = renderToString(
-    <App location={req.url} context={context} />
+    <App location={req.url} context={context} store={store} />
   );
 
   const html = `
@@ -24,6 +36,13 @@ router.get('*', (req, res) => {
     </head>
     <body>
       <div id="root">${component}</div>
+      <script>
+          // WARNING: See the following for security issues around embedding JSON in HTML:
+          // http://redux.js.org/recipes/ServerRendering.html#security-considerations
+          window.__PRELOADED_STATE__ = ${JSON.stringify(
+            store.getState()
+          ).replace(/</g, '\\u003c')}
+      </script>
       ${includeJSbyHTML(pathPublic) + includeMAPSJSbyHTML(pathPublic)}
     </body>
     </html>
