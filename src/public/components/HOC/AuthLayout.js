@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { ReactReduxContext } from 'react-redux';
+import { connect } from 'react-redux';
 import { fetchValidateAuthenticatedUser, removeStoreData } from '../../utils';
-import { setUser } from '../../reducers';
+import { setUser } from '../../actions';
 
 class AuthLayout extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
+    this.props.dispatch(setUser('JRGE'));
     this.state = {
       access: false,
       redirect: false
@@ -59,7 +59,8 @@ AuthLayout.defaultProps = {
 
 const mapStateToProps = state => {
   console.log('-->', state);
+  return { state };
 };
 
-// export default connect(mapStateToProps)(AuthLayout);
-export default AuthLayout;
+export default connect(mapStateToProps)(AuthLayout);
+// export default AuthLayout;

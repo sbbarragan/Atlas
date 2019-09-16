@@ -9,7 +9,7 @@ const env = process && process.env;
 
 // settings
 const mode = env.MODE || defaultMode;
-const devtool = mode === defaultMode ? 'source-map' : '';
+const devtool = mode === defaultMode ? 'inline-source-map' : '';
 const js = {
   test: /\.js$/,
   exclude: /node_modules/,

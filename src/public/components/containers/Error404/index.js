@@ -1,3 +1,7 @@
-import Error404 from './Error404';
+import React, { Fragment } from 'react';
+import constants from '../../../constants';
 
-export { Error404 };
+const { NoFound } = constants;
+const Error404 = props => props.children || <Fragment>{NoFound}</Fragment>;
+
+export default Error404;
