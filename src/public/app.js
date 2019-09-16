@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import root from 'window-or-global';
 import rootReducer from './reducers';
 import Routes from './components/routes';
+import { reduxContext } from './constants';
 
 const App = ({ location, context }) => {
   const composeEnhancer =
@@ -15,9 +16,9 @@ const App = ({ location, context }) => {
     rootReducer,
     composeEnhancer(applyMiddleware(thunk))
   );
-
+  console.log('TEST-context', reduxContext);
   let rtn = (
-    <Provider store={store}>
+    <Provider store={store} context={reduxContext}>
       <BrowserRouter>
         <Routes />
       </BrowserRouter>
