@@ -72,7 +72,6 @@ const validateResource = (req, res, next) => {
     status = serviceUnavailable;
     if (authenticated.includes(resource)) {
       const session = validateAuth(req);
-      console.log('SESSION', session);
       if (
         session &&
         'iss' in session &&

@@ -46,7 +46,7 @@ const clientConfig = {
   mode,
   target: 'web',
   entry: {
-    'app.js': path.resolve(__dirname, 'src/public/app.js')
+    'app.js': path.resolve(__dirname, 'src/public/front-app.js')
   },
   module: {
     rules: [js]
