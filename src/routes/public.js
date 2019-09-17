@@ -37,11 +37,10 @@ router.get('*', (req, res) => {
     <body>
       <div id="root">${component}</div>
       <script>
-          // WARNING: See the following for security issues around embedding JSON in HTML:
-          // http://redux.js.org/recipes/ServerRendering.html#security-considerations
-          window.__PRELOADED_STATE__ = ${JSON.stringify(
-            store.getState()
-          ).replace(/</g, '\\u003c')}
+        window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(
+          /</g,
+          '\\u003c'
+        )}
       </script>
       ${includeJSbyHTML(pathPublic) + includeMAPSJSbyHTML(pathPublic)}
     </body>

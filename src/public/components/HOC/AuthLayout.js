@@ -8,7 +8,6 @@ import { setUser } from '../../actions';
 class AuthLayout extends Component {
   constructor(props) {
     super(props);
-    this.props.dispatch(setUser('JRGE'));
     this.state = {
       access: false,
       redirect: false
@@ -20,7 +19,7 @@ class AuthLayout extends Component {
       fetchValidateAuthenticatedUser().then(response => {
         if (response && response.id) {
           this.setState({ access: true });
-          this.props.dispatch(setUser(response.name));
+          this.props.changeName(response.name);
         } else {
           this.setState({ redirect: true });
         }
@@ -41,7 +40,11 @@ class AuthLayout extends Component {
       }
       return rtn;
     };
-    const render = access ? <div>{children}</div> : <DisplayOrRedirect />;
+    const render = access ? (
+      <Fragment>{children}</Fragment>
+    ) : (
+      <DisplayOrRedirect />
+    );
     return render;
   }
 }
@@ -50,18 +53,24 @@ AuthLayout.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]),
-  dispatch: PropTypes.func
+  changeName: PropTypes.func
 };
+
 AuthLayout.defaultProps = {
   children: [],
-  dispatch: () => undefined
+  changeName: () => undefined
 };
 
-const mapStateToProps = state => {
-  console.log('-->', state);
-  return { state };
+const mapStateToProps = ({ App }) => {
+  const { user } = App;
+  return { user };
 };
 
-export default connect(mapStateToProps)(AuthLayout);
+const mapDispatchToProps = dispatch => ({
+  changeName: name => dispatch(setUser(name))
+});
 
-// export default AuthLayout;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthLayout);

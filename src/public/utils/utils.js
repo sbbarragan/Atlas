@@ -1,4 +1,5 @@
 import moment from 'moment';
+import axios from 'axios';
 
 export const validateInput = (value, type, min, max) => {
   switch (type) {
