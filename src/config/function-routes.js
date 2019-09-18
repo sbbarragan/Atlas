@@ -1,6 +1,7 @@
 const { Map } = require('immutable');
 const enviroments = require('dotenv');
 const moment = require('moment');
+
 const {
   httpMethod,
   defaultMethodLogin,
@@ -183,7 +184,6 @@ const publicRoutes = {
     httpMethod: GET,
     action: (req, res, next) => {
       next();
-      console.log('zeromq');
     }
   },
   support: {
