@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import express from 'express';
 import morgan from 'morgan';
 import enviroments from 'dotenv';
+import atob from 'atob';
 import path from 'path';
 import cors from 'cors';
 import { createServer } from 'http';
@@ -22,7 +23,7 @@ const env = process && process.env;
 const port = env.PORT || 3000;
 const log = env.LOG || 'dev';
 const zeromqType = env.ZEROTYPE || 'tcp';
-const zeromqPort = env.ZEROPORT || 3001;
+const zeromqPort = env.ZEROPORT || 2101;
 const zeromqHost = env.ZEROHOST || '127.0.0.1';
 
 app.use(helmet.hidePoweredBy());
@@ -73,21 +74,16 @@ try {
 
     const clientConnection = request.accept(null, request.origin);
     clients.push(clientConnection);
-
     zeromqSock.subscribe('');
-    /*
-      connection.on('message', message => {
-        console.log('->', message);
-        if (message.type && message.type === 'utf8' && 'utf8Data' in message) {
-          const { utf8Data: data } = message;
-          console.log('received: %s', data);
-          connection.send(`Hello, you sent -> ${data}`);
-        }
-      });
-    */
     zeromqSock.on('message', (topic, mssg) => {
+      const mssgs = [];
       clients.map(client => {
-        client.send(`Hello, broadcast message -> ${mssg}`);
+        client.send('->', topic);
+        client.send(atob(mssg));
+        Array.prototype.slice.call(mssg).forEach(arg => {
+          mssgs.push(arg.toString());
+        });
+        console.log('->', topic, mssgs);
       });
     });
   });
