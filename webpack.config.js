@@ -30,7 +30,8 @@ const serverConfig = {
   },
   externals: [nodeExternals()],
   entry: {
-    'index.js': path.resolve(__dirname, 'src/index.js')
+    'index.js': path.resolve(__dirname, 'src/index.js'),
+    'publisherZMQ.js': path.resolve(__dirname, 'src/publisherZMQ.js')
   },
   module: {
     rules: [js]

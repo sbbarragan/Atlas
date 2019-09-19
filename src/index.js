@@ -7,6 +7,7 @@ import path from 'path';
 import cors from 'cors';
 import { createServer } from 'http';
 import { server } from 'websocket';
+import { socket } from 'zeromq';
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
 import { messageTerminal } from './utils';
@@ -19,8 +20,10 @@ const env = process && process.env;
 
 // settings
 const port = env.PORT || 3000;
-const wsPort = env.WSPORT || 3001;
 const log = env.LOG || 'dev';
+const zeromqType = env.ZEROTYPE || 'tcp';
+const zeromqPort = env.ZEROPORT || 3001;
+const zeromqHost = env.ZEROHOST || '127.0.0.1';
 
 app.use(helmet.hidePoweredBy());
 app.use(compression());
@@ -58,19 +61,44 @@ const appServer = createServer(app);
 const wsServer = new server({
   httpServer: appServer
 });
-// WebSocket petitions
-wsServer.on('request', request => {
-  const connection = request.accept(null, request.origin);
 
-  connection.on('message', message => {
-    console.log('->', message);
-    if (message.type && message.type === 'utf8' && 'utf8Data' in message) {
-      const { utf8Data: data } = message;
-      console.log('received: %s', data);
-      connection.send(`Hello, you sent -> ${data}`);
-    }
+// connect to zeromq
+const zeromqSock = socket('sub');
+const address = `${zeromqType}://${zeromqHost}:${zeromqPort}`;
+try {
+  zeromqSock.connect(address);
+  const clients = [];
+  wsServer.on('request', request => {
+    // aca deberia ir la el auth
+
+    const clientConnection = request.accept(null, request.origin);
+    clients.push(clientConnection);
+
+    zeromqSock.subscribe('');
+    /*
+      connection.on('message', message => {
+        console.log('->', message);
+        if (message.type && message.type === 'utf8' && 'utf8Data' in message) {
+          const { utf8Data: data } = message;
+          console.log('received: %s', data);
+          connection.send(`Hello, you sent -> ${data}`);
+        }
+      });
+    */
+    zeromqSock.on('message', (topic, mssg) => {
+      clients.map(client => {
+        client.send(`Hello, broadcast message -> ${mssg}`);
+      });
+    });
   });
-});
+} catch (error) {
+  const config = {
+    color: 'red',
+    type: error,
+    message: '%s'
+  };
+  messageTerminal(config);
+}
 
 appServer.listen(port, () => {
   const config = {
@@ -80,14 +108,3 @@ appServer.listen(port, () => {
   };
   messageTerminal(config);
 });
-
-/*
-app.listen(port, () => {
-  const config = {
-    color: 'green',
-    type: port,
-    message: 'Server listen in port %s'
-  };
-  messageTerminal(config);
-});
-*/
