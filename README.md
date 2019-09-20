@@ -17,6 +17,9 @@
 - [nodemon] Internal watch failed: watch ENOSPC
 for this error run `sudo sysctl fs.inotify.max_user_watches=582222 && sudo sysctl -p`
 
+- Starting inspector on 127.0.0.1:9229 failed: address already in use
+for this error run  `killall -9 node` and start app again
+
 ## Project description:
 
 - `disk`: this folder content the transpiled code.

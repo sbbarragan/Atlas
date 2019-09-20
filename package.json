@@ -4,7 +4,7 @@
   "description": "Backend",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --mode=production && npm run copy_static_assets",
+    "build": "webpack --mode=production && concurrently \" npm run copy_static_assets\"",
     "publisherZMQ": "node dist/publisherZMQ",
     "dev": "webpack --mode=development && npm run copy_static_assets && concurrently \"webpack --watch\" \"nodemon --inspect dist\"",
     "start": "node dist/index",
