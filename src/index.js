@@ -75,12 +75,12 @@ try {
     const clientConnection = request.accept(null, request.origin);
     clients.push(clientConnection);
     zeromqSock.subscribe('');
-    zeromqSock.on('message', (topic, mssg) => {
+    zeromqSock.on('message', function(topic, mssg){
       const mssgs = [];
       clients.map(client => {
         client.send('->', topic);
         client.send(atob(mssg));
-        Array.prototype.slice.call(mssg).forEach(arg => {
+        Array.prototype.slice.call(this).forEach(arg => {
           mssgs.push(arg.toString());
         });
         console.log('->', topic, mssgs);
