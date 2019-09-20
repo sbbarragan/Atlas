@@ -1,18 +1,29 @@
 # Atlas
 
+base for a new sunstone (Opennebula).
 
-
-## Commands for run this:
+## Commands for run this
 
 - **yarn** (this command import the dependecies).
 - **yarn build** (execute the javascript build "bundle")
 - **yarn start** (start the server in port 3000)
 
-## Commands for development:
+## Commands for development
 
 - **yarn dev** (run server in mode development)
 
-## Errors with solutions:
+## How to use
+
+- **Api**
+  it is a http request, return opennebula resource info or login this return a `JWT`.
+
+  - Login: POST: `http://localhost:3000/api/auth` with params: `user` and `pass`.
+  - Other: check file `src/config/command-params.js`
+
+- **zeroMQ**
+  it is a websocket connection call to: `ws://127.0.0.1:3000/?token=JWT`
+
+## Errors with solutions
 
 - [nodemon] Internal watch failed: watch ENOSPC
 for this error run `sudo sysctl fs.inotify.max_user_watches=582222 && sudo sysctl -p`
@@ -20,7 +31,7 @@ for this error run `sudo sysctl fs.inotify.max_user_watches=582222 && sudo sysct
 - Starting inspector on 127.0.0.1:9229 failed: address already in use
 for this error run  `killall -9 node` and start app again
 
-## Project description:
+## Project description
 
 - `disk`: this folder content the transpiled code.
 - `disk/public`: content the transpiled code valid for the HTML.

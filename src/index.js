@@ -14,7 +14,8 @@ import xml2js from 'xml2js';
 
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
-import { messageTerminal } from './utils';
+import { messageTerminal, validateAuth } from './utils';
+import { unauthorized } from './config/http-codes';
 
 const app = express();
 
@@ -71,47 +72,65 @@ const zeromqSock = socket('sub');
 const address = `${zeromqType}://${zeromqHost}:${zeromqPort}`;
 try {
   zeromqSock.connect(address);
-  const clients = [];
+  let clients = [];
+
   wsServer.on('request', request => {
-    // aca deberia ir la el auth
-
-    const clientConnection = request.accept(null, request.origin);
-    clients.push(clientConnection);
-    zeromqSock.subscribe('');
-    zeromqSock.on('message', (...args) => {
-      const mssgs = [];
-      // broadcast
-      clients.map(client => {
-        Array.prototype.slice.call(args).forEach(arg => {
-          mssgs.push(arg.toString());
-        });
-
-        if (mssgs[0] && mssgs[1]) {
-          xml2js.parseString(
-            atob(mssgs[1]),
-            {
-              explicitArray: false,
-              trim: true,
-              normalize: true,
-              includeWhiteChars: true,
-              strict: false
-            },
-            (error, result) => {
-              if (error) {
-                const configErrorParser = {
-                  color: 'red',
-                  type: error,
-                  message: 'Error parser: %s'
-                };
-                messageTerminal(configErrorParser);
-                return;
+    if (
+      request &&
+      request.resourceURL &&
+      request.resourceURL.query &&
+      request.resourceURL.query.token &&
+      validateAuth({
+        headers: { authorization: request.resourceURL.query.token }
+      })
+    ) {
+      const clientConnection = request.accept(null, request.origin);
+      clients.push(clientConnection);
+      zeromqSock.subscribe('');
+      zeromqSock.on('message', (...args) => {
+        const mssgs = [];
+        // broadcast
+        clients.map(client => {
+          Array.prototype.slice.call(args).forEach(arg => {
+            mssgs.push(arg.toString());
+          });
+          if (mssgs[0] && mssgs[1]) {
+            xml2js.parseString(
+              atob(mssgs[1]),
+              {
+                explicitArray: false,
+                trim: true,
+                normalize: true,
+                includeWhiteChars: true,
+                strict: false
+              },
+              (error, result) => {
+                if (error) {
+                  const configErrorParser = {
+                    color: 'red',
+                    type: error,
+                    message: 'Error parser: %s'
+                  };
+                  messageTerminal(configErrorParser);
+                  return;
+                }
+                client.send(
+                  JSON.stringify({ command: mssgs[0], data: result })
+                );
               }
-              client.send(JSON.stringify({ command: mssgs[0], data: result }));
-            }
-          );
-        }
+            );
+          }
+        });
       });
-    });
+    } else {
+      const { id, message } = unauthorized;
+      request.reject(id, message);
+    }
+  });
+
+  wsServer.on('close', request => {
+    // clear connection to broadcast
+    clients = clients.filter(client => client !== request);
   });
 } catch (error) {
   const configErrorZeroMQ = {
