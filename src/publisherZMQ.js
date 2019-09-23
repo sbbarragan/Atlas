@@ -8,7 +8,6 @@ const env = process && process.env;
 const connectionType = env.ZEROTYPE || 'tcp';
 const port = env.ZEROPORT || 3001;
 const host = env.HOST || '*';
-const topic = env.TOPIC || 'rand';
 
 const address = `${connectionType}://${host}:${port}`;
 

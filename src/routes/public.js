@@ -6,7 +6,11 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../public/reducers';
 import App from '../public/app';
-import { includeMAPSJSbyHTML, includeJSbyHTML } from '../utils';
+import {
+  includeMAPSJSbyHTML,
+  includeJSbyHTML,
+  includeCSSbyHTML
+} from '../utils';
 
 const router = express.Router();
 
@@ -33,6 +37,7 @@ router.get('*', (req, res) => {
       <link rel='shortcut icon' type='image/x-icon' href='/static/favicon.ico' />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      ${includeCSSbyHTML(pathPublic)}
     </head>
     <body>
       <div id="root">${component}</div>

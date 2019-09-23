@@ -5,6 +5,7 @@ const { defaultMode } = require('../config/defaults');
 const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
 const enviroments = require('dotenv');
+
 enviroments.config();
 const env = process && process.env;
 
@@ -43,7 +44,7 @@ const createQueriesState = () => {
 
 const includeMAPSJSbyHTML = (path = '') => {
   let scripts = '';
-  if (mode === defaultMode){
+  if (mode === defaultMode) {
     fs.readdirSync(path).map(file => {
       if (file.match(/\w*\.js\.map+$\b/gi)) {
         scripts += `<script src="/static/${file}" type="application/json"></script>`;
@@ -58,6 +59,16 @@ const includeJSbyHTML = (path = '') => {
   fs.readdirSync(path).map(file => {
     if (file.match(/\w*\.js+$\b/gi)) {
       scripts += `<script src="/static/${file}"></script>`;
+    }
+  });
+  return scripts;
+};
+
+const includeCSSbyHTML = (path = '') => {
+  let scripts = '';
+  fs.readdirSync(path).map(file => {
+    if (file.match(/\w*\.css+$\b/gi)) {
+      scripts += `<link rel="stylesheet" href="/static/${file}"></link>`;
     }
   });
   return scripts;
@@ -107,6 +118,7 @@ module.exports = {
   opennebulaConnect,
   includeMAPSJSbyHTML,
   includeJSbyHTML,
+  includeCSSbyHTML,
   messageTerminal,
   getRouteForOpennebulaCommand,
   getMethodForOpennebulaCommand,

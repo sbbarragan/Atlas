@@ -1,6 +1,9 @@
 const fs = require('fs-extra');
 const { messageTerminal } = require('./src/utils');
 
+const pathNodeModules = 'node_modules/';
+
+const pathAntdCSS = `${pathNodeModules}antd/dist/`;
 const pathInternal = 'src/public/resources/';
 const pathExternal = 'dist/public/';
 
@@ -15,6 +18,10 @@ const files = [
   {
     internal: `${pathInternal}favicon.ico`,
     external: `${pathExternal}favicon.ico`
+  },
+  {
+    internal: `${pathAntdCSS}antd.min.css`,
+    external: `${pathExternal}antd.min.css`
   }
 ];
 
