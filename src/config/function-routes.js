@@ -1,6 +1,8 @@
 const { Map } = require('immutable');
 const enviroments = require('dotenv');
 const moment = require('moment');
+const { totp, generateSecret } = require('speakeasy');
+const qrcode = require('qrcode');
 
 const {
   httpMethod,
@@ -25,7 +27,7 @@ enviroments.config();
 const env = process && process.env;
 const limitToken = JSON.parse(env.LIMIT_TOKEN);
 
-const { POST, GET } = httpMethod;
+const { POST, GET, DELETE } = httpMethod;
 
 const privateRoutes = {
   private: ''
@@ -164,6 +166,61 @@ const publicRoutes = {
       } else {
         next();
       }
+    }
+  },
+  twofactorsetup: {
+    httpMethod: POST,
+    action: (req, res, next) => {
+      const secret = generateSecret({ length: 10 });
+      if (secret && secret.otpauth_url && secret.base32) {
+        const { otpauth_url: otpURL, base32 } = secret;
+        qrcode.toDataURL(otpURL, (err, dataURL) => {
+          /*
+            // con el err se puede validar problemas para generar el QR
+            // save to template USER
+            user.twofactor = {
+              secret: '',
+              tempSecret: base32,
+              dataURL,
+              otpURL
+            };
+          */
+          const codeOK = Map(ok).toObject();
+          codeOK.data = {
+            message: 'Verify OTP',
+            tempSecret: base32,
+            dataURL,
+            otpURL
+          };
+          res.locals.httpCode = codeOK;
+        });
+      }
+      next();
+    }
+  },
+  twofactorverify: {
+    httpMethod: POST,
+    action: (req, res, next) => {
+      const verified = totp.verify({
+        // secret: user.twofactor.tempSecret, // secret of the logged in user in user template
+        encoding: 'base32',
+        token: req.body.token
+      });
+
+      if (verified) {
+        // user.twofactor.secret = user.twofactor.tempSecret; // set secret, confirmated 2fa (need save in user template)
+        res.locals.httpCode = Map(ok).toObject();
+        next();
+      }
+      res.locals.httpCode = Map(unauthorized).toObject();
+      next();
+    }
+  },
+  twofactordelete: {
+    httpMethod: DELETE,
+    action: (req, res, next) => {
+      next();
+      console.log('twofactordelete');
     }
   },
   zendesk: {
