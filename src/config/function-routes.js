@@ -69,6 +69,13 @@ const publicRoutes = {
             dataSource[fromData.postBody].pass) ||
           '';
 
+        const token =
+          (dataSource &&
+            fromData.postBody &&
+            dataSource[fromData.postBody] &&
+            dataSource[fromData.postBody].token) ||
+          '';
+
         const extended =
           (dataSource &&
             dataSource[fromData.postBody] &&
@@ -83,12 +90,13 @@ const publicRoutes = {
             .add(extended ? MAX : MIN, 'days')
             .unix();
 
-          let token;
+          let opennebulaToken;
           const connectOpennebula = opennebulaConnect(user, pass, rpc);
 
           const getUserInfo = userData => {
-            if (user && token && userData && userData.USER) {
+            if (user && opennebulaToken && userData && userData.USER) {
               const informationUser = userData.USER;
+
               if (
                 informationUser &&
                 informationUser.LOGIN_TOKEN &&
@@ -98,12 +106,48 @@ const publicRoutes = {
                   if (
                     loginToken &&
                     loginToken.TOKEN &&
-                    loginToken.TOKEN !== token
+                    loginToken.TOKEN !== opennebulaToken
                   ) {
                     // aca se debe de borrar los demas tokens generados no el que esta en la variable token
-                    console.log('->', token, informationUser.LOGIN_TOKEN);
+                    console.log(
+                      '->',
+                      opennebulaToken,
+                      informationUser.LOGIN_TOKEN
+                    );
                   }
                 });
+              }
+
+              // aca se tiene que retormar un mesaje de error pidiendo los datos del token de 2FA
+              if (
+                informationUser &&
+                informationUser.TEMPLATE &&
+                informationUser.TEMPLATE.SUNSTONE &&
+                informationUser.TEMPLATE.SUNSTONE.TWO_FACTOR_AUTH_SECRET
+              ) {
+                if (!token) {
+                  console.log(
+                    'mesaje de error porque falta el token de 2fa del usuario'
+                  );
+                  next();
+                  return;
+                }
+                const secret =
+                  informationUser.TEMPLATE.SUNSTONE.TWO_FACTOR_AUTH_SECRET;
+                const verified = totp.verify({
+                  secret,
+                  encoding: 'base32',
+                  token
+                });
+                if (verified) {
+                  console.log(
+                    'aca se tiene que llenar el usuario con el nuevo token de 2fa'
+                  );
+                } else {
+                  console.log('fallo el auth del 2fa');
+                  next();
+                  return;
+                }
               }
 
               const { ID: id } = informationUser;
@@ -123,7 +167,7 @@ const publicRoutes = {
 
           const authenticated = val => {
             if (val) {
-              token = val;
+              opennebulaToken = val;
               connectOpennebula(
                 defaultMethodUserInfo,
                 paramsDefaultByCommandOpennebula(defaultMethodUserInfo, GET),
