@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Button } from 'antd';
 
 class Menu extends Component {
   constructor(props) {
@@ -19,7 +20,9 @@ class Menu extends Component {
     return redirect ? (
       <Redirect to="/" />
     ) : (
-      <button onClick={this.onRedirect}>redirect</button>
+      <Button type="primary" onClick={this.onRedirect}>
+        redirect
+      </Button>
     );
   }
 }

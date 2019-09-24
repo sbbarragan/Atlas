@@ -237,12 +237,6 @@ const publicRoutes = {
       console.log('latest version opennebula');
     }
   },
-  zeromq: {
-    httpMethod: GET,
-    action: (req, res, next) => {
-      next();
-    }
-  },
   support: {
     httpMethod: POST,
     action: (req, res, next) => {
