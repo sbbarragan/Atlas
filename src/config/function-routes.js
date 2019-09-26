@@ -6,8 +6,10 @@ const qrcode = require('qrcode');
 
 const {
   httpMethod,
+  defaultNamespace,
   defaultMethodLogin,
-  defaultMethodUserInfo
+  defaultMethodUserInfo,
+  defaultMethodUserUpdate
 } = require('./defaults');
 const {
   ok,
@@ -26,6 +28,7 @@ const {
 enviroments.config();
 const env = process && process.env;
 const limitToken = JSON.parse(env.LIMIT_TOKEN);
+const namespace = env.namespace || defaultNamespace;
 
 const { POST, GET, DELETE } = httpMethod;
 
@@ -151,6 +154,7 @@ const publicRoutes = {
             if (user && opennebulaToken && userData && userData.USER) {
               const informationUser = userData.USER;
 
+              // remove multiple tokens
               if (
                 informationUser.LOGIN_TOKEN &&
                 Array.isArray(informationUser.LOGIN_TOKEN)
@@ -171,7 +175,7 @@ const publicRoutes = {
                 });
               }
 
-              // aca se tiene que retormar un mesaje de error pidiendo los datos del token de 2FA
+              // validate 2fa token
               if (
                 informationUser.TEMPLATE &&
                 informationUser.TEMPLATE.SUNSTONE &&
@@ -184,16 +188,15 @@ const publicRoutes = {
                   encoding: 'base32',
                   token
                 });
-                if (!!token && verified) {
-                  console.log(
-                    'aca se tiene que llenar el usuario con el nuevo token de 2fa'
-                  );
-                } else {
-                  console.log('fallo el auth del 2fa');
+                if (!verified) {
+                  const codeUnauthorized = Map(unauthorized).toObject();
+                  codeUnauthorized.data = { message: 'invalid 2fa token' };
+                  updaterResponse(codeUnauthorized);
                   next();
                 }
               }
 
+              // generate jwt
               const { ID: id } = informationUser;
               const dataJWT = { id, user, token: opennebulaToken };
               const jwt = createToken(dataJWT, momentUnix, momentWithDays);
@@ -209,21 +212,28 @@ const publicRoutes = {
           };
 
           const authenticated = val => {
+            const findTextError = `[${namespace + defaultMethodLogin}]`;
             if (val) {
-              opennebulaToken = val;
-              connectOpennebula(
-                defaultMethodUserInfo,
-                paramsDefaultByCommandOpennebula(defaultMethodUserInfo, GET),
-                (err, value) => {
-                  responseOpennebula(
-                    updaterResponse,
-                    err,
-                    value,
-                    getUserInfo,
-                    next
-                  );
-                }
-              );
+              if (val.search(findTextError) > 0) {
+                const codeUnauthorized = Map(unauthorized).toObject();
+                updaterResponse(codeUnauthorized);
+                next();
+              } else {
+                opennebulaToken = val;
+                connectOpennebula(
+                  defaultMethodUserInfo,
+                  paramsDefaultByCommandOpennebula(defaultMethodUserInfo, GET),
+                  (err, value) => {
+                    responseOpennebula(
+                      updaterResponse,
+                      err,
+                      value,
+                      getUserInfo,
+                      next
+                    );
+                  }
+                );
+              }
             } else {
               next();
             }
