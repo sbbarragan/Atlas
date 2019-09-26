@@ -18,5 +18,6 @@ module.exports = {
   defaultGetMethod: 'info',
   defaultMessageProblemOpennebula: 'Problem with conection or xml parser',
   defaultMethodLogin: 'user.login',
+  defaultMethodUserUpdate: 'user.update',
   defaultMethodUserInfo: 'user.info'
 };

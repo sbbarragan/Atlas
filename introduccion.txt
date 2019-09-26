@@ -38,7 +38,8 @@ Ventajas:
 
 
 
-
+CONSULTAR: 
+-que pasaria si en una federacion posee un namespace diferente a one.
 
 
 

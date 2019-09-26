@@ -2084,8 +2084,21 @@ const commandsParams = {
     }
   },
   'user.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      update: {
+        from: postBody,
+        default: 1
+      }
+    }
   },
   'user.chauth': {
     httpMethod: GET,
