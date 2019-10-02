@@ -2075,7 +2075,7 @@ const commandsParams = {
       },
       expire: {
         from: postBody,
-        default: -1
+        default: 0
       },
       gid: {
         from: postBody,
