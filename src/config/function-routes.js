@@ -145,10 +145,11 @@ const publicRoutes = {
           const momentUnix = momentInstance.unix();
           const momentWithDays = momentInstance
             .add(extended ? MAX : MIN, 'days')
-            .unix();
-
+            .format('X');
+          console.log('-->', momentUnix, momentWithDays);
           let opennebulaToken;
           const connectOpennebula = opennebulaConnect(user, pass, rpc);
+          const dataSourceWithExpirateDate = Map(dataSource).toObject();
 
           const getUserInfo = userData => {
             if (user && opennebulaToken && userData && userData.USER) {
@@ -165,12 +166,23 @@ const publicRoutes = {
                     loginToken.TOKEN &&
                     loginToken.TOKEN !== opennebulaToken
                   ) {
-                    // aca se debe de borrar los demas tokens generados no el que esta en la variable token
-                    /* console.log(
-                      '->',
-                      opennebulaToken,
-                      informationUser.LOGIN_TOKEN
-                    ); */
+                    dataSourceWithExpirateDate[fromData.postBody].expire = 0;
+                    dataSourceWithExpirateDate[fromData.postBody].token =
+                      loginToken.TOKEN;
+
+                    connectOpennebula(
+                      defaultMethodLogin,
+                      getOpennebulaMethod(dataSourceWithExpirateDate),
+                      (err, value) => {
+                        responseOpennebula(
+                          () => undefined,
+                          err,
+                          value,
+                          () => undefined,
+                          next
+                        );
+                      }
+                    );
                   }
                 });
               }
@@ -214,7 +226,7 @@ const publicRoutes = {
           const authenticated = val => {
             const findTextError = `[${namespace + defaultMethodLogin}]`;
             if (val) {
-              if (val.search(findTextError) > 0) {
+              if (val.indexOf(findTextError) >= 0) {
                 const codeUnauthorized = Map(unauthorized).toObject();
                 updaterResponse(codeUnauthorized);
                 next();
@@ -240,7 +252,6 @@ const publicRoutes = {
           };
 
           // add expire time unix
-          const dataSourceWithExpirateDate = Map(dataSource).toObject();
           dataSourceWithExpirateDate[fromData.postBody].expire = momentWithDays;
 
           connectOpennebula(
