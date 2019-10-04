@@ -1,7 +1,7 @@
 const { Map } = require('immutable');
 const enviroments = require('dotenv');
 const moment = require('moment');
-const { totp, generateSecret } = require('speakeasy');
+const speakeasy = require('speakeasy');
 const qrcode = require('qrcode');
 
 const {
@@ -20,7 +20,6 @@ const { from: fromData } = require('../config/commands-params');
 const { createToken } = require('../utils/jwt-functions');
 const {
   responseOpennebula,
-  opennebulaConnect,
   checkOpennebulaCommand,
   paramsDefaultByCommandOpennebula
 } = require('../utils/opennebula-functions');
@@ -33,40 +32,63 @@ const namespace = env.namespace || defaultNamespace;
 const { POST, GET, DELETE } = httpMethod;
 
 const privateRoutes = {
-  twofactorsetup: {
+  '2fsetup': {
     httpMethod: POST,
-    action: (req, res, next) => {
-      const secret = generateSecret({ length: 10 });
+    action: (dataSource, res, next, connect) => {
+      const secret = speakeasy.generateSecret({ length: 10 });
       if (secret && secret.otpauth_url && secret.base32) {
-        const { otpauth_url: otpURL, base32 } = secret;
+        const { otpauth_url: otpURL } = secret;
         qrcode.toDataURL(otpURL, (err, dataURL) => {
-          /*
-            // con el err se puede validar problemas para generar el QR
-            // save to template USER
-            user.twofactor = {
-              secret: '',
-              tempSecret: base32,
-              dataURL,
-              otpURL
-            };
-          */
-          const codeOK = Map(ok).toObject();
-          codeOK.data = {
-            message: 'Verify OTP',
-            tempSecret: base32,
-            dataURL,
-            otpURL
-          };
-          res.locals.httpCode = codeOK;
+          if (err) {
+            res.locals.httpCode = Map(internalServerError).toObject();
+            next();
+          } else {
+            const connectOpennebula = connect();
+            const dataUser = Map(dataSource).toObject();
+            dataUser[fromData.resource].id = 0; // colocar user ID
+            dataUser[fromData.postBody].template = 'SECRETTOKEN=PEPE'; // aca colocar secret token
+
+            const getOpennebulaMethod = checkOpennebulaCommand(
+              defaultMethodUserUpdate,
+              POST
+            );
+            console.log('-->', dataUser, getOpennebulaMethod());
+            next();
+            connectOpennebula(
+              defaultMethodUserUpdate,
+              getOpennebulaMethod(dataUser),
+              (err, value) => {
+                responseOpennebula(
+                  () => undefined,
+                  err,
+                  value,
+                  pass => {
+                    if (pass) {
+                      const codeOK = Map(ok).toObject();
+                      codeOK.data = {
+                        img: dataURL
+                      };
+                      res.locals.httpCode = codeOK;
+                      next();
+                    } else {
+                      next();
+                    }
+                  },
+                  next
+                );
+              }
+            );
+          }
         });
+      } else {
+        next();
       }
-      next();
     }
   },
-  twofactorverify: {
+  '2fverify': {
     httpMethod: POST,
     action: (req, res, next) => {
-      const verified = totp.verify({
+      const verified = speakeasy.totp.verify({
         // secret: user.twofactor.tempSecret, // secret of the logged in user in user template
         encoding: 'base32',
         token: req.body.token
@@ -93,7 +115,7 @@ const privateRoutes = {
 const publicRoutes = {
   auth: {
     httpMethod: POST,
-    action: (dataSource, res, next, rpc) => {
+    action: (dataSource, res, next, connect) => {
       const updaterResponse = code => {
         if (
           'id' in code &&
@@ -139,7 +161,7 @@ const publicRoutes = {
             dataSource[fromData.postBody].extended) ||
           '';
 
-        if (user && pass && rpc && limitToken) {
+        if (user && pass && connect && limitToken) {
           const { MIN, MAX } = limitToken;
 
           const now = moment();
@@ -148,7 +170,10 @@ const publicRoutes = {
           const relativeTime = nowWithDays.diff(now, 'seconds');
 
           let opennebulaToken;
-          const connectOpennebula = opennebulaConnect(user, pass, rpc);
+          const connectOpennebula = connect(
+            user,
+            pass
+          );
           const dataSourceWithExpirateDate = Map(dataSource).toObject();
 
           const getUserInfo = userData => {
