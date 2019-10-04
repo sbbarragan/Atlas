@@ -141,12 +141,12 @@ const publicRoutes = {
 
         if (user && pass && rpc && limitToken) {
           const { MIN, MAX } = limitToken;
-          const momentInstance = moment();
-          const momentUnix = momentInstance.unix();
-          const momentWithDays = momentInstance
-            .add(extended ? MAX : MIN, 'days')
-            .format('X');
-          console.log('-->', momentUnix, momentWithDays);
+
+          const now = moment();
+          const nowUnix = now.unix();
+          const nowWithDays = moment().add(extended ? MAX : MIN, 'days');
+          const relativeTime = nowWithDays.diff(now, 'seconds');
+
           let opennebulaToken;
           const connectOpennebula = opennebulaConnect(user, pass, rpc);
           const dataSourceWithExpirateDate = Map(dataSource).toObject();
@@ -155,7 +155,7 @@ const publicRoutes = {
             if (user && opennebulaToken && userData && userData.USER) {
               const informationUser = userData.USER;
 
-              // remove multiple tokens
+              // remove opennebula user tokens
               if (
                 informationUser.LOGIN_TOKEN &&
                 Array.isArray(informationUser.LOGIN_TOKEN)
@@ -211,7 +211,11 @@ const publicRoutes = {
               // generate jwt
               const { ID: id } = informationUser;
               const dataJWT = { id, user, token: opennebulaToken };
-              const jwt = createToken(dataJWT, momentUnix, momentWithDays);
+              const jwt = createToken(
+                dataJWT,
+                nowUnix,
+                nowWithDays.format('X')
+              );
               if (jwt) {
                 const codeOK = Map(ok).toObject();
                 codeOK.data = { token: jwt };
@@ -251,8 +255,8 @@ const publicRoutes = {
             }
           };
 
-          // add expire time unix
-          dataSourceWithExpirateDate[fromData.postBody].expire = momentWithDays;
+          // add expire time unix for opennebula creation token
+          dataSourceWithExpirateDate[fromData.postBody].expire = relativeTime;
 
           connectOpennebula(
             defaultMethodLogin,
