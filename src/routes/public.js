@@ -40,7 +40,7 @@ router.get('*', (req, res) => {
       ${includeCSSbyHTML(pathPublic)}
     </head>
     <body>
-      <div id="root">${component}</div>
+      <div id="root" class="container">${component}</div>
       <script>
         window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(
           /</g,

@@ -1,5 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Form, Icon, Input, Button, Checkbox } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Button
+} from 'reactstrap';
+import classnames from 'classnames';
 
 class Login extends Component {
   constructor(props) {
@@ -15,28 +26,24 @@ class Login extends Component {
   render() {
     const { writeToken } = this.state;
     const inputs = writeToken ? (
-      <Form.Item>
-        <Input
-          prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
+      <FormGroup row>
+        <InputGroup className={classnames('col')}>
+          <InputGroupAddon addonType="prepend">LOCK</InputGroupAddon>
+          <Input type="password" placeholder="Password" />
+        </InputGroup>
+      </FormGroup>
     ) : (
       <Fragment>
-        <Form.Item>
-          <Input
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
+        <FormGroup row>
+          <InputGroup className={classnames('col')}>
+            <Input placeholder="Username" />
+          </InputGroup>
+        </FormGroup>
+        <FormGroup row>
+          <InputGroup className={classnames('col')}>
+            <Input type="password" placeholder="Password" />
+          </InputGroup>
+        </FormGroup>
       </Fragment>
     );
 
@@ -47,19 +54,21 @@ class Login extends Component {
         justify="center"
         align="middle"
       >
-        <Col span={4}>
+        <Col sm="12" md={{ size: 6, offset: 3 }}>
           <Form onSubmit={this.handleSubmit}>
             {inputs}
-            <Form.Item>
-              <Checkbox>Remember me</Checkbox>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
-                Log in
-              </Button>
-            </Form.Item>
+            <FormGroup row>
+              <Col sm="12" md="6">
+                <Label>
+                  <Input type="checkbox" /> Keep me logged in
+                </Label>
+              </Col>
+              <Col sm="12" md="6">
+                <Button type="primary" className="login-form-button">
+                  Log in
+                </Button>
+              </Col>
+            </FormGroup>
           </Form>
         </Col>
       </Row>

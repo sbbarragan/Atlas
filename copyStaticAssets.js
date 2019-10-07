@@ -3,7 +3,7 @@ const { messageTerminal } = require('./src/utils');
 
 const pathNodeModules = 'node_modules/';
 
-const pathAntdCSS = `${pathNodeModules}antd/dist/`;
+const pathBootstrap = `${pathNodeModules}bootstrap/dist/css/`;
 const pathInternal = 'src/public/resources/';
 const pathExternal = 'dist/public/';
 
@@ -20,8 +20,8 @@ const files = [
     external: `${pathExternal}favicon.ico`
   },
   {
-    internal: `${pathAntdCSS}antd.min.css`,
-    external: `${pathExternal}antd.min.css`
+    internal: `${pathBootstrap}bootstrap.min.css`,
+    external: `${pathExternal}bootstrap.min.css`
   }
 ];
 

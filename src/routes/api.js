@@ -37,6 +37,7 @@ const defaultQueries = Map(createQueriesState());
 
 let paramsState = defaultParams.toObject();
 let queriesState = defaultQueries.toObject();
+let idUserOpennebula = '';
 let userOpennebula = '';
 let passOpennebula = '';
 
@@ -50,6 +51,7 @@ const opennebulaZones =
 const clearStates = () => {
   paramsState = defaultParams.toObject();
   queriesState = defaultQueries.toObject();
+  idUserOpennebula = '';
   userOpennebula = '';
   passOpennebula = '';
 };
@@ -80,6 +82,7 @@ const validateResource = (req, res, next) => {
         'iat' in session &&
         'exp' in session
       ) {
+        idUserOpennebula = session.iss;
         userOpennebula = session.aud;
         passOpennebula = session.jti;
         next();
@@ -169,11 +172,10 @@ router.all(
     const zone = getDataZone();
     if (zone) {
       const { RPC } = zone;
-      const connectOpennebula = opennebulaConnect(
-        userOpennebula,
-        passOpennebula,
-        RPC
-      );
+      const connectOpennebula = (
+        user = userOpennebula,
+        pass = passOpennebula
+      ) => opennebulaConnect(user, pass, RPC);
       const { resource } = req.params;
       const routeFunction = checkRouteFunction(resource);
       res.locals.httpCode = Map(methodNotAllowed).toObject();
@@ -188,7 +190,13 @@ router.all(
           httpMethod
         );
         if (valRouteFunction) {
-          valRouteFunction(dataSources, res, next, RPC);
+          valRouteFunction(
+            dataSources,
+            res,
+            next,
+            connectOpennebula,
+            idUserOpennebula
+          );
         } else {
           next();
         }
@@ -216,8 +224,12 @@ router.all(
               res.locals.httpCode = code;
             }
           };
-
-          connectOpennebula(
+          const connect = connectOpennebula(
+            userOpennebula,
+            passOpennebula,
+            RPC
+          );
+          connect(
             command,
             getOpennebulaMethod(dataSources),
             (err, value) =>

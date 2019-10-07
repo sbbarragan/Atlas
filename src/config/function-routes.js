@@ -34,10 +34,10 @@ const { POST, GET, DELETE } = httpMethod;
 const privateRoutes = {
   '2fsetup': {
     httpMethod: POST,
-    action: (dataSource, res, next, connect) => {
+    action: (dataSource, res, next, connect, userId) => {
       const secret = speakeasy.generateSecret({ length: 10 });
       if (secret && secret.otpauth_url && secret.base32) {
-        const { otpauth_url: otpURL } = secret;
+        const { otpauth_url: otpURL, base32 } = secret;
         qrcode.toDataURL(otpURL, (err, dataURL) => {
           if (err) {
             res.locals.httpCode = Map(internalServerError).toObject();
@@ -45,15 +45,15 @@ const privateRoutes = {
           } else {
             const connectOpennebula = connect();
             const dataUser = Map(dataSource).toObject();
-            dataUser[fromData.resource].id = 0; // colocar user ID
-            dataUser[fromData.postBody].template = 'SECRETTOKEN=PEPE'; // aca colocar secret token
+            dataUser[fromData.resource].id = userId;
+            dataUser[
+              fromData.postBody
+            ].template = `SUNSTONE=[TWO_FACTOR_AUTH_SECRET=${base32}]`;
 
             const getOpennebulaMethod = checkOpennebulaCommand(
               defaultMethodUserUpdate,
               POST
             );
-            console.log('-->', dataUser, getOpennebulaMethod());
-            next();
             connectOpennebula(
               defaultMethodUserUpdate,
               getOpennebulaMethod(dataUser),
@@ -63,7 +63,7 @@ const privateRoutes = {
                   err,
                   value,
                   pass => {
-                    if (pass) {
+                    if (pass !== undefined && pass !== null) {
                       const codeOK = Map(ok).toObject();
                       codeOK.data = {
                         img: dataURL
@@ -87,7 +87,7 @@ const privateRoutes = {
   },
   '2fverify': {
     httpMethod: POST,
-    action: (req, res, next) => {
+    action: (req, res, next, connect, userId) => {
       const verified = speakeasy.totp.verify({
         // secret: user.twofactor.tempSecret, // secret of the logged in user in user template
         encoding: 'base32',
@@ -220,7 +220,7 @@ const publicRoutes = {
               ) {
                 const secret =
                   informationUser.TEMPLATE.SUNSTONE.TWO_FACTOR_AUTH_SECRET;
-                const verified = totp.verify({
+                const verified = speakeasy.totp.verify({
                   secret,
                   encoding: 'base32',
                   token
