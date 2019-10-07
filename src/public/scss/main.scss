@@ -3,11 +3,6 @@
 @import "footer";
 @import "menu";
 
-body{
-  height: 100%;
-}
-#root{
-  display: flex;
-  height: 100%;
-  flex-direction: row;
+html, body, #root, .full-height{
+  min-height: 100vh;
 }

@@ -48,22 +48,21 @@ class Login extends Component {
     );
 
     return (
-      <Row
-        style={{ width: '100%' }}
-        type="flex"
-        justify="center"
-        align="middle"
-      >
-        <Col sm="12" md={{ size: 6, offset: 3 }}>
-          <Form onSubmit={this.handleSubmit}>
+      <Row className={classnames('min-vh-100')}>
+        <Col
+          sm="12"
+          md={{ size: 4, offset: 4 }}
+          className={classnames('align-items-center', 'd-flex')}
+        >
+          <Form onSubmit={this.handleSubmit} className={classnames('col')}>
             {inputs}
             <FormGroup row>
-              <Col sm="12" md="6">
+              <Col sm="12" md="6" className={classnames('text-center')}>
                 <Label>
                   <Input type="checkbox" /> Keep me logged in
                 </Label>
               </Col>
-              <Col sm="12" md="6">
+              <Col sm="12" md="6" className={classnames('text-center')}>
                 <Button type="primary" className="login-form-button">
                   Log in
                 </Button>

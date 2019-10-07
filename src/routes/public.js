@@ -4,8 +4,10 @@ import { renderToString } from 'react-dom/server';
 import root from 'window-or-global';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import classnames from 'classnames';
 import rootReducer from '../public/reducers';
 import App from '../public/app';
+
 import {
   includeMAPSJSbyHTML,
   includeJSbyHTML,
@@ -40,7 +42,12 @@ router.get('*', (req, res) => {
       ${includeCSSbyHTML(pathPublic)}
     </head>
     <body>
-      <div id="root" class="container">${component}</div>
+      <div id="root" class="${classnames(
+        'container-fluid',
+        'd-flex',
+        'flex-column',
+        'justify-content-between'
+      )}">${component}</div>
       <script>
         window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(
           /</g,
