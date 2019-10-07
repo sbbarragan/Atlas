@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, createContext as CreateContext } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
+import { sprintf } from 'sprintf';
+import root from 'window-or-global';
 import { translations, defaultLang } from '../../../config/defaults';
 
 const langDefault = defaultLang;
-export const TranslateContext = new React.createContext();
+export const TranslateContext = new CreateContext();
 
 export class TranslateProvider extends Component {
   constructor() {
@@ -70,6 +72,19 @@ export const Translate = ({ word }) => {
   return <TranslateContext.Consumer>{selector}</TranslateContext.Consumer>;
 };
 
+const tr = (str = '') => {
+  let tmp = root.locale[str];
+  if (tmp == null || tmp == '') {
+    tmp = str;
+  }
+
+  /* if (arguments.length == 1) {
+    return tmp;
+  } */
+
+  return sprintf.apply(this, Array.prototype.slice.call(arguments));
+};
+
 TranslateProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -82,14 +97,9 @@ TranslateProvider.defaultProps = {
 };
 
 Translate.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]),
   word: PropTypes.string
 };
 
 Translate.defaultProps = {
-  children: undefined,
   word: ''
 };
