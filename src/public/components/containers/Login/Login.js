@@ -43,7 +43,6 @@ class Login extends Component {
         <FormGroup row>
           <InputGroup className={classnames('col')}>
             <Input type="password" placeholder="Password" />
-            <Translate />
           </InputGroup>
         </FormGroup>
       </Fragment>
@@ -61,7 +60,8 @@ class Login extends Component {
             <FormGroup row>
               <Col sm="12" md="6" className={classnames('text-center')}>
                 <Label>
-                  <Input type="checkbox" /> Keep me logged in
+                  <Input type="checkbox" />{' '}
+                  <Translate word="Keep me logged in" />
                 </Label>
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
