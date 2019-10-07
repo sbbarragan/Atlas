@@ -2,19 +2,24 @@ import React from 'react';
 import { StaticRouter, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
+import { TranslateProvider } from './components/HOC';
 import Routes from './components/routes';
 
 const App = ({ location, context, store }) => {
   let rtn = (
     <BrowserRouter>
-      <Routes />
+      <TranslateProvider>
+        <Routes />
+      </TranslateProvider>
     </BrowserRouter>
   );
 
   if (location && context) {
     rtn = (
       <StaticRouter location={location} context={context}>
-        <Routes />
+        <TranslateProvider>
+          <Routes />
+        </TranslateProvider>
       </StaticRouter>
     );
   }

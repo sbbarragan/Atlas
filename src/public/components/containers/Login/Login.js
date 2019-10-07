@@ -11,6 +11,7 @@ import {
   Button
 } from 'reactstrap';
 import classnames from 'classnames';
+import { Translate } from '../../HOC';
 
 class Login extends Component {
   constructor(props) {
@@ -42,6 +43,7 @@ class Login extends Component {
         <FormGroup row>
           <InputGroup className={classnames('col')}>
             <Input type="password" placeholder="Password" />
+            <Translate />
           </InputGroup>
         </FormGroup>
       </Fragment>
@@ -64,7 +66,7 @@ class Login extends Component {
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
                 <Button type="primary" className="login-form-button">
-                  Log in
+                  <Translate word="Log in" />
                 </Button>
               </Col>
             </FormGroup>
