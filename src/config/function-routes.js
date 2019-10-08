@@ -9,7 +9,8 @@ const {
   defaultNamespace,
   defaultMethodLogin,
   defaultMethodUserInfo,
-  defaultMethodUserUpdate
+  defaultMethodUserUpdate,
+  defaultIssuer
 } = require('./defaults');
 const {
   ok,
@@ -28,14 +29,18 @@ enviroments.config();
 const env = process && process.env;
 const limitToken = JSON.parse(env.LIMIT_TOKEN);
 const namespace = env.namespace || defaultNamespace;
+const twoFactorAuthIssuer = env.TWO_FACTOR_AUTH_ISSUER || defaultIssuer;
 
 const { POST, GET, DELETE } = httpMethod;
 
 const privateRoutes = {
-  '2fsetup': {
+  '2fqr': {
     httpMethod: POST,
     action: (dataSource, res, next, connect, userId) => {
-      const secret = speakeasy.generateSecret({ length: 10 });
+      const secret = speakeasy.generateSecret({
+        length: 10,
+        name: twoFactorAuthIssuer
+      });
       if (secret && secret.otpauth_url && secret.base32) {
         const { otpauth_url: otpURL, base32 } = secret;
         qrcode.toDataURL(otpURL, (err, dataURL) => {
@@ -85,28 +90,90 @@ const privateRoutes = {
       }
     }
   },
-  '2fverify': {
+  '2fsetup': {
     httpMethod: POST,
     action: (req, res, next, connect, userId) => {
-      
-      const verified = speakeasy.totp.verify({
-        // secret: user.twofactor.tempSecret, // secret of the logged in user in user template
-        encoding: 'base32',
-        token: req.body.token
-      });
-
-      if (verified) {
-        // user.twofactor.secret = user.twofactor.tempSecret; // set secret, confirmated 2fa (need save in user template)
-        res.locals.httpCode = Map(ok).toObject();
-        next();
-      }
-      res.locals.httpCode = Map(unauthorized).toObject();
-      next();
+      const connectOpennebula = connect();
+      req[fromData.resource].id = userId;
+      const getOpennebulaMethod = checkOpennebulaCommand(
+        defaultMethodUserInfo,
+        GET
+      );
+      connectOpennebula(
+        defaultMethodUserInfo,
+        getOpennebulaMethod(req),
+        (err, value) => {
+          responseOpennebula(
+            () => undefined,
+            err,
+            value,
+            pass => {
+              if (
+                pass &&
+                pass.USER &&
+                pass.USER.TEMPLATE &&
+                pass.USER.TEMPLATE.SUNSTONE &&
+                pass.USER.TEMPLATE.SUNSTONE.TMP_TWO_FACTOR_AUTH_SECRET &&
+                fromData &&
+                fromData.postBody &&
+                req &&
+                req[fromData.postBody] &&
+                req[fromData.postBody].token
+              ) {
+                const token = req[fromData.postBody].token;
+                const secret =
+                  pass.USER.TEMPLATE.SUNSTONE.TMP_TWO_FACTOR_AUTH_SECRET;
+                const verified = speakeasy.totp.verify({
+                  secret,
+                  encoding: 'base32',
+                  token
+                });
+                if (verified) {
+                  const dataUser = Map(req).toObject();
+                  dataUser[fromData.resource].id = userId;
+                  dataUser[
+                    fromData.postBody
+                  ].template = `SUNSTONE=[TWO_FACTOR_AUTH_SECRET=${secret}]`;
+                  const getOpennebulaMethodUpdate = checkOpennebulaCommand(
+                    defaultMethodUserUpdate,
+                    POST
+                  );
+                  connectOpennebula(
+                    defaultMethodUserUpdate,
+                    getOpennebulaMethodUpdate(dataUser),
+                    (err, value) => {
+                      responseOpennebula(
+                        () => undefined,
+                        err,
+                        value,
+                        pass => {
+                          if (pass !== undefined && pass !== null) {
+                            const codeOK = Map(ok).toObject();
+                            res.locals.httpCode = codeOK;
+                          }
+                          next();
+                        },
+                        next
+                      );
+                    }
+                  );
+                } else {
+                  res.locals.httpCode = Map(unauthorized).toObject();
+                  next();
+                }
+              } else {
+                next();
+              }
+            },
+            next
+          );
+        }
+      );
     }
   },
   twofactordelete: {
     httpMethod: DELETE,
-    action: (req, res, next) => {
+    action: (req, res, next, connect, userId) => {
       next();
       console.log('twofactordelete');
     }

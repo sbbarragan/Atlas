@@ -15,6 +15,7 @@ module.exports = {
   defaultMode: 'development',
   defaultNamespace: 'one.',
   defaultMessageInvalidZone: 'Invalid Zone',
+  defaultIssuer: 'sunstone-UI',
   defaultGetMethod: 'info',
   defaultMessageProblemOpennebula: 'Problem with conection or xml parser',
   defaultMethodLogin: 'user.login',
