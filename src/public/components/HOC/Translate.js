@@ -1,7 +1,7 @@
 import React, { Component, createContext as CreateContext } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
-import { sprintf } from 'sprintf';
+import { sprintf } from 'sprintf-js';
 import root from 'window-or-global';
 import { translations, defaultLang } from '../../../config/defaults';
 
@@ -37,7 +37,19 @@ export class TranslateProvider extends Component {
   }
 }
 
-export const Translate = ({ word }) => {
+export const Tr = (str = '', fixedValues) => {
+  let rtn = str;
+  if (root && root.locale && root.locale[str]) {
+    const translate = root.locale[str];
+    rtn = translate;
+    if (!!fixedValues && Array.isArray(fixedValues)) {
+      rtn = sprintf(translate, ...fixedValues);
+    }
+  }
+  return rtn;
+};
+
+export const Translate = ({ word, values }) => {
   const handleChange = (e, changeLang) => {
     if (
       e &&
@@ -49,6 +61,7 @@ export const Translate = ({ word }) => {
       changeLang(e.target.value);
     }
   };
+
   const selector = current => {
     if (!word && current.changeLang) {
       const languages = Object.keys(translations);
@@ -66,23 +79,11 @@ export const Translate = ({ word }) => {
         </Input>
       );
     }
-    return word;
+    const valuesTr = !!values && !Array.isArray(values) ? [values] : values;
+    return Tr(word, valuesTr);
   };
 
   return <TranslateContext.Consumer>{selector}</TranslateContext.Consumer>;
-};
-
-const tr = (str = '') => {
-  let tmp = root.locale[str];
-  if (tmp == null || tmp == '') {
-    tmp = str;
-  }
-
-  /* if (arguments.length == 1) {
-    return tmp;
-  } */
-
-  return sprintf.apply(this, Array.prototype.slice.call(arguments));
 };
 
 TranslateProvider.propTypes = {
@@ -97,9 +98,11 @@ TranslateProvider.defaultProps = {
 };
 
 Translate.propTypes = {
-  word: PropTypes.string
+  word: PropTypes.string,
+  values: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
 };
 
 Translate.defaultProps = {
-  word: ''
+  word: '',
+  values: ''
 };

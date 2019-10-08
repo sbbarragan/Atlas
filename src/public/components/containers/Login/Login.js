@@ -11,7 +11,7 @@ import {
   Button
 } from 'reactstrap';
 import classnames from 'classnames';
-import { Translate } from '../../HOC';
+import { Translate, Tr } from '../../HOC';
 
 class Login extends Component {
   constructor(props) {
@@ -30,19 +30,19 @@ class Login extends Component {
       <FormGroup row>
         <InputGroup className={classnames('col')}>
           <InputGroupAddon addonType="prepend">LOCK</InputGroupAddon>
-          <Input type="password" placeholder="Password" />
+          <Input type="password" placeholder={Tr('2FA Token')} />
         </InputGroup>
       </FormGroup>
     ) : (
       <Fragment>
         <FormGroup row>
           <InputGroup className={classnames('col')}>
-            <Input placeholder="Username" />
+            <Input placeholder={Tr('Username')} />
           </InputGroup>
         </FormGroup>
         <FormGroup row>
           <InputGroup className={classnames('col')}>
-            <Input type="password" placeholder="Password" />
+            <Input type="password" placeholder={Tr('Password')} />
           </InputGroup>
         </FormGroup>
       </Fragment>
@@ -60,13 +60,13 @@ class Login extends Component {
             <FormGroup row>
               <Col sm="12" md="6" className={classnames('text-center')}>
                 <Label>
-                  <Input type="checkbox" />{' '}
+                  <Input type="checkbox" />
                   <Translate word="Keep me logged in" />
                 </Label>
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
                 <Button type="primary" className="login-form-button">
-                  <Translate word="Log in" />
+                  <Translate word="Login" />
                 </Button>
               </Col>
             </FormGroup>

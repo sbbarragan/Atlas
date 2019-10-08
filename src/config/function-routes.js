@@ -48,7 +48,7 @@ const privateRoutes = {
             dataUser[fromData.resource].id = userId;
             dataUser[
               fromData.postBody
-            ].template = `SUNSTONE=[TWO_FACTOR_AUTH_SECRET=${base32}]`;
+            ].template = `SUNSTONE=[TMP_TWO_FACTOR_AUTH_SECRET=${base32}]`;
 
             const getOpennebulaMethod = checkOpennebulaCommand(
               defaultMethodUserUpdate,
@@ -88,6 +88,7 @@ const privateRoutes = {
   '2fverify': {
     httpMethod: POST,
     action: (req, res, next, connect, userId) => {
+      
       const verified = speakeasy.totp.verify({
         // secret: user.twofactor.tempSecret, // secret of the logged in user in user template
         encoding: 'base32',
