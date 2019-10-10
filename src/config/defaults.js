@@ -1,3 +1,4 @@
+const default2FAOpennebulaVar = 'TWO_FACTOR_AUTH_SECRET';
 module.exports = {
   httpMethod: {
     GET: 'GET',
@@ -15,7 +16,9 @@ module.exports = {
   defaultMode: 'development',
   defaultNamespace: 'one.',
   defaultMessageInvalidZone: 'Invalid Zone',
-  defaultIssuer: 'sunstone-UI',
+  default2FAIssuer: 'sunstone-UI',
+  default2FAOpennebulaVar,
+  default2FAOpennebulaTmpVar: `TMP_${default2FAOpennebulaVar}`,
   defaultGetMethod: 'info',
   defaultMessageProblemOpennebula: 'Problem with conection or xml parser',
   defaultMethodLogin: 'user.login',

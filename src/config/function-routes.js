@@ -10,7 +10,9 @@ const {
   defaultMethodLogin,
   defaultMethodUserInfo,
   defaultMethodUserUpdate,
-  defaultIssuer
+  default2FAIssuer,
+  default2FAOpennebulaVar,
+  default2FAOpennebulaTmpVar
 } = require('./defaults');
 const {
   ok,
@@ -29,14 +31,58 @@ enviroments.config();
 const env = process && process.env;
 const limitToken = JSON.parse(env.LIMIT_TOKEN);
 const namespace = env.namespace || defaultNamespace;
-const twoFactorAuthIssuer = env.TWO_FACTOR_AUTH_ISSUER || defaultIssuer;
+const twoFactorAuthIssuer = env.TWO_FACTOR_AUTH_ISSUER || default2FAIssuer;
 
 const { POST, GET, DELETE } = httpMethod;
+
+const getUserInfoAuthenticated = (connect, userId, callback, next) => {
+  if (
+    connect &&
+    !!userId &&
+    callback &&
+    next &&
+    typeof connect === 'function' &&
+    typeof callback === 'function' &&
+    typeof next === 'function' &&
+    defaultMethodUserInfo
+  ) {
+    const connectOpennebula = connect();
+    const dataUser = {};
+    // empty positions for validate...
+    dataUser[fromData.resource] = {};
+    dataUser[fromData.query] = {};
+    dataUser[fromData.postBody] = {};
+    dataUser[fromData.resource].id = userId;
+    const getOpennebulaMethod = checkOpennebulaCommand(
+      defaultMethodUserInfo,
+      GET
+    );
+    connectOpennebula(
+      defaultMethodUserInfo,
+      getOpennebulaMethod(dataUser),
+      (err, value) => {
+        responseOpennebula(
+          () => undefined,
+          err,
+          value,
+          info => {
+            if (info !== undefined && info !== null) {
+              callback(info);
+            } else {
+              next();
+            }
+          },
+          next
+        );
+      }
+    );
+  }
+};
 
 const privateRoutes = {
   '2fqr': {
     httpMethod: POST,
-    action: (dataSource, res, next, connect, userId) => {
+    action: (req, res, next, connect, userId) => {
       const secret = speakeasy.generateSecret({
         length: 10,
         name: twoFactorAuthIssuer
@@ -49,39 +95,49 @@ const privateRoutes = {
             next();
           } else {
             const connectOpennebula = connect();
-            const dataUser = Map(dataSource).toObject();
-            dataUser[fromData.resource].id = userId;
-            dataUser[
-              fromData.postBody
-            ].template = `SUNSTONE=[TMP_TWO_FACTOR_AUTH_SECRET=${base32}]`;
-
-            const getOpennebulaMethod = checkOpennebulaCommand(
-              defaultMethodUserUpdate,
-              POST
-            );
-            connectOpennebula(
-              defaultMethodUserUpdate,
-              getOpennebulaMethod(dataUser),
-              (err, value) => {
-                responseOpennebula(
-                  () => undefined,
-                  err,
-                  value,
-                  pass => {
-                    if (pass !== undefined && pass !== null) {
-                      const codeOK = Map(ok).toObject();
-                      codeOK.data = {
-                        img: dataURL
-                      };
-                      res.locals.httpCode = codeOK;
-                      next();
-                    } else {
-                      next();
+            getUserInfoAuthenticated(
+              connect,
+              userId,
+              info => {
+                if (info && info.USER && info.USER.TEMPLATE && req) {
+                  const dataUser = Map(req).toObject();
+                  dataUser[fromData.resource].id = userId;
+                  dataUser[
+                    fromData.postBody
+                  ].template = `SUNSTONE=[${default2FAOpennebulaTmpVar}=${base32}]`;
+                  const getOpennebulaMethod = checkOpennebulaCommand(
+                    defaultMethodUserUpdate,
+                    POST
+                  );
+                  connectOpennebula(
+                    defaultMethodUserUpdate,
+                    getOpennebulaMethod(dataUser),
+                    (err, value) => {
+                      responseOpennebula(
+                        () => undefined,
+                        err,
+                        value,
+                        pass => {
+                          if (pass !== undefined && pass !== null) {
+                            const codeOK = Map(ok).toObject();
+                            codeOK.data = {
+                              img: dataURL
+                            };
+                            res.locals.httpCode = codeOK;
+                            next();
+                          } else {
+                            next();
+                          }
+                        },
+                        next
+                      );
                     }
-                  },
-                  next
-                );
-              }
+                  );
+                } else {
+                  next();
+                }
+              },
+              next
             );
           }
         });
@@ -94,80 +150,68 @@ const privateRoutes = {
     httpMethod: POST,
     action: (req, res, next, connect, userId) => {
       const connectOpennebula = connect();
-      req[fromData.resource].id = userId;
-      const getOpennebulaMethod = checkOpennebulaCommand(
-        defaultMethodUserInfo,
-        GET
-      );
-      connectOpennebula(
-        defaultMethodUserInfo,
-        getOpennebulaMethod(req),
-        (err, value) => {
-          responseOpennebula(
-            () => undefined,
-            err,
-            value,
-            pass => {
-              if (
-                pass &&
-                pass.USER &&
-                pass.USER.TEMPLATE &&
-                pass.USER.TEMPLATE.SUNSTONE &&
-                pass.USER.TEMPLATE.SUNSTONE.TMP_TWO_FACTOR_AUTH_SECRET &&
-                fromData &&
-                fromData.postBody &&
-                req &&
-                req[fromData.postBody] &&
-                req[fromData.postBody].token
-              ) {
-                const token = req[fromData.postBody].token;
-                const secret =
-                  pass.USER.TEMPLATE.SUNSTONE.TMP_TWO_FACTOR_AUTH_SECRET;
-                const verified = speakeasy.totp.verify({
-                  secret,
-                  encoding: 'base32',
-                  token
-                });
-                if (verified) {
-                  const dataUser = Map(req).toObject();
-                  dataUser[fromData.resource].id = userId;
-                  dataUser[
-                    fromData.postBody
-                  ].template = `SUNSTONE=[TWO_FACTOR_AUTH_SECRET=${secret}]`;
-                  const getOpennebulaMethodUpdate = checkOpennebulaCommand(
-                    defaultMethodUserUpdate,
-                    POST
+      getUserInfoAuthenticated(
+        connect,
+        userId,
+        info => {
+          if (
+            info &&
+            info.USER &&
+            info.USER.TEMPLATE &&
+            info.USER.TEMPLATE.SUNSTONE &&
+            info.USER.TEMPLATE.SUNSTONE[default2FAOpennebulaTmpVar] &&
+            fromData &&
+            fromData.postBody &&
+            req &&
+            req[fromData.postBody] &&
+            req[fromData.postBody].token
+          ) {
+            const sunstone = info.USER.TEMPLATE.SUNSTONE;
+            const token = req[fromData.postBody].token;
+            const lang = sunstone.LANG ? `LANG=${sunstone.LANG}, ` : '';
+            const secret = sunstone[default2FAOpennebulaTmpVar];
+            const verified = speakeasy.totp.verify({
+              secret,
+              encoding: 'base32',
+              token
+            });
+            if (verified) {
+              const dataUser = Map(req).toObject();
+              dataUser[fromData.resource].id = userId;
+              dataUser[fromData.postBody].template = `SUNSTONE=[${lang +
+                default2FAOpennebulaVar}=${secret}]`;
+              const getOpennebulaMethodUpdate = checkOpennebulaCommand(
+                defaultMethodUserUpdate,
+                POST
+              );
+              connectOpennebula(
+                defaultMethodUserUpdate,
+                getOpennebulaMethodUpdate(dataUser),
+                (err, value) => {
+                  responseOpennebula(
+                    () => undefined,
+                    err,
+                    value,
+                    pass => {
+                      if (pass !== undefined && pass !== null) {
+                        const codeOK = Map(ok).toObject();
+                        res.locals.httpCode = codeOK;
+                      }
+                      next();
+                    },
+                    next
                   );
-                  connectOpennebula(
-                    defaultMethodUserUpdate,
-                    getOpennebulaMethodUpdate(dataUser),
-                    (err, value) => {
-                      responseOpennebula(
-                        () => undefined,
-                        err,
-                        value,
-                        pass => {
-                          if (pass !== undefined && pass !== null) {
-                            const codeOK = Map(ok).toObject();
-                            res.locals.httpCode = codeOK;
-                          }
-                          next();
-                        },
-                        next
-                      );
-                    }
-                  );
-                } else {
-                  res.locals.httpCode = Map(unauthorized).toObject();
-                  next();
                 }
-              } else {
-                next();
-              }
-            },
-            next
-          );
-        }
+              );
+            } else {
+              res.locals.httpCode = Map(unauthorized).toObject();
+              next();
+            }
+          } else {
+            next();
+          }
+        },
+        next
       );
     }
   },
@@ -183,7 +227,7 @@ const privateRoutes = {
 const publicRoutes = {
   auth: {
     httpMethod: POST,
-    action: (dataSource, res, next, connect) => {
+    action: (req, res, next, connect) => {
       const updaterResponse = code => {
         if (
           'id' in code &&
@@ -202,31 +246,26 @@ const publicRoutes = {
         POST
       );
 
-      if (dataSource && getOpennebulaMethod) {
+      if (req && getOpennebulaMethod) {
         const user =
-          (dataSource &&
+          (req &&
             fromData.postBody &&
-            dataSource[fromData.postBody] &&
-            dataSource[fromData.postBody].user) ||
+            req[fromData.postBody] &&
+            req[fromData.postBody].user) ||
           '';
 
         const pass =
-          (dataSource &&
+          (req &&
             fromData.postBody &&
-            dataSource[fromData.postBody] &&
-            dataSource[fromData.postBody].pass) ||
+            req[fromData.postBody] &&
+            req[fromData.postBody].pass) ||
           '';
 
         const token =
-          (dataSource &&
-            dataSource[fromData.postBody] &&
-            dataSource[fromData.postBody].token) ||
-          '';
+          (req && req[fromData.postBody] && req[fromData.postBody].token) || '';
 
         const extended =
-          (dataSource &&
-            dataSource[fromData.postBody] &&
-            dataSource[fromData.postBody].extended) ||
+          (req && req[fromData.postBody] && req[fromData.postBody].extended) ||
           '';
 
         if (user && pass && connect && limitToken) {
@@ -242,9 +281,9 @@ const publicRoutes = {
             user,
             pass
           );
-          const dataSourceWithExpirateDate = Map(dataSource).toObject();
+          const dataSourceWithExpirateDate = Map(req).toObject();
 
-          const getUserInfo = userData => {
+          const userInfo = userData => {
             if (user && opennebulaToken && userData && userData.USER) {
               const informationUser = userData.USER;
 
@@ -284,10 +323,10 @@ const publicRoutes = {
               if (
                 informationUser.TEMPLATE &&
                 informationUser.TEMPLATE.SUNSTONE &&
-                informationUser.TEMPLATE.SUNSTONE.TWO_FACTOR_AUTH_SECRET
+                informationUser.TEMPLATE.SUNSTONE[default2FAOpennebulaVar]
               ) {
                 const secret =
-                  informationUser.TEMPLATE.SUNSTONE.TWO_FACTOR_AUTH_SECRET;
+                  informationUser.TEMPLATE.SUNSTONE[default2FAOpennebulaVar];
                 const verified = speakeasy.totp.verify({
                   secret,
                   encoding: 'base32',
@@ -337,7 +376,7 @@ const publicRoutes = {
                       updaterResponse,
                       err,
                       value,
-                      getUserInfo,
+                      userInfo,
                       next
                     );
                   }

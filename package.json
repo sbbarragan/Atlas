@@ -6,7 +6,6 @@
   "scripts": {
     "build": "webpack --mode=production && concurrently \" npm run copy_static_assets\" \"npm run build:css\"",
     "build:css": "node-sass src/public/scss/main.scss dist/public/styles.css --output-style compressed",
-    "publisherZMQ": "node dist/publisherZMQ",
     "dev": "webpack --mode=development && npm run copy_static_assets && concurrently \"webpack --watch\" \"npm run build:css\" \"nodemon --inspect dist\"",
     "start": "node dist/index",
     "copy_static_assets": "node copyStaticAssets.js"

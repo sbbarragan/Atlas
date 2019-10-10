@@ -2123,8 +2123,8 @@ const commandsParams = {
   'user.info': {
     httpMethod: GET,
     params: {
-      object: {
-        from: query,
+      id: {
+        from: resource,
         default: -1
       }
     }
