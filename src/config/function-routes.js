@@ -24,7 +24,8 @@ const { createToken } = require('../utils/jwt-functions');
 const {
   responseOpennebula,
   checkOpennebulaCommand,
-  paramsDefaultByCommandOpennebula
+  paramsDefaultByCommandOpennebula,
+  generateNewTemplate
 } = require('../utils/opennebula-functions');
 
 enviroments.config();
@@ -101,10 +102,15 @@ const privateRoutes = {
               info => {
                 if (info && info.USER && info.USER.TEMPLATE && req) {
                   const dataUser = Map(req).toObject();
+                  const emptyTemplate = {};
+                  emptyTemplate[default2FAOpennebulaTmpVar] = base32;
+
                   dataUser[fromData.resource].id = userId;
-                  dataUser[
-                    fromData.postBody
-                  ].template = `SUNSTONE=[${default2FAOpennebulaTmpVar}=${base32}]`;
+                  dataUser[fromData.postBody].template = generateNewTemplate(
+                    info.USER.TEMPLATE.SUNSTONE || {},
+                    emptyTemplate,
+                    [default2FAOpennebulaVar]
+                  );
                   const getOpennebulaMethod = checkOpennebulaCommand(
                     defaultMethodUserUpdate,
                     POST
@@ -168,7 +174,6 @@ const privateRoutes = {
           ) {
             const sunstone = info.USER.TEMPLATE.SUNSTONE;
             const token = req[fromData.postBody].token;
-            const lang = sunstone.LANG ? `LANG=${sunstone.LANG}, ` : '';
             const secret = sunstone[default2FAOpennebulaTmpVar];
             const verified = speakeasy.totp.verify({
               secret,
@@ -176,10 +181,16 @@ const privateRoutes = {
               token
             });
             if (verified) {
+              const emptyTemplate = {};
+              emptyTemplate[default2FAOpennebulaVar] = secret;
+
               const dataUser = Map(req).toObject();
               dataUser[fromData.resource].id = userId;
-              dataUser[fromData.postBody].template = `SUNSTONE=[${lang +
-                default2FAOpennebulaVar}=${secret}]`;
+              dataUser[fromData.postBody].template = generateNewTemplate(
+                sunstone || {},
+                emptyTemplate,
+                [default2FAOpennebulaTmpVar]
+              );
               const getOpennebulaMethodUpdate = checkOpennebulaCommand(
                 defaultMethodUserUpdate,
                 POST

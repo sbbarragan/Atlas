@@ -4,6 +4,7 @@ const url = require('url');
 const rpc = require('xmlrpc');
 const xml2js = require('xml2js');
 const { Map } = require('immutable');
+const { sprintf } = require('sprintf-js');
 const httpCodes = require('../config/http-codes');
 const { commandsParams, from } = require('../config/commands-params');
 const {
@@ -238,6 +239,31 @@ const paramsDefaultByCommandOpennebula = (command = '', httpCode = '') => {
   return rtn;
 };
 
+const generateNewTemplate = (
+  current = {},
+  addPositions = {},
+  removePositions = [],
+  wrapper = 'SUNSTONE=[%1$s]'
+) => {
+  const allPositions = { ...current, ...addPositions };
+  const positions = Object.keys(allPositions);
+  let rtn = '';
+  positions.map(position => {
+    if (position && allPositions[position]) {
+      console.log('V-->', position, removePositions.includes(position));
+      if (removePositions.includes(position)) {
+        delete allPositions[position];
+      }
+    }
+  });
+  const newPositions = Object.keys(allPositions);
+  newPositions.map(position => {
+    rtn += `${rtn ? ', ' : ''}${position}=${allPositions[position]}`;
+  });
+  console.log('-->', removePositions, rtn);
+  return sprintf(wrapper, rtn);
+};
+
 module.exports = {
   opennebulaConnect,
   responseOpennebula,
@@ -247,5 +273,6 @@ module.exports = {
   getRouteForOpennebulaCommand,
   checkPositionInDataSource,
   checkOpennebulaCommand,
-  paramsDefaultByCommandOpennebula
+  paramsDefaultByCommandOpennebula,
+  generateNewTemplate
 };
