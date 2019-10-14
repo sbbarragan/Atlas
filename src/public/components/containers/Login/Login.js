@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import {
   Row,
   Col,
-  Form,
   FormGroup,
   Label,
   Input,
@@ -11,38 +10,105 @@ import {
   Button
 } from 'reactstrap';
 import classnames from 'classnames';
+import constants from '../../../constants';
 import { Translate, Tr } from '../../HOC';
+
+const { checkbox, classInputInvalid } = constants;
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
-      pass: '',
+      password: '',
       token: '',
-      writeToken: false
+      writeToken: false,
+      showError: false,
+      keepLogged: false
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(type = '', element = false) {
+    if (
+      element &&
+      element.preventDefault &&
+      element.target &&
+      element.target.type &&
+      type &&
+      Object.keys(this.state).includes(type)
+    ) {
+      const { target } = element;
+      if (target.type !== checkbox) {
+        element.preventDefault();
+      }
+      const { showError, keepLogged } = this.state;
+      const newState = {};
+      newState[type] = target.type === checkbox ? !keepLogged : target.value;
+      if (showError) {
+        newState.showError = !showError;
+      }
+      this.setState(newState);
+    }
+  }
+
+  handleSubmit(element = false) {
+    if (element && element.preventDefault) {
+      element.preventDefault();
+    }
   }
 
   render() {
-    const { writeToken } = this.state;
+    const { writeToken, token, username, password, showError } = this.state;
+    const classnameError = {};
+    classnameError[classInputInvalid] = showError;
     const inputs = writeToken ? (
       <FormGroup row>
         <InputGroup className={classnames('col')}>
-          <InputGroupAddon addonType="prepend">LOCK</InputGroupAddon>
-          <Input type="password" placeholder={Tr('2FA Token')} />
+          <InputGroupAddon addonType="prepend">
+            <icon className={classnames('fas', 'fa-lock-alt')} />
+          </InputGroupAddon>
+          <Input
+            className={classnames(classnameError)}
+            type="password"
+            autoComplete="off"
+            placeholder={Tr('2FA Token')}
+            value={token}
+            onChange={e => {
+              this.handleChange('token', e);
+            }}
+          />
         </InputGroup>
       </FormGroup>
     ) : (
       <Fragment>
         <FormGroup row>
           <InputGroup className={classnames('col')}>
-            <Input placeholder={Tr('Username')} />
+            <Input
+              className={classnames(classnameError)}
+              type="text"
+              autoComplete="off"
+              placeholder={Tr('Username')}
+              value={username}
+              onChange={e => {
+                this.handleChange('username', e);
+              }}
+            />
           </InputGroup>
         </FormGroup>
         <FormGroup row>
           <InputGroup className={classnames('col')}>
-            <Input type="password" placeholder={Tr('Password')} />
+            <Input
+              className={classnames(classnameError)}
+              type="password"
+              autoComplete="off"
+              placeholder={Tr('Password')}
+              value={password}
+              onChange={e => {
+                this.handleChange('password', e);
+              }}
+            />
           </InputGroup>
         </FormGroup>
       </Fragment>
@@ -55,22 +121,31 @@ class Login extends Component {
           md={{ size: 4, offset: 4 }}
           className={classnames('align-items-center', 'd-flex')}
         >
-          <Form onSubmit={this.handleSubmit} className={classnames('col')}>
+          <div onSubmit={this.handleSubmit} className={classnames('col')}>
             {inputs}
             <FormGroup row>
               <Col sm="12" md="6" className={classnames('text-center')}>
                 <Label>
-                  <Input type="checkbox" />
+                  <Input
+                    type="checkbox"
+                    onClick={e => {
+                      this.handleChange('keepLogged', e);
+                    }}
+                  />
                   <Translate word="Keep me logged in" />
                 </Label>
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
-                <Button type="primary" className="login-form-button">
+                <Button
+                  type="primary"
+                  className="login-form-button"
+                  onClick={this.handleSubmit}
+                >
                   <Translate word="Login" />
                 </Button>
               </Col>
             </FormGroup>
-          </Form>
+          </div>
         </Col>
       </Row>
     );

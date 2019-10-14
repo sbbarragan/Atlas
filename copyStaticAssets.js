@@ -16,8 +16,8 @@ const config = {
 
 const files = [
   {
-    internal: `${pathInternal}favicon.ico`,
-    external: `${pathExternal}favicon.ico`
+    internal: `${pathInternal}favicon.png`,
+    external: `${pathExternal}favicon.png`
   },
   {
     internal: `${pathBootstrap}bootstrap.min.css`,

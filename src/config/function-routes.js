@@ -226,11 +226,58 @@ const privateRoutes = {
       );
     }
   },
-  twofactordelete: {
+  '2fdelete': {
     httpMethod: DELETE,
     action: (req, res, next, connect, userId) => {
-      next();
-      console.log('twofactordelete');
+      const connectOpennebula = connect();
+      getUserInfoAuthenticated(
+        connect,
+        userId,
+        info => {
+          console.log('UserINfo', info);
+          if (
+            info &&
+            info.USER &&
+            info.USER.TEMPLATE &&
+            info.USER.TEMPLATE.SUNSTONE
+          ) {
+            const emptyTemplate = {};
+            const dataUser = Map(req).toObject();
+            dataUser[fromData.resource].id = userId;
+            dataUser[fromData.postBody].template = generateNewTemplate(
+              info.USER.TEMPLATE.SUNSTONE || {},
+              emptyTemplate,
+              [default2FAOpennebulaTmpVar, default2FAOpennebulaVar]
+            );
+            const getOpennebulaMethodUpdate = checkOpennebulaCommand(
+              defaultMethodUserUpdate,
+              POST
+            );
+            connectOpennebula(
+              defaultMethodUserUpdate,
+              getOpennebulaMethodUpdate(dataUser),
+              (err, value) => {
+                responseOpennebula(
+                  () => undefined,
+                  err,
+                  value,
+                  pass => {
+                    if (pass !== undefined && pass !== null) {
+                      const codeOK = Map(ok).toObject();
+                      res.locals.httpCode = codeOK;
+                    }
+                    next();
+                  },
+                  next
+                );
+              }
+            );
+          } else {
+            next();
+          }
+        },
+        next
+      );
     }
   }
 };
