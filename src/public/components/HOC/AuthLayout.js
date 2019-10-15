@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchValidateAuthenticatedUser, removeStoreData } from '../../utils';
+import { requestData, removeStoreData, findStorageData } from '../../utils';
+import { constants } from '../../constants';
 import { setUser } from '../../actions';
 
 class AuthLayout extends Component {
@@ -14,9 +15,11 @@ class AuthLayout extends Component {
     };
   }
 
-  componentDidMount() {
-    if (localStorage && localStorage.getItem && localStorage.getItem('token')) {
-      fetchValidateAuthenticatedUser().then(response => {
+  componentWillMount() {
+    const { jwtName } = constants;
+    console.log('jwt', jwtName);
+    if (findStorageData(jwtName)) {
+      requestData().then(response => {
         if (response && response.id) {
           this.setState({ access: true });
           this.props.changeName(response.name);
@@ -25,7 +28,7 @@ class AuthLayout extends Component {
         }
       });
     } else {
-      removeStoreData(['opennebulaToken']);
+      removeStoreData(jwtName);
       this.setState({ access: false });
     }
   }

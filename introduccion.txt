@@ -27,7 +27,7 @@ Ventajas:
 - Eliminacion de recursos deprecados como Bower y Grunt, para el transpilado, JQuery y handlebars para el manejo de vistas.
 - Creacion de estado Global: al momento de querer hacer consulta a un resurso se puede saber conectando el componente a redux.
 - Reactividad: no se debe de manejar las vistas y las acciones por separado.
-- Uso de API REST: se puede usar tambien para otro tipo de aplicaciones.
+- Uso de API REST: se puede usar tambien para otro tipo de aplicaciones web.
 - Reglas de LINT: el codigo se hace mas legible.
 
 

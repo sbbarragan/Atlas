@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import classnames from 'classnames';
 import rootReducer from '../public/reducers';
 import App from '../public/app';
+import frontVars from '../config/front-vars';
 
 import {
   includeMAPSJSbyHTML,
@@ -40,6 +41,9 @@ router.get('*', (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       ${includeCSSbyHTML(pathPublic)}
+      <script type="text/javascript">
+        var opennebulaConfig = ${JSON.stringify(frontVars)}
+      </script>
     </head>
     <body>
       <div id="root" class="${classnames(

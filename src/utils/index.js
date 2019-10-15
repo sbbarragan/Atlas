@@ -1,9 +1,9 @@
 const fs = require('fs-extra');
-const colors = require('colors');
 const params = require('../config/params');
 const { defaultMode } = require('../config/defaults');
 const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
+const { messageTerminal } = require('./general-functions');
 const enviroments = require('dotenv');
 
 enviroments.config();
@@ -72,18 +72,6 @@ const includeCSSbyHTML = (path = '') => {
     }
   });
   return scripts;
-};
-
-const messageTerminal = ({ color, type, error, message }) => {
-  const colorConsole = color || 'red';
-  const typeConsole = type || '';
-  const errorConsole = error || '';
-  const messageConsole = message || 'Message Console ';
-  const consoleColor =
-    colorConsole === 'green'
-      ? colors.green(messageConsole)
-      : colors.red(messageConsole);
-  console.log(consoleColor, typeConsole, errorConsole);
 };
 
 const validateRouteFunction = (routeFunction, httpMethod = '') => {

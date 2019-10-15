@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import constants from '../../../constants';
+import { requestData, removeStoreData } from '../../../utils';
 import { Translate, Tr } from '../../HOC';
 
 const { checkbox, classInputInvalid } = constants;
@@ -19,8 +20,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      user: '',
+      pass: '',
       token: '',
       writeToken: false,
       showError: false,
@@ -54,20 +55,49 @@ class Login extends Component {
   }
 
   handleSubmit(element = false) {
+    const { jwtName, urlLogin } = constants;
+    const { user, pass, token, writeToken, keepLogged } = this.state;
+    const loginParams = {
+      data: { user, pass },
+      method: 'POST',
+      authenticate: false
+    };
+    if (writeToken && token) {
+      loginParams.data.token = token;
+    }
     if (element && element.preventDefault) {
+      let newState = { showError: true };
       element.preventDefault();
+      if (user && pass) {
+        removeStoreData(jwtName);
+        requestData(urlLogin, loginParams).then(response => {
+          if (response && response.data && response.data.data) {
+            const { status, data } = response;
+            const { message, token: opennebulaToken } = data.data;
+            if (status === 401 && message) {
+              newState = { showError: false, writeToken: true };
+            } else if (response.status === 200 && opennebulaToken) {
+              
+              console.log('todo fino', opennebulaToken);
+            }
+            this.setState(newState);
+          }
+        });
+      } else {
+        this.setState(newState);
+      }
     }
   }
 
   render() {
-    const { writeToken, token, username, password, showError } = this.state;
+    const { writeToken, token, user, pass, showError } = this.state;
     const classnameError = {};
     classnameError[classInputInvalid] = showError;
     const inputs = writeToken ? (
       <FormGroup row>
         <InputGroup className={classnames('col')}>
           <InputGroupAddon addonType="prepend">
-            <icon className={classnames('fas', 'fa-lock-alt')} />
+            <i className={classnames('fas', 'fa-lock-alt')} />
           </InputGroupAddon>
           <Input
             className={classnames(classnameError)}
@@ -90,9 +120,9 @@ class Login extends Component {
               type="text"
               autoComplete="off"
               placeholder={Tr('Username')}
-              value={username}
+              value={user}
               onChange={e => {
-                this.handleChange('username', e);
+                this.handleChange('user', e);
               }}
             />
           </InputGroup>
@@ -104,9 +134,9 @@ class Login extends Component {
               type="password"
               autoComplete="off"
               placeholder={Tr('Password')}
-              value={password}
+              value={pass}
               onChange={e => {
-                this.handleChange('password', e);
+                this.handleChange('pass', e);
               }}
             />
           </InputGroup>

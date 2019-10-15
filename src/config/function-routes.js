@@ -234,7 +234,6 @@ const privateRoutes = {
         connect,
         userId,
         info => {
-          console.log('UserINfo', info);
           if (
             info &&
             info.USER &&

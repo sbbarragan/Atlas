@@ -11,6 +11,7 @@ import { createServer } from 'http';
 import { server } from 'websocket';
 import { socket } from 'zeromq';
 import xml2js from 'xml2js';
+import bodyParser from 'body-parser';
 
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
@@ -44,7 +45,8 @@ if (env.MODE && env.MODE === 'development') {
 }
 
 // post params parser body
-app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // routes
 app.use('/api', apiRoutes);

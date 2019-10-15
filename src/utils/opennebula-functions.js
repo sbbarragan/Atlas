@@ -250,7 +250,6 @@ const generateNewTemplate = (
   let rtn = '';
   positions.map(position => {
     if (position && allPositions[position]) {
-      console.log('V-->', position, removePositions.includes(position));
       if (removePositions.includes(position)) {
         delete allPositions[position];
       }
@@ -260,7 +259,6 @@ const generateNewTemplate = (
   newPositions.map(position => {
     rtn += `${rtn ? ', ' : ''}${position}=${allPositions[position]}`;
   });
-  console.log('-->', removePositions, rtn);
   return sprintf(wrapper, rtn);
 };
 
