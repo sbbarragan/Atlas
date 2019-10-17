@@ -20,6 +20,10 @@ const files = [
     external: `${pathExternal}favicon.png`
   },
   {
+    internal: `${pathInternal}logo.png`,
+    external: `${pathExternal}logo.png`
+  },
+  {
     internal: `${pathBootstrap}bootstrap.min.css`,
     external: `${pathExternal}bootstrap.min.css`
   }

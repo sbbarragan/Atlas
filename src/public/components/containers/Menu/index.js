@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button } from 'reactstrap';
 
 class Menu extends Component {
   constructor(props) {

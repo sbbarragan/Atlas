@@ -16,13 +16,13 @@ class AuthLayout extends Component {
 
   componentDidMount() {
     const { jwtName, endpoints } = constants;
+    const { changeName } = this.props;
     if (findStorageData && findStorageData(jwtName)) {
       requestData(endpoints.userInfo).then(response => {
-        console.log('RESPONSE--> ', response);
         if (response && response.data && response.data.USER) {
           const { USER: userInfo } = response.data;
           this.setState({ show: true });
-          this.props.changeName(userInfo.NAME);
+          changeName(userInfo.NAME);
         } else {
           this.redirectToLogin();
         }
@@ -78,10 +78,7 @@ AuthLayout.defaultProps = {
   changeName: () => undefined
 };
 
-const mapStateToProps = ({ App }) => {
-  const { user } = App;
-  return { user };
-};
+const mapStateToProps = () => undefined;
 
 const mapDispatchToProps = dispatch => ({
   changeName: name => dispatch(setUser(name))

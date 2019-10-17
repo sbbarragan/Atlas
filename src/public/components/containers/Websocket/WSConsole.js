@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import JSONPretty from 'react-json-pretty';
+import { messageTerminal } from '../../../../utils/general-functions';
 
 class WSConsole extends Component {
   constructor(props) {
@@ -16,7 +17,12 @@ class WSConsole extends Component {
     );
 
     client.onopen = () => {
-      console.log('WebSocket Client Connected');
+      const config = {
+        color: 'green',
+        type: 'ERROR',
+        message: 'WebSocket Client Connected'
+      };
+      messageTerminal(config);
     };
 
     client.onmessage = message => {

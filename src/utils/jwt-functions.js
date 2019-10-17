@@ -1,6 +1,7 @@
 const enviroments = require('dotenv');
 const jwt = require('jwt-simple');
 const moment = require('moment');
+const { messageTerminal } = require('../utils/general-functions');
 
 enviroments.config();
 const env = process && process.env;
@@ -52,7 +53,13 @@ const validateAuth = req => {
         };
       }
     } catch (error) {
-      console.log('ERROR', error);
+      const config = {
+        color: 'red',
+        type: 'ERROR',
+        error,
+        message: 'Error: %s'
+      };
+      messageTerminal(config);
     }
   }
   return rtn;

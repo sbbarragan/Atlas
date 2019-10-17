@@ -1,7 +1,8 @@
-import App from './app';
 import { combineReducers } from 'redux';
+import Opennebula from './opennebula';
 
 const rootReducers = combineReducers({
-  App
+  Opennebula
 });
+
 export default rootReducers;
