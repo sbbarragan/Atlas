@@ -1,66 +1,80 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { requestData, removeStoreData, findStorageData } from '../../utils';
-import { constants } from '../../constants';
+import constants from '../../constants';
 import { setUser } from '../../actions';
 
 class AuthLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      access: false,
-      redirect: false
+      show: false
     };
+    this.redirectToLogin = this.redirectToLogin.bind(this);
   }
 
-  componentWillMount() {
-    const { jwtName } = constants;
-    console.log('jwt', jwtName);
-    if (findStorageData(jwtName)) {
-      requestData().then(response => {
-        if (response && response.id) {
-          this.setState({ access: true });
-          this.props.changeName(response.name);
+  componentDidMount() {
+    const { jwtName, endpoints } = constants;
+    if (findStorageData && findStorageData(jwtName)) {
+      requestData(endpoints.userInfo).then(response => {
+        console.log('RESPONSE--> ', response);
+        if (response && response.data && response.data.USER) {
+          const { USER: userInfo } = response.data;
+          this.setState({ show: true });
+          this.props.changeName(userInfo.NAME);
         } else {
-          this.setState({ redirect: true });
+          this.redirectToLogin();
         }
       });
     } else {
-      removeStoreData(jwtName);
-      this.setState({ access: false });
+      this.redirectToLogin();
     }
   }
 
+  redirectToLogin() {
+    const { jwtName, reactEndpoints } = constants;
+    const { history } = this.props;
+    removeStoreData(jwtName);
+    history.push(reactEndpoints.login);
+  }
+
   render() {
-    const { access, redirect } = this.state;
+    const { show } = this.state;
     const { children } = this.props;
-    const DisplayOrRedirect = () => {
-      let rtn = <Fragment />;
-      if (redirect) {
-        rtn = <Redirect to="/" />;
-      }
-      return rtn;
-    };
-    const render = access ? (
-      <Fragment>{children}</Fragment>
-    ) : (
-      <DisplayOrRedirect />
-    );
+    const render = show ? <Fragment>{children}</Fragment> : <Fragment />;
     return render;
   }
 }
 AuthLayout.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
+    PropTypes.string
   ]),
+  history: PropTypes.shape({
+    push: PropTypes.func
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({}),
+    path: PropTypes.string,
+    isExact: PropTypes.bool,
+    url: PropTypes.string
+  }),
   changeName: PropTypes.func
 };
 
 AuthLayout.defaultProps = {
   children: [],
+  history: {
+    push: () => undefined
+  },
+  match: {
+    params: {},
+    path: '',
+    isExact: false,
+    url: ''
+  },
   changeName: () => undefined
 };
 

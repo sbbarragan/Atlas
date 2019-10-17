@@ -10,8 +10,9 @@ import {
   Button
 } from 'reactstrap';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import constants from '../../../constants';
-import { requestData, removeStoreData } from '../../../utils';
+import { requestData, removeStoreData, storage } from '../../../utils';
 import { Translate, Tr } from '../../HOC';
 
 const { checkbox, classInputInvalid } = constants;
@@ -55,8 +56,9 @@ class Login extends Component {
   }
 
   handleSubmit(element = false) {
-    const { jwtName, urlLogin } = constants;
+    const { jwtName, endpoints, reactEndpoints } = constants;
     const { user, pass, token, writeToken, keepLogged } = this.state;
+    const { history } = this.props;
     const loginParams = {
       data: { user, pass },
       method: 'POST',
@@ -70,15 +72,17 @@ class Login extends Component {
       element.preventDefault();
       if (user && pass) {
         removeStoreData(jwtName);
-        requestData(urlLogin, loginParams).then(response => {
-          if (response && response.data && response.data.data) {
-            const { status, data } = response;
-            const { message, token: opennebulaToken } = data.data;
-            if (status === 401 && message) {
+        requestData(endpoints.login, loginParams).then(response => {
+          if (response && response.data) {
+            const { id, data } = response;
+            const { token: opennebulaToken, message } = data;
+            if (id === 401 && message) {
               newState = { showError: false, writeToken: true };
-            } else if (response.status === 200 && opennebulaToken) {
-              
-              console.log('todo fino', opennebulaToken);
+            } else if (id === 200 && opennebulaToken) {
+              newState = { showError: false, writeToken: false };
+              storage(jwtName, opennebulaToken, keepLogged);
+              history.push(reactEndpoints.home);
+              return;
             }
             this.setState(newState);
           }
@@ -90,7 +94,7 @@ class Login extends Component {
   }
 
   render() {
-    const { writeToken, token, user, pass, showError } = this.state;
+    const { writeToken, token, user, pass, showError, keepLogged } = this.state;
     const classnameError = {};
     classnameError[classInputInvalid] = showError;
     const inputs = writeToken ? (
@@ -158,7 +162,8 @@ class Login extends Component {
                 <Label>
                   <Input
                     type="checkbox"
-                    onClick={e => {
+                    checked={keepLogged}
+                    onChange={e => {
                       this.handleChange('keepLogged', e);
                     }}
                   />
@@ -181,5 +186,29 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({}),
+    path: PropTypes.string,
+    isExact: PropTypes.bool,
+    url: PropTypes.string
+  })
+};
+
+Login.defaultProps = {
+  history: {
+    push: () => undefined
+  },
+  match: {
+    params: {},
+    path: '',
+    isExact: false,
+    url: ''
+  }
+};
 
 export default Login;

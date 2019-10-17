@@ -3,7 +3,14 @@ const constants = {
   classInputInvalid: 'is-invalid',
   NoFound: 'No found',
   jwtName: 'SunstoneToken',
-  urlLogin: '/api/auth/'
+  endpoints: {
+    login: '/api/auth/',
+    userInfo: '/api/user/info'
+  },
+  reactEndpoints: {
+    login: '/',
+    home: '/management'
+  }
 };
 
 export default constants;
