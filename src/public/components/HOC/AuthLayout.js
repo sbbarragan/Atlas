@@ -78,7 +78,7 @@ AuthLayout.defaultProps = {
   changeName: () => undefined
 };
 
-const mapStateToProps = () => undefined;
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
   changeName: name => dispatch(setUser(name))
