@@ -30,11 +30,33 @@ Ventajas:
 - Uso de API REST: se puede usar tambien para otro tipo de aplicaciones web.
 - Reglas de LINT: el codigo se hace mas legible.
 
+Dependencias: 
+  - Principales: Node, Yarn, ZeroMQ
+  - Descargadas al hacer uso del comando "Yarn o nom start": 
+    * Sistema: React,NodeJS,Helmet,Redux.
+    * Desarrollo. Test y compilacion: Webpack, Babel, Cypress, Sass.
 
+Herramientas de Debug:
+  - Google Chrome (Browser).
+  - React Developer Tools (Chrome plugin).
+  - Redux DevTools (Chrome plugin).
+  - Clear Cache (Chrome plugin).
 
+Compilacion:
 
+  Server Side Rendering: al compilar una vez teniendo las dependencias instaladas Webpack se encargara de generar el codigo (Proceso) que estara ejecutandoce en node (Sunstone server) y tambien genera el javascript usado en el Browser (Cliente).
 
+Memcache:
+  no seria necesario el uso del memcache, actualmente se usa solamente para identificar el usuario del front con el backend, para esto se usaria un jwt, que es un token, dentro tuviese el id del usuario y el opennebula token, esto estaria cifrado por una clave que se guarda en el archivo .env
 
+Views
+  la idea es mantener las vistas (el concepto de vista seria la asociacion de recursos). esta "vista" estaran en los template de group. ya que cada usuario estaria almenos en un grupo. el orden seria el siguiente:
+  - Al conectarme buscaria los grupos que el usuario posea.
+  - Dependiendo del grupo del usuario se mostraria las diferentes vistas (estas vistas se guardarian cifradas en base64 ejemplo: 
+    VIEWS = [VIEW1="template_en_base64", VIEW2="template_en_base64", VIEW3="template_en_base64"]).
+  - Para que un usuario pueda ver una vista particular: 
+    * se puede seleccionar una vista por defecto en el usertemplate, estaria cifrada en base64 ejemplo: DEFAULT_VIEW = "VIEW3".
+    * se puede colocar una vista en particular cifrada en base64 ejemplo: VIEWS = [ VIEW1="template_en_base64", VIEW2="template_en_base64" ]
 
 
 

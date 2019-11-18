@@ -7,11 +7,12 @@ import atob from 'atob';
 import path from 'path';
 import cors from 'cors';
 
-import { createServer } from 'http';
+import { createServer } from 'https';
 import { server } from 'websocket';
 import { socket } from 'zeromq';
 import xml2js from 'xml2js';
 import bodyParser from 'body-parser';
+import fs from 'fs';
 
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
@@ -62,7 +63,13 @@ app.get('*', (req, res) =>
 );
 
 // server
-const appServer = createServer(app);
+const appServer = createServer(
+  {
+    key: fs.readFileSync(`${__dirname}/../cert/key.pem`, 'utf8'),
+    cert: fs.readFileSync(`${__dirname}/../cert/cert.pem`, 'utf8')
+  },
+  app
+);
 
 // create the server
 const wsServer = new server({

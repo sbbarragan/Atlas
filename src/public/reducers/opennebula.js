@@ -2,7 +2,25 @@ const initial = {
   user: {
     name: ''
   },
-  vm: {}
+  vm: [],
+  templates: [],
+  services: [],
+  datastores: [],
+  virtualRoutes: [],
+  vmGroups: [],
+  images: [],
+  files: [],
+  marketPlaces: [],
+  apps: [],
+  virtualNetworks: [],
+  networkTemplates: [],
+  securityGroups: [],
+  clusters: [],
+  hosts: [],
+  zones: [],
+  groups: [],
+  vdc: [],
+  acl: []
 };
 
 const Opennebula = (state = initial, action) => {
