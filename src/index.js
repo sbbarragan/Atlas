@@ -6,17 +6,18 @@ import enviroments from 'dotenv';
 import atob from 'atob';
 import path from 'path';
 import cors from 'cors';
+import fs from 'fs';
+import { createServer as unsecureServer } from 'http';
+import { createServer as secureServer } from 'https';
 
-import { createServer } from 'https';
-import { server } from 'websocket';
+import { server as Server } from 'websocket';
 import { socket } from 'zeromq';
 import xml2js from 'xml2js';
 import bodyParser from 'body-parser';
-import fs from 'fs';
 
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
-import { messageTerminal, validateAuth } from './utils';
+import { messageTerminal, validateAuth, addWsServer } from './utils';
 import { unauthorized } from './config/http-codes';
 
 const app = express();
@@ -62,93 +63,28 @@ app.get('*', (req, res) =>
     )
 );
 
-// server
-const appServer = createServer(
-  {
-    key: fs.readFileSync(`${__dirname}/../cert/key.pem`, 'utf8'),
-    cert: fs.readFileSync(`${__dirname}/../cert/cert.pem`, 'utf8')
-  },
-  app
-);
+const key = `${__dirname}/../cert/key.pem`;
+const cert = `${__dirname}/../cert/cert.pem`;
 
-// create the server
-const wsServer = new server({
-  httpServer: appServer
-});
+// server
+const appServer =
+  fs &&
+  fs.existsSync &&
+  key &&
+  cert &&
+  fs.existsSync(key) &&
+  fs.existsSync(cert)
+    ? secureServer(
+        {
+          key: fs.readFileSync(key, 'utf8'),
+          cert: fs.readFileSync(cert, 'utf8')
+        },
+        app
+      )
+    : unsecureServer(app);
 
 // connect to zeromq
-const zeromqSock = socket('sub');
-const address = `${zeromqType}://${zeromqHost}:${zeromqPort}`;
-try {
-  zeromqSock.connect(address);
-  let clients = [];
-
-  wsServer.on('request', request => {
-    if (
-      request &&
-      request.resourceURL &&
-      request.resourceURL.query &&
-      request.resourceURL.query.token &&
-      validateAuth({
-        headers: { authorization: request.resourceURL.query.token }
-      })
-    ) {
-      const clientConnection = request.accept(null, request.origin);
-      clients.push(clientConnection);
-      zeromqSock.subscribe('');
-      zeromqSock.on('message', (...args) => {
-        const mssgs = [];
-        // broadcast
-        clients.map(client => {
-          Array.prototype.slice.call(args).forEach(arg => {
-            mssgs.push(arg.toString());
-          });
-          if (mssgs[0] && mssgs[1]) {
-            xml2js.parseString(
-              atob(mssgs[1]),
-              {
-                explicitArray: false,
-                trim: true,
-                normalize: true,
-                includeWhiteChars: true,
-                strict: false
-              },
-              (error, result) => {
-                if (error) {
-                  const configErrorParser = {
-                    color: 'red',
-                    type: error,
-                    message: 'Error parser: %s'
-                  };
-                  messageTerminal(configErrorParser);
-                  return;
-                }
-                client.send(
-                  JSON.stringify({ command: mssgs[0], data: result })
-                );
-              }
-            );
-          }
-        });
-      });
-    } else {
-      const { id, message } = unauthorized;
-      request.reject(id, message);
-    }
-  });
-
-  wsServer.on('close', request => {
-    // clear connection to broadcast
-    clients = clients.filter(client => client !== request);
-  });
-} catch (error) {
-  const configErrorZeroMQ = {
-    color: 'red',
-    type: error,
-    message: '%s'
-  };
-  messageTerminal(configErrorZeroMQ);
-}
+addWsServer(appServer);
 
 appServer.listen(port, () => {
   const config = {

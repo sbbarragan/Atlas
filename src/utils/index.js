@@ -4,6 +4,7 @@ const { defaultMode } = require('../config/defaults');
 const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
 const { messageTerminal } = require('./general-functions');
+const { addWsServer } = require('./ws-zeromq');
 const enviroments = require('dotenv');
 
 enviroments.config();
@@ -99,6 +100,7 @@ const checkRouteFunction = route => {
 };
 
 module.exports = {
+  addWsServer,
   validateAuth,
   createParamsState,
   getAllowedQueryParams,
