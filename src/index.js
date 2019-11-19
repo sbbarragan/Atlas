@@ -2,36 +2,26 @@ import compression from 'compression';
 import helmet from 'helmet';
 import express from 'express';
 import morgan from 'morgan';
-import enviroments from 'dotenv';
-import atob from 'atob';
 import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
 import { createServer as unsecureServer } from 'http';
 import { createServer as secureServer } from 'https';
-
-import { server as Server } from 'websocket';
-import { socket } from 'zeromq';
-import xml2js from 'xml2js';
 import bodyParser from 'body-parser';
+import { getConfig } from './utils/yml-connect';
 
 import publicRoutes from './routes/public';
 import apiRoutes from './routes/api';
-import { messageTerminal, validateAuth, addWsServer } from './utils';
-import { unauthorized } from './config/http-codes';
+import { messageTerminal, addWsServer } from './utils';
 
 const app = express();
 
-// enviroments
-enviroments.config();
-const env = process && process.env;
+// user config
+const appConfig = getConfig();
 
 // settings
-const port = env.PORT || 3000;
-const log = env.LOG || 'dev';
-const zeromqType = env.ZEROTYPE || 'tcp';
-const zeromqPort = env.ZEROPORT || 2101;
-const zeromqHost = env.ZEROHOST || '127.0.0.1';
+const port = appConfig.PORT || 3000;
+const log = appConfig.LOG || 'dev';
 
 app.use(helmet.hidePoweredBy());
 app.use(compression());
@@ -42,7 +32,7 @@ app.use('/static', express.static(path.resolve(__dirname, 'public')));
 app.use(morgan(log));
 
 // cors
-if (env.MODE && env.MODE === 'development') {
+if (appConfig.MODE && appConfig.MODE === 'development') {
   app.use(cors());
 }
 

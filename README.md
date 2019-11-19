@@ -48,7 +48,7 @@ for this error run  `killall -9 node` and start app again
 - `src/routes`: contains the routes for node (API and WEB).
 - `src/utils`: utilities used by the application.
 - `src/index.js`: entrypoint node.
-- `.env`: enviroment config for user
+- `config.yml`: enviroment config for user
 - `.eslintignore`: files ignored by the eslint
 - `.gitignore`: files ignored by git
 - `copyStaticAssets.js`: copy the html resourses to dist/public path (.ico, .css, fonts, etc).

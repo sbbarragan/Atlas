@@ -1,4 +1,3 @@
-const enviroments = require('dotenv');
 const atob = require('atob');
 
 const { server: Server } = require('websocket');
@@ -6,16 +5,16 @@ const { socket } = require('zeromq');
 const xml2js = require('xml2js');
 
 const { messageTerminal } = require('./general-functions');
+const { getConfig } = require('./yml-connect');
 const { validateAuth } = require('./jwt-functions');
 const { unauthorized } = require('../config/http-codes');
 
-// enviroments
-enviroments.config();
-const env = process && process.env;
+// user config
+const appConfig = getConfig();
 
-const zeromqType = env.ZEROTYPE || 'tcp';
-const zeromqPort = env.ZEROPORT || 2101;
-const zeromqHost = env.ZEROHOST || '127.0.0.1';
+const zeromqType = appConfig.ZEROTYPE || 'tcp';
+const zeromqPort = appConfig.ZEROPORT || 2101;
+const zeromqHost = appConfig.ZEROHOST || '127.0.0.1';
 
 const addWsServer = appServer => {
   if (

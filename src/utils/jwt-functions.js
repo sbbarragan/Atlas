@@ -1,11 +1,12 @@
-const enviroments = require('dotenv');
 const jwt = require('jwt-simple');
 const moment = require('moment');
 const { messageTerminal } = require('../utils/general-functions');
+const { getConfig } = require('./yml-connect');
 
-enviroments.config();
-const env = process && process.env;
-const tokenSecret = env.TOKEN_SECRET || null;
+// user config
+const appConfig = getConfig();
+
+const tokenSecret = appConfig.TOKEN_SECRET || null;
 
 const createToken = (
   { id: iss, user: aud, token: jti },

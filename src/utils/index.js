@@ -5,12 +5,12 @@ const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
 const { messageTerminal } = require('./general-functions');
 const { addWsServer } = require('./ws-zeromq');
-const enviroments = require('dotenv');
+const { getConfig } = require('./yml-connect');
 
-enviroments.config();
-const env = process && process.env;
+// user config
+const appConfig = getConfig();
 
-const mode = env.MODE || defaultMode;
+const mode = appConfig.MODE || defaultMode;
 
 const {
   responseOpennebula,

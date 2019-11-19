@@ -47,7 +47,7 @@ Compilacion:
   Server Side Rendering: al compilar una vez teniendo las dependencias instaladas Webpack se encargara de generar el codigo (Proceso) que estara ejecutandoce en node (Sunstone server) y tambien genera el javascript usado en el Browser (Cliente).
 
 Memcache:
-  no seria necesario el uso del memcache, actualmente se usa solamente para identificar el usuario del front con el backend, para esto se usaria un jwt, que es un token, dentro tuviese el id del usuario y el opennebula token, esto estaria cifrado por una clave que se guarda en el archivo .env
+  no seria necesario el uso del memcache, actualmente se usa solamente para identificar el usuario del front con el backend, para esto se usaria un jwt, que es un token, dentro tuviese el id del usuario y el opennebula token, esto estaria cifrado por una clave que se guarda en el archivo config.yml
 
 Views
   la idea es mantener las vistas (el concepto de vista seria la asociacion de recursos). esta "vista" estaran en los template de group. ya que cada usuario estaria almenos en un grupo. el orden seria el siguiente:
