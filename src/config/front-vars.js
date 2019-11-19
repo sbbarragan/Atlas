@@ -5,5 +5,5 @@ const { defaultBaseURL } = require('./defaults');
 const appConfig = getConfig();
 
 module.exports = {
-  baseUrl: appConfig.namespace || defaultBaseURL
+  baseUrl: appConfig.NAMESPACE || defaultBaseURL
 };

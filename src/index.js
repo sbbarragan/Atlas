@@ -73,7 +73,7 @@ const appServer =
       )
     : unsecureServer(app);
 
-// connect to zeromq
+// connect to zeromq websocket
 addWsServer(appServer);
 
 appServer.listen(port, () => {

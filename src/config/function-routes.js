@@ -120,10 +120,10 @@ const privateRoutes = {
                   connectOpennebula(
                     defaultMethodUserUpdate,
                     getOpennebulaMethod(dataUser),
-                    (err, value) => {
+                    (error, value) => {
                       responseOpennebula(
                         () => undefined,
-                        err,
+                        error,
                         value,
                         pass => {
                           if (pass !== undefined && pass !== null) {
