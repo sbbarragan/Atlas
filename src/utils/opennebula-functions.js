@@ -1,5 +1,4 @@
 const upcast = require('upcast');
-const enviroments = require('dotenv');
 const url = require('url');
 const rpc = require('xmlrpc');
 const xml2js = require('xml2js');
@@ -12,9 +11,11 @@ const {
   defaultMessageProblemOpennebula
 } = require('../config/defaults');
 
-enviroments.config();
-const env = process && process.env;
-const namespace = env.namespace || defaultNamespace;
+// user config
+const { getConfig } = require('./yml-connect');
+
+const appConfig = getConfig();
+const namespace = appConfig.namespace || defaultNamespace;
 
 const opennebulaConnect = (username = '', password = '', path = '') => {
   let rtn = () => null;

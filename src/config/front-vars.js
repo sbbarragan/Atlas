@@ -1,9 +1,9 @@
-const enviroments = require('dotenv');
+const { getConfig } = require('../utils/yml-connect');
 const { defaultBaseURL } = require('./defaults');
 
-enviroments.config();
-const env = process && process.env;
+// user config
+const appConfig = getConfig();
 
 module.exports = {
-  baseUrl: env.namespace || defaultBaseURL
+  baseUrl: appConfig.NAMESPACE || defaultBaseURL
 };

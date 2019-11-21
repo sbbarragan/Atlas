@@ -13,6 +13,7 @@ module.exports = {
       VNC: ''
     }
   ],
+  defaultConfigFile: `${__dirname}/../config.yml`,
   defaultBaseURL: '',
   defaultMode: 'development',
   defaultNamespace: 'one.',

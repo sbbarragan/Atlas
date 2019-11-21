@@ -1,14 +1,13 @@
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
-const enviroments = require('dotenv');
+const { getConfig } = require('./src/utils/yml-connect');
 const { defaultMode } = require('./src/config/defaults');
 
-enviroments.config();
-const env = process && process.env;
+const appConfig = getConfig();
 
 // settings
-const mode = env.MODE || defaultMode;
+const mode = appConfig.MODE || defaultMode;
 const devtool = mode === defaultMode ? 'inline-source-map' : '';
 const js = {
   test: /\.js$/,

@@ -1,5 +1,5 @@
 const { Map } = require('immutable');
-const enviroments = require('dotenv');
+const { getConfig } = require('../utils/yml-connect');
 const moment = require('moment');
 const speakeasy = require('speakeasy');
 const qrcode = require('qrcode');
@@ -28,11 +28,13 @@ const {
   generateNewTemplate
 } = require('../utils/opennebula-functions');
 
-enviroments.config();
-const env = process && process.env;
-const limitToken = JSON.parse(env.LIMIT_TOKEN);
-const namespace = env.namespace || defaultNamespace;
-const twoFactorAuthIssuer = env.TWO_FACTOR_AUTH_ISSUER || default2FAIssuer;
+// user config
+const appConfig = getConfig();
+
+const limitToken = appConfig.LIMIT_TOKEN;
+const namespace = appConfig.NAMESPACE || defaultNamespace;
+const twoFactorAuthIssuer =
+  appConfig.TWO_FACTOR_AUTH_ISSUER || default2FAIssuer;
 
 const { POST, GET, DELETE } = httpMethod;
 
@@ -118,10 +120,10 @@ const privateRoutes = {
                   connectOpennebula(
                     defaultMethodUserUpdate,
                     getOpennebulaMethod(dataUser),
-                    (err, value) => {
+                    (error, value) => {
                       responseOpennebula(
                         () => undefined,
-                        err,
+                        error,
                         value,
                         pass => {
                           if (pass !== undefined && pass !== null) {

@@ -5,7 +5,7 @@ const {
   public: nonAuthenticated
 } = require('../config/routes-api');
 const params = require('../config/params');
-const enviroments = require('dotenv');
+const { getConfig } = require('../utils/yml-connect');
 const {
   opennebulaConnect,
   validateAuth,
@@ -41,12 +41,10 @@ let idUserOpennebula = '';
 let userOpennebula = '';
 let passOpennebula = '';
 
-enviroments.config();
-const env = process && process.env;
+// user config
+const appConfig = getConfig();
 
-const opennebulaZones =
-  (env.OPENNEBULA_ZONES && JSON.parse(env.OPENNEBULA_ZONES)) ||
-  defaultOpennebulaZones;
+const opennebulaZones = appConfig.OPENNEBULA_ZONES || defaultOpennebulaZones;
 
 const clearStates = () => {
   paramsState = defaultParams.toObject();
