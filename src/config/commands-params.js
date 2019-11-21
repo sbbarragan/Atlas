@@ -2340,36 +2340,170 @@ const commandsParams = {
     }
   },
   'vrouter.chmod': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userUse: {
+        from: postBody,
+        default: -1
+      },
+      userManage: {
+        from: postBody,
+        default: -1
+      },
+      userAdmin: {
+        from: postBody,
+        default: -1
+      },
+      groupUse: {
+        from: postBody,
+        default: -1
+      },
+      groupManage: {
+        from: postBody,
+        default: -1
+      },
+      groupAdmin: {
+        from: postBody,
+        default: -1
+      },
+      otherUse: {
+        from: postBody,
+        default: -1
+      },
+      otherManage: {
+        from: postBody,
+        default: -1
+      },
+      otherAdmin: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'vrouter.chown': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userId: {
+        from: postBody,
+        default: -1
+      },
+      groupId: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'vrouter.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vrouter.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: -1
+      }
+    }
+  },
+  'vrouter.lock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'vrouter.unlock': {
+    httpMethod: GET,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'vrouterpool.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      filter: {
+        from: query,
+        default: -1
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      }
+    }
   },
   'user.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      username: {
+        from: postBody,
+        default: 0
+      },
+      password: {
+        from: postBody,
+        default: ''
+      },
+      driver: {
+        from: postBody,
+        default: ''
+      },
+      group: {
+        from: postBody,
+        default: []
+      }
+    }
   },
   'user.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'user.passwd': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      password: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'user.login': {
     httpMethod: POST,
@@ -2410,24 +2544,73 @@ const commandsParams = {
     }
   },
   'user.chauth': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: postBody,
+        default: 0
+      },
+      driver: {
+        from: postBody,
+        default: ''
+      },
+      password: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'user.quota': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      quota: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'user.chgrp': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      group: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'user.addgroup': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      group: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'user.delgroup': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      group: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'user.info': {
     httpMethod: GET,
@@ -2447,35 +2630,86 @@ const commandsParams = {
     params: {}
   },
   'userquota.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'group.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'group.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'group.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: query,
+        default: -1
+      }
+    }
   },
   'group.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'group.addadmin': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      user: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'group.deladmin': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      user: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'group.quota': {
-    httpMethod: GET,
+    httpMethod: PUT,
     params: {}
   },
   'grouppool.info': {
