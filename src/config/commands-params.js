@@ -1936,99 +1936,408 @@ const commandsParams = {
   },
   'imagepool.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      filter: {
+        from: query,
+        default: -3
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      }
+    }
   },
   'market.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'market.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'market.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      update: {
+        from: postBody,
+        default: 1
+      }
+    }
   },
   'market.chmod': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userUse: {
+        from: postBody,
+        default: -1
+      },
+      userManage: {
+        from: postBody,
+        default: -1
+      },
+      userAdmin: {
+        from: postBody,
+        default: -1
+      },
+      groupUse: {
+        from: postBody,
+        default: -1
+      },
+      groupManage: {
+        from: postBody,
+        default: -1
+      },
+      groupAdmin: {
+        from: postBody,
+        default: -1
+      },
+      otherUse: {
+        from: postBody,
+        default: -1
+      },
+      otherManage: {
+        from: postBody,
+        default: -1
+      },
+      otherAdmin: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'market.chown': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userId: {
+        from: postBody,
+        default: -1
+      },
+      groupId: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'market.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'market.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: -1
+      }
+    }
   },
   'marketpool.info': {
     httpMethod: GET,
     params: {}
   },
   'marketapp.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'marketapp.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'marketapp.enable': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      enable: {
+        from: postBody,
+        default: true
+      }
+    }
   },
   'marketapp.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'marketapp.chmod': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userUse: {
+        from: postBody,
+        default: -1
+      },
+      userManage: {
+        from: postBody,
+        default: -1
+      },
+      userAdmin: {
+        from: postBody,
+        default: -1
+      },
+      groupUse: {
+        from: postBody,
+        default: -1
+      },
+      groupManage: {
+        from: postBody,
+        default: -1
+      },
+      groupAdmin: {
+        from: postBody,
+        default: -1
+      },
+      otherUse: {
+        from: postBody,
+        default: -1
+      },
+      otherManage: {
+        from: postBody,
+        default: -1
+      },
+      otherAdmin: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'marketapp.chown': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userId: {
+        from: postBody,
+        default: -1
+      },
+      groupId: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'marketapp.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'marketapp.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: -1
+      }
+    }
+  },
+  'marketapp.lock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'marketapp.unlock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'marketapppool.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      filter: {
+        from: query,
+        default: -1
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      }
+    }
   },
   'vrouter.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vrouter.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'vrouter.instantiate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      number: {
+        from: postBody,
+        default: 1
+      },
+      templateId: {
+        from: postBody,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      },
+      pending: {
+        from: postBody,
+        default: false
+      },
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vrouter.attachnic': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      attribute: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vrouter.detachnic': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      nic: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vrouter.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      update: {
+        from: postBody,
+        default: 1
+      }
+    }
   },
   'vrouter.chmod': {
     httpMethod: GET,
