@@ -2437,7 +2437,7 @@ const commandsParams = {
     }
   },
   'vrouter.unlock': {
-    httpMethod: GET,
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -2710,7 +2710,16 @@ const commandsParams = {
   },
   'group.quota': {
     httpMethod: PUT,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: resource,
+        default: ''
+      }
+    }
   },
   'grouppool.info': {
     httpMethod: GET,
@@ -2721,92 +2730,298 @@ const commandsParams = {
     params: {}
   },
   'groupquota.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vdc.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      },
+      cluster: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'vdc.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'vdc.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: 0
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'vdc.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: -1
+      }
+    }
   },
   'vdcpool.info': {
     httpMethod: GET,
     params: {}
   },
   'vdc.addgroup': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      group: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.delgroup': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      group: {
+        from: query,
+        default: 0
+      }
+    }
   },
   'vdc.addcluster': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      cluster: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.delcluster': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: query,
+        default: 0
+      },
+      cluster: {
+        from: query,
+        default: 0
+      }
+    }
   },
   'vdc.addhost': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      host: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.delhost': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      host: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.adddatastore': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      datastore: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.deldatastore': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      datastore: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.addvnet': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: postBody,
+        default: 0
+      },
+      datastore: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'vdc.delvnet': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      zone: {
+        from: query,
+        default: 0
+      },
+      datastore: {
+        from: query,
+        default: 0
+      }
+    }
   },
   'zone.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'zone.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'zone.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'zone.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'zone.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      decrypt: false
+    }
   },
   'zone.raftstatus': {
     httpMethod: GET,
@@ -2817,52 +3032,213 @@ const commandsParams = {
     params: {}
   },
   'acl.addrule': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      user: {
+        from: postBody,
+        default: '0x100000000'
+      },
+      resource: {
+        from: postBody,
+        default: '0x1000000000'
+      },
+      right: {
+        from: postBody,
+        default: '0x1'
+      }
+    }
   },
   'acl.delrule': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'acl.info': {
     httpMethod: GET,
     params: {}
   },
   'document.allocate': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: POST,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      },
+      type: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'document.clone': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'document.delete': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'document.update': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
   },
   'document.chmod': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userUse: {
+        from: postBody,
+        default: -1
+      },
+      userManage: {
+        from: postBody,
+        default: -1
+      },
+      userAdmin: {
+        from: postBody,
+        default: -1
+      },
+      groupUse: {
+        from: postBody,
+        default: -1
+      },
+      groupManage: {
+        from: postBody,
+        default: -1
+      },
+      groupAdmin: {
+        from: postBody,
+        default: -1
+      },
+      otherUse: {
+        from: postBody,
+        default: -1
+      },
+      otherManage: {
+        from: postBody,
+        default: -1
+      },
+      otherAdmin: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'document.chown': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      user: {
+        from: postBody,
+        default: -1
+      },
+      group: {
+        from: postBody,
+        default: -1
+      }
+    }
   },
   'document.rename': {
-    httpMethod: GET,
-    params: {}
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
   },
   'document.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'document.lock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'document.unlock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
   },
   'documentpool.info': {
     httpMethod: GET,
-    params: {}
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      filter: {
+        from: query,
+        default: -1
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      },
+      type: {
+        from: query,
+        default: 0
+      }
+    }
   },
   'system.version': {
     httpMethod: GET,
@@ -2871,7 +3247,29 @@ const commandsParams = {
   'system.config': {
     httpMethod: GET,
     params: {}
-  }
+  },
+  'vntemplate.allocate': {},
+  'vntemplate.clone': {},
+  'vntemplate.delete': {},
+  'vntemplate.instantiate': {},
+  'vntemplate.update': {},
+  'vntemplate.chmod': {},
+  'vntemplate.chown': {},
+  'vntemplate.rename': {},
+  'vntemplate.info': {},
+  'vntemplate.lock': {},
+  'vntemplate.unlock': {},
+  'vntemplatepool.info': {},
+  'one.hook.allocate': {},
+  'one.hook.delete': {},
+  'one.hook.update': {},
+  'one.hook.rename': {},
+  'one.hook.info': {},
+  'one.hook.lock': {},
+  'one.hook.unlock': {},
+  'one.hook.retry': {},
+  'one.hookpool.info': {},
+  'one.hooklog.info': {}
 };
 
 module.exports = { from, commandsParams };
