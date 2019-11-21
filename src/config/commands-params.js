@@ -876,6 +876,7 @@ const commandsParams = {
     }
   },
   'host.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -885,6 +886,7 @@ const commandsParams = {
     }
   },
   'host.status': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -898,6 +900,7 @@ const commandsParams = {
     }
   },
   'host.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -908,13 +911,14 @@ const commandsParams = {
         from: postBody,
         default: ''
       },
-      update: {
+      replace: {
         from: postBody,
         default: 0
       }
     }
   },
   'host.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -928,15 +932,21 @@ const commandsParams = {
     }
   },
   'host.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: postBody,
+        default: false
       }
     }
   },
   'host.monitoring': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -946,14 +956,17 @@ const commandsParams = {
     }
   },
   'hostpool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'hostpool.monitoring': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'cluster.allocate': {
+    // inspected
     httpMethod: PUT,
     params: {
       name: {
@@ -963,6 +976,7 @@ const commandsParams = {
     }
   },
   'cluster.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -972,6 +986,7 @@ const commandsParams = {
     }
   },
   'cluster.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -989,7 +1004,8 @@ const commandsParams = {
     }
   },
   'cluster.addhost': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -1002,6 +1018,7 @@ const commandsParams = {
     }
   },
   'cluster.delhost': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1009,7 +1026,7 @@ const commandsParams = {
         default: 0
       },
       host: {
-        from: postBody,
+        from: query,
         default: 0
       }
     }
