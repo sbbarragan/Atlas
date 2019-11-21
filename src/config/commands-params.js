@@ -10,12 +10,9 @@ const { GET, POST, PUT, DELETE } = httpMethod;
 
 const commandsParams = {
   'template.allocate': {
+    // inspected
     httpMethod: PUT,
     params: {
-      id: {
-        from: resource,
-        default: 0
-      },
       template: {
         from: postBody,
         default: ''
@@ -23,6 +20,7 @@ const commandsParams = {
     }
   },
   'template.clone': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -40,6 +38,7 @@ const commandsParams = {
     }
   },
   'template.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -53,6 +52,7 @@ const commandsParams = {
     }
   },
   'template.instantiate': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -67,7 +67,7 @@ const commandsParams = {
         from: postBody,
         default: false
       },
-      extraTemplate: {
+      template: {
         from: postBody,
         default: ''
       },
@@ -78,6 +78,7 @@ const commandsParams = {
     }
   },
   'template.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -95,6 +96,7 @@ const commandsParams = {
     }
   },
   'template.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -144,6 +146,7 @@ const commandsParams = {
     }
   },
   'template.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -161,6 +164,7 @@ const commandsParams = {
     }
   },
   'template.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -174,6 +178,7 @@ const commandsParams = {
     }
   },
   'template.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -183,32 +188,15 @@ const commandsParams = {
       extended: {
         from: query,
         default: false
-      }
-    }
-  },
-  'template.lock': {
-    httpMethod: PUT,
-    params: {
-      id: {
-        from: resource,
-        default: 0
       },
-      lock: {
-        from: postBody,
-        default: 4
-      }
-    }
-  },
-  'template.unlock': {
-    httpMethod: GET,
-    params: {
-      id: {
-        from: resource,
-        default: 0
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'templatepool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -225,13 +213,34 @@ const commandsParams = {
       }
     }
   },
-  'vm.allocate': {
+  'template.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'template.unlock': {
+    // inspected
+    httpMethod: GET,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'vm.allocate': {
+    // inspected
+    httpMethod: PUT,
+    params: {
       template: {
         from: postBody,
         default: ''
@@ -243,13 +252,14 @@ const commandsParams = {
     }
   },
   'vm.deploy': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      hostId: {
+      host: {
         from: postBody,
         default: 0
       },
@@ -264,23 +274,21 @@ const commandsParams = {
     }
   },
   'vm.action': {
+    // inspected
     httpMethod: PUT,
     params: {
-      id: {
-        from: resource,
-        default: 0
-      },
       action: {
         from: postBody,
         default: 'stop'
       },
-      objetId: {
-        from: postBody,
+      id: {
+        from: resource,
         default: 0
       }
     }
   },
   'vm.migrate': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -302,10 +310,15 @@ const commandsParams = {
       datastore: {
         from: postBody,
         default: 0
+      },
+      migration: {
+        from: postBody,
+        default: 0
       }
     }
   },
   'vm.disksaveas': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -320,7 +333,7 @@ const commandsParams = {
         from: postBody,
         default: ''
       },
-      image: {
+      type: {
         from: postBody,
         default: ''
       },
@@ -331,6 +344,7 @@ const commandsParams = {
     }
   },
   'vm.disksnapshotcreate': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -348,13 +362,14 @@ const commandsParams = {
     }
   },
   'vm.disksnapshotdelete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      object: {
+      disk: {
         from: query,
         default: 0
       },
@@ -365,6 +380,7 @@ const commandsParams = {
     }
   },
   'vm.disksnapshotrevert': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -381,7 +397,8 @@ const commandsParams = {
       }
     }
   },
-  'vm.attach': {
+  'vm.disksnapshotrename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -390,11 +407,34 @@ const commandsParams = {
       },
       disk: {
         from: postBody,
+        default: 0
+      },
+      snapshot: {
+        from: postBody,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'vm.attach': {
+    // inspected
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
         default: ''
       }
     }
   },
   'vm.detach': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -408,6 +448,7 @@ const commandsParams = {
     }
   },
   'vm.diskresize': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -425,19 +466,21 @@ const commandsParams = {
     }
   },
   'vm.attachnic': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      nic: {
+      template: {
         from: postBody,
         default: ''
       }
     }
   },
   'vm.detachnic': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -451,6 +494,7 @@ const commandsParams = {
     }
   },
   'vm.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -496,23 +540,25 @@ const commandsParams = {
     }
   },
   'vm.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userId: {
+      user: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group: {
         from: postBody,
         default: -1
       }
     }
   },
   'vm.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -526,7 +572,8 @@ const commandsParams = {
     }
   },
   'vm.snapshotcreate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -539,7 +586,8 @@ const commandsParams = {
     }
   },
   'vm.snapshotrevert': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -552,6 +600,7 @@ const commandsParams = {
     }
   },
   'vm.snapshotdelete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -565,6 +614,7 @@ const commandsParams = {
     }
   },
   'vm.resize': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -582,6 +632,7 @@ const commandsParams = {
     }
   },
   'vm.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -599,6 +650,7 @@ const commandsParams = {
     }
   },
   'vm.updateconf': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -612,6 +664,7 @@ const commandsParams = {
     }
   },
   'vm.recover': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -625,6 +678,21 @@ const commandsParams = {
     }
   },
   'vm.info': {
+    // inspected
+    httpMethod: GET,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      decrypt: {
+        from: query,
+        default: false
+      }
+    }
+  },
+  'vm.monitoring': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -633,8 +701,23 @@ const commandsParams = {
       }
     }
   },
-  'vm.monitoring': {
-    httpMethod: GET,
+  'vm.lock': {
+    // inspected
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      level: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'vm.unlock': {
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -643,11 +726,12 @@ const commandsParams = {
     }
   },
   'vmpool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
         from: query,
-        default: -3
+        default: -2
       },
       start: {
         from: query,
@@ -657,13 +741,44 @@ const commandsParams = {
         from: query,
         default: -1
       },
-      vmState: {
+      state: {
+        from: query,
+        default: -2
+      },
+      filterbykey: {
+        from: query,
+        default: ''
+      }
+    }
+  },
+  'vmpool.infoextended': {
+    // inspected
+    httpMethod: GET,
+    params: {
+      filter: {
+        from: query,
+        default: -2
+      },
+      start: {
         from: query,
         default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      },
+      state: {
+        from: query,
+        default: -2
+      },
+      filterbykey: {
+        from: query,
+        default: ''
       }
     }
   },
   'vmpool.monitoring': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -673,6 +788,7 @@ const commandsParams = {
     }
   },
   'vmpool.accounting': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -690,55 +806,58 @@ const commandsParams = {
     }
   },
   'vmpool.showback': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
         from: query,
         default: -2
       },
-      startMonth: {
+      start_month: {
         filter: query,
         default: -1
       },
-      startYear: {
+      start_year: {
         filter: query,
         default: -1
       },
-      endMonth: {
+      end_month: {
         filter: query,
         default: -1
       },
-      endYear: {
+      end_year: {
         filter: query,
         default: -1
       }
     }
   },
   'vmpool.calculateshowback': {
+    // inspected
     httpMethod: GET,
     params: {
-      startMonth: {
+      start_month: {
         filter: query,
         default: -1
       },
-      startYear: {
+      start_year: {
         filter: query,
         default: -1
       },
-      endMonth: {
+      end_month: {
         filter: query,
         default: -1
       },
-      endYear: {
+      end_year: {
         filter: query,
         default: -1
       }
     }
   },
   'host.allocate': {
+    // inspected
     httpMethod: PUT,
     params: {
-      host: {
+      hostname: {
         from: postBody,
         default: ''
       },
@@ -746,7 +865,7 @@ const commandsParams = {
         from: postBody,
         default: ''
       },
-      machine: {
+      manager: {
         from: postBody,
         default: ''
       },
@@ -3248,28 +3367,324 @@ const commandsParams = {
     httpMethod: GET,
     params: {}
   },
-  'vntemplate.allocate': {},
-  'vntemplate.clone': {},
-  'vntemplate.delete': {},
-  'vntemplate.instantiate': {},
-  'vntemplate.update': {},
-  'vntemplate.chmod': {},
-  'vntemplate.chown': {},
-  'vntemplate.rename': {},
-  'vntemplate.info': {},
-  'vntemplate.lock': {},
-  'vntemplate.unlock': {},
-  'vntemplatepool.info': {},
-  'one.hook.allocate': {},
-  'one.hook.delete': {},
-  'one.hook.update': {},
-  'one.hook.rename': {},
-  'one.hook.info': {},
-  'one.hook.lock': {},
-  'one.hook.unlock': {},
-  'one.hook.retry': {},
-  'one.hookpool.info': {},
-  'one.hooklog.info': {}
+  'vntemplate.allocate': {
+    httpMethod: PUT,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'vntemplate.clone': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'vntemplate.delete': {
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'vntemplate.instantiate': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'vntemplate.update': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
+  },
+  'vntemplate.chmod': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userUse: {
+        from: postBody,
+        default: -1
+      },
+      userManage: {
+        from: postBody,
+        default: -1
+      },
+      userAdmin: {
+        from: postBody,
+        default: -1
+      },
+      groupUse: {
+        from: postBody,
+        default: -1
+      },
+      groupManage: {
+        from: postBody,
+        default: -1
+      },
+      groupAdmin: {
+        from: postBody,
+        default: -1
+      },
+      otherUse: {
+        from: postBody,
+        default: -1
+      },
+      otherManage: {
+        from: postBody,
+        default: -1
+      },
+      otherAdmin: {
+        from: postBody,
+        default: -1
+      }
+    }
+  },
+  'vntemplate.chown': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      userId: {
+        from: postBody,
+        default: -1
+      },
+      groupId: {
+        from: postBody,
+        default: -1
+      }
+    }
+  },
+  'vntemplate.rename': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'vntemplate.info': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'vntemplate.lock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'vntemplate.unlock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'vntemplatepool.info': {
+    httpMethod: GET,
+    params: {
+      filter: {
+        from: query,
+        default: -1
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      }
+    }
+  },
+  'hook.allocate': {
+    httpMethod: POST,
+    params: {
+      template: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'hook.delete': {
+    httpMethod: DELETE,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'hook.update': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      template: {
+        from: postBody,
+        default: ''
+      },
+      replace: {
+        from: postBody,
+        default: 0
+      }
+    }
+  },
+  'hook.rename': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      name: {
+        from: postBody,
+        default: ''
+      }
+    }
+  },
+  'hook.info': {
+    httpMethod: GET,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'hook.lock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      lock: {
+        from: postBody,
+        default: 4
+      }
+    }
+  },
+  'hook.unlock': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      }
+    }
+  },
+  'hook.retry': {
+    httpMethod: PUT,
+    params: {
+      id: {
+        from: resource,
+        default: 0
+      },
+      execution: {
+        from: postBody,
+        default: 0
+      }
+    }
+  },
+  'hookpool.info': {
+    httpMethod: GET,
+    params: {
+      filter: {
+        from: query,
+        default: -1
+      },
+      start: {
+        from: query,
+        default: -1
+      },
+      end: {
+        from: query,
+        default: -1
+      }
+    }
+  },
+  'hooklog.info': {
+    httpMethod: GET,
+    params: {
+      minimun: {
+        from: postBody, // epoch time
+        default: ''
+      },
+      maximun: {
+        from: postBody, // epoch time
+        default: ''
+      },
+      id: {
+        from: postBody,
+        default: '' // check
+      },
+      execution: {
+        from: postBody,
+        default: 0
+      }
+    }
+  }
 };
 
 module.exports = { from, commandsParams };
