@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
-class Menu extends Component {
+class PrincipalMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,4 +27,4 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+export default PrincipalMenu;

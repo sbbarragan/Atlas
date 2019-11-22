@@ -1,0 +1,15 @@
+.menu{
+  border-right: 2px solid $tertiary;
+  background-color: $primary;
+  color: $secondary;
+
+  &.open{
+    max-width: 300px;
+  }
+
+  &.close{
+    max-width: 0px;
+    padding: 0px;
+    border: 0px;
+  }
+}

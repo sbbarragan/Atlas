@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
-import Header from '../Header';
-import Footer from '../Footer';
-import Menu from '../Menu';
+import classnames from 'classnames';
+import Header from '../containers/Header';
+import Footer from '../containers/Footer';
+import PrincipalMenu from '../containers/PrincipalMenu';
 
-class Home extends Component {
+class InternalLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,11 +23,11 @@ class Home extends Component {
             <Header />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Menu />
+        <Row className={classnames('flex-grow-1')}>
+          <Col className={classnames('menu')}>
+            <PrincipalMenu />
           </Col>
-          <Col>{children}</Col>
+          <Col className={classnames('content')}>{children}</Col>
         </Row>
         <Row>
           <Col>
@@ -38,7 +39,7 @@ class Home extends Component {
   }
 }
 
-Home.propTypes = {
+InternalLayout.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -46,8 +47,8 @@ Home.propTypes = {
   ])
 };
 
-Home.defaultProps = {
+InternalLayout.defaultProps = {
   children: []
 };
 
-export default Home;
+export default InternalLayout;

@@ -1,8 +1,16 @@
+$primary: #353735;
+$secondary: #FFF;
+$tertiary: #FAFAFA;
+
+$font_primary: #353735;
+$font_secondary: red;
+
 @import "header";
 @import "login";
 @import "footer";
 @import "menu";
+@import "content";
 
-html, body, #root, .full-height{
-  min-height: 100vh;
+html, body{
+  background-color: $secondary;
 }

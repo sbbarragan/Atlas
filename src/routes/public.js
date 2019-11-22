@@ -50,6 +50,7 @@ router.get('*', (req, res) => {
         'container-fluid',
         'd-flex',
         'flex-column',
+        'min-vh-100',
         'justify-content-between'
       )}">${component}</div>
       <script>

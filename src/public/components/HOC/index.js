@@ -1,5 +1,5 @@
 import AuthLayout from './AuthLayout';
-import Layout from './Layout';
+import InternalLayout from './InternalLayout';
 import {
   TranslateContext,
   TranslateProvider,
@@ -10,7 +10,7 @@ import {
 
 export {
   AuthLayout,
-  Layout,
+  InternalLayout,
   TranslateContext,
   TranslateProvider,
   Translate,
