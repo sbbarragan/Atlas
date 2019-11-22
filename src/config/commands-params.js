@@ -21,7 +21,7 @@ const commandsParams = {
   },
   'template.clone': {
     // inspected
-    httpMethod: PUT,
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -1915,7 +1915,7 @@ const commandsParams = {
   },
   'image.clone': {
     // inspected
-    httpMethod: PUT,
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -2567,6 +2567,7 @@ const commandsParams = {
     }
   },
   'vrouter.detachnic': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2580,6 +2581,7 @@ const commandsParams = {
     }
   },
   'vrouter.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2597,6 +2599,7 @@ const commandsParams = {
     }
   },
   'vrouter.chmod': {
+    //inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2642,6 +2645,7 @@ const commandsParams = {
     }
   },
   'vrouter.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2659,6 +2663,7 @@ const commandsParams = {
     }
   },
   'vrouter.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2672,15 +2677,21 @@ const commandsParams = {
     }
   },
   'vrouter.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: -1
+      },
+      decrypt:{
+        from: query,
+        default: false
       }
     }
   },
   'vrouter.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2694,6 +2705,7 @@ const commandsParams = {
     }
   },
   'vrouter.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2703,6 +2715,7 @@ const commandsParams = {
     }
   },
   'vrouterpool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -2720,7 +2733,8 @@ const commandsParams = {
     }
   },
   'user.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       username: {
         from: postBody,
@@ -2741,6 +2755,7 @@ const commandsParams = {
     }
   },
   'user.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2750,6 +2765,7 @@ const commandsParams = {
     }
   },
   'user.passwd': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2763,6 +2779,7 @@ const commandsParams = {
     }
   },
   'user.login': {
+    // inspected
     httpMethod: POST,
     params: {
       user: {
@@ -2784,6 +2801,7 @@ const commandsParams = {
     }
   },
   'user.update': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -2801,6 +2819,7 @@ const commandsParams = {
     }
   },
   'user.chauth': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2818,19 +2837,21 @@ const commandsParams = {
     }
   },
   'user.quota': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      quota: {
+      template: {
         from: postBody,
         default: ''
       }
     }
   },
   'user.chgrp': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2844,6 +2865,7 @@ const commandsParams = {
     }
   },
   'user.addgroup': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -2857,36 +2879,45 @@ const commandsParams = {
     }
   },
   'user.delgroup': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: DELETE,
     params: {
       id: {
         from: resource,
         default: 0
       },
       group: {
-        from: postBody,
+        from: query,
         default: 0
       }
     }
   },
   'user.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: -1
+      },
+      decrypt:{
+        from: query,
+        default: false
       }
     }
   },
   'userpool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'userquota.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'userquota.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       template: {
@@ -2896,6 +2927,7 @@ const commandsParams = {
     }
   },
   'group.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       name: {
@@ -2905,6 +2937,7 @@ const commandsParams = {
     }
   },
   'group.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2914,15 +2947,21 @@ const commandsParams = {
     }
   },
   'group.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
-        from: query,
+        from: resource,
         default: -1
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'group.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2940,6 +2979,7 @@ const commandsParams = {
     }
   },
   'group.addadmin': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -2953,6 +2993,7 @@ const commandsParams = {
     }
   },
   'group.deladmin': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2966,6 +3007,7 @@ const commandsParams = {
     }
   },
   'group.quota': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2979,14 +3021,17 @@ const commandsParams = {
     }
   },
   'grouppool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'groupquota.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'groupquota.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       template: {
@@ -2996,6 +3041,7 @@ const commandsParams = {
     }
   },
   'vdc.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       template: {
@@ -3009,6 +3055,7 @@ const commandsParams = {
     }
   },
   'vdc.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3018,6 +3065,7 @@ const commandsParams = {
     }
   },
   'vdc.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3026,7 +3074,7 @@ const commandsParams = {
       },
       template: {
         from: postBody,
-        default: 0
+        default: ''
       },
       replace: {
         from: postBody,
@@ -3035,6 +3083,7 @@ const commandsParams = {
     }
   },
   'vdc.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3048,19 +3097,26 @@ const commandsParams = {
     }
   },
   'vdc.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: -1
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'vdcpool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'vdc.addgroup': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -3074,6 +3130,7 @@ const commandsParams = {
     }
   },
   'vdc.delgroup': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3087,6 +3144,7 @@ const commandsParams = {
     }
   },
   'vdc.addcluster': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -3104,6 +3162,7 @@ const commandsParams = {
     }
   },
   'vdc.delcluster': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3121,6 +3180,7 @@ const commandsParams = {
     }
   },
   'vdc.addhost': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -3138,6 +3198,7 @@ const commandsParams = {
     }
   },
   'vdc.delhost': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3155,6 +3216,7 @@ const commandsParams = {
     }
   },
   'vdc.adddatastore': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -3172,6 +3234,7 @@ const commandsParams = {
     }
   },
   'vdc.deldatastore': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3189,6 +3252,7 @@ const commandsParams = {
     }
   },
   'vdc.addvnet': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -3199,13 +3263,14 @@ const commandsParams = {
         from: postBody,
         default: 0
       },
-      datastore: {
+      vnet: {
         from: postBody,
         default: 0
       }
     }
   },
   'vdc.delvnet': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3216,13 +3281,14 @@ const commandsParams = {
         from: query,
         default: 0
       },
-      datastore: {
+      vnet: {
         from: query,
         default: 0
       }
     }
   },
   'zone.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       template: {
@@ -3232,6 +3298,7 @@ const commandsParams = {
     }
   },
   'zone.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3241,7 +3308,8 @@ const commandsParams = {
     }
   },
   'zone.update': {
-    httpMethod: POST,
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -3258,7 +3326,8 @@ const commandsParams = {
     }
   },
   'zone.rename': {
-    httpMethod: POST,
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -3271,6 +3340,7 @@ const commandsParams = {
     }
   },
   'zone.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -3284,14 +3354,17 @@ const commandsParams = {
     }
   },
   'zone.raftstatus': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'zonepool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'acl.addrule': {
+    // inspected
     httpMethod: POST,
     params: {
       user: {
@@ -3309,7 +3382,8 @@ const commandsParams = {
     }
   },
   'acl.delrule': {
-    httpMethod: POST,
+    // inspected
+    httpMethod: DELETE,
     params: {
       id: {
         from: resource,
@@ -3318,10 +3392,12 @@ const commandsParams = {
     }
   },
   'acl.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'document.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       template: {
@@ -3335,15 +3411,21 @@ const commandsParams = {
     }
   },
   'document.clone': {
-    httpMethod: GET,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      name:{
+        from: postBody,
+        default: ''
       }
     }
   },
   'document.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3353,6 +3435,7 @@ const commandsParams = {
     }
   },
   'document.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3370,6 +3453,7 @@ const commandsParams = {
     }
   },
   'document.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3415,6 +3499,7 @@ const commandsParams = {
     }
   },
   'document.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3432,6 +3517,7 @@ const commandsParams = {
     }
   },
   'document.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3445,15 +3531,21 @@ const commandsParams = {
     }
   },
   'document.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: postBody,
+        default: false
       }
     }
   },
   'document.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3467,6 +3559,7 @@ const commandsParams = {
     }
   },
   'document.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3476,6 +3569,7 @@ const commandsParams = {
     }
   },
   'documentpool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -3501,15 +3595,18 @@ const commandsParams = {
     }
   },
   'system.version': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'system.config': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'vntemplate.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -3518,7 +3615,8 @@ const commandsParams = {
     }
   },
   'vntemplate.clone': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -3531,6 +3629,7 @@ const commandsParams = {
     }
   },
   'vntemplate.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3540,6 +3639,7 @@ const commandsParams = {
     }
   },
   'vntemplate.instantiate': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3548,7 +3648,7 @@ const commandsParams = {
       },
       name: {
         from: postBody,
-        default: 0
+        default: ''
       },
       template: {
         from: postBody,
@@ -3557,6 +3657,7 @@ const commandsParams = {
     }
   },
   'vntemplate.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3574,6 +3675,7 @@ const commandsParams = {
     }
   },
   'vntemplate.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3619,6 +3721,7 @@ const commandsParams = {
     }
   },
   'vntemplate.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3636,6 +3739,7 @@ const commandsParams = {
     }
   },
   'vntemplate.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3649,15 +3753,21 @@ const commandsParams = {
     }
   },
   'vntemplate.info': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt:{
+        from: query,
+        default: false
       }
     }
   },
   'vntemplate.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3671,6 +3781,7 @@ const commandsParams = {
     }
   },
   'vntemplate.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3680,6 +3791,7 @@ const commandsParams = {
     }
   },
   'vntemplatepool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -3697,6 +3809,7 @@ const commandsParams = {
     }
   },
   'hook.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       template: {
@@ -3706,6 +3819,7 @@ const commandsParams = {
     }
   },
   'hook.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -3715,6 +3829,7 @@ const commandsParams = {
     }
   },
   'hook.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3732,6 +3847,7 @@ const commandsParams = {
     }
   },
   'hook.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3745,15 +3861,21 @@ const commandsParams = {
     }
   },
   'hook.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt:{
+        from: postBody,
+        default: false
       }
     }
   },
   'hook.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3767,6 +3889,7 @@ const commandsParams = {
     }
   },
   'hook.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -3776,7 +3899,8 @@ const commandsParams = {
     }
   },
   'hook.retry': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       id: {
         from: resource,
@@ -3789,6 +3913,7 @@ const commandsParams = {
     }
   },
   'hookpool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -3806,6 +3931,7 @@ const commandsParams = {
     }
   },
   'hooklog.info': {
+    // inspected
     httpMethod: GET,
     params: {
       minimun: {
