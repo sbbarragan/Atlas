@@ -103,39 +103,39 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       },
@@ -153,11 +153,11 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userId: {
+      user_id: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group_id: {
         from: postBody,
         default: -1
       }
@@ -501,39 +501,39 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
@@ -940,7 +940,7 @@ const commandsParams = {
         default: 0
       },
       decrypt: {
-        from: postBody,
+        from: query,
         default: false
       }
     }
@@ -1032,6 +1032,7 @@ const commandsParams = {
     }
   },
   'cluster.adddatastore': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1045,6 +1046,7 @@ const commandsParams = {
     }
   },
   'cluster.deldatastore': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1058,6 +1060,7 @@ const commandsParams = {
     }
   },
   'cluster.addvnet': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1071,6 +1074,7 @@ const commandsParams = {
     }
   },
   'cluster.delvnet': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1084,6 +1088,7 @@ const commandsParams = {
     }
   },
   'cluster.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1097,20 +1102,27 @@ const commandsParams = {
     }
   },
   'cluster.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'clusterpool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'vn.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -1123,6 +1135,7 @@ const commandsParams = {
     }
   },
   'vn.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1132,6 +1145,7 @@ const commandsParams = {
     }
   },
   'vn.add_ar': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1145,6 +1159,7 @@ const commandsParams = {
     }
   },
   'vn.rm_ar': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1158,6 +1173,7 @@ const commandsParams = {
     }
   },
   'vn.update_ar': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1171,6 +1187,7 @@ const commandsParams = {
     }
   },
   'vn.reserve': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1184,6 +1201,7 @@ const commandsParams = {
     }
   },
   'vn.free_ar': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1197,6 +1215,7 @@ const commandsParams = {
     }
   },
   'vn.hold': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1210,6 +1229,7 @@ const commandsParams = {
     }
   },
   'vn.release': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1223,7 +1243,8 @@ const commandsParams = {
     }
   },
   'vn.update': {
-    httpMethod: GET,
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -1240,51 +1261,53 @@ const commandsParams = {
     }
   },
   'vn.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'vn.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1293,15 +1316,16 @@ const commandsParams = {
       },
       user: {
         from: postBody,
-        default: 0
+        default: -1
       },
       group: {
         from: postBody,
-        default: 0
+        default: -1
       }
     }
   },
   'vn.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1315,15 +1339,21 @@ const commandsParams = {
     }
   },
   'vn.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'vn.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1337,6 +1367,7 @@ const commandsParams = {
     }
   },
   'vn.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1346,6 +1377,7 @@ const commandsParams = {
     }
   },
   'vnpool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -1363,12 +1395,9 @@ const commandsParams = {
     }
   },
   'secgroup.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
-      id: {
-        from: resource,
-        default: 0
-      },
       template: {
         from: postBody,
         default: ''
@@ -1376,6 +1405,7 @@ const commandsParams = {
     }
   },
   'secgroup.clone': {
+    // inspected
     httpMethod: POST,
     params: {
       id: {
@@ -1385,14 +1415,11 @@ const commandsParams = {
       name: {
         from: postBody,
         default: ''
-      },
-      datastore: {
-        from: postBody,
-        default: -1
       }
     }
   },
   'secgroup.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1402,6 +1429,7 @@ const commandsParams = {
     }
   },
   'secgroup.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1419,6 +1447,7 @@ const commandsParams = {
     }
   },
   'secgroup.commit': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1432,51 +1461,53 @@ const commandsParams = {
     }
   },
   'secgroup.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'secgroup.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1494,6 +1525,7 @@ const commandsParams = {
     }
   },
   'secgroup.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1507,15 +1539,21 @@ const commandsParams = {
     }
   },
   'secgroup.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'secgrouppool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -1533,7 +1571,8 @@ const commandsParams = {
     }
   },
   'vmgroup.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -1542,6 +1581,7 @@ const commandsParams = {
     }
   },
   'vmgroup.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1551,6 +1591,7 @@ const commandsParams = {
     }
   },
   'vmgroup.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1568,51 +1609,53 @@ const commandsParams = {
     }
   },
   'vmgroup.chmod': {
-    httpMethod: GET,
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'vmgroup.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1630,6 +1673,7 @@ const commandsParams = {
     }
   },
   'vmgroup.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1643,15 +1687,21 @@ const commandsParams = {
     }
   },
   'vmgroup.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: postBody,
+        default: false
       }
     }
   },
   'vmgroup.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1665,6 +1715,7 @@ const commandsParams = {
     }
   },
   'vmgroup.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1674,11 +1725,12 @@ const commandsParams = {
     }
   },
   'vmgrouppool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
         from: query,
-        default: -3
+        default: -1
       },
       start: {
         from: query,
@@ -1691,7 +1743,8 @@ const commandsParams = {
     }
   },
   'datastore.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -1704,6 +1757,7 @@ const commandsParams = {
     }
   },
   'datastore.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1713,6 +1767,7 @@ const commandsParams = {
     }
   },
   'datastore.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1730,51 +1785,53 @@ const commandsParams = {
     }
   },
   'datastore.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'datastore.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1792,6 +1849,7 @@ const commandsParams = {
     }
   },
   'datastore.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1805,6 +1863,7 @@ const commandsParams = {
     }
   },
   'datastore.enable': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1818,20 +1877,27 @@ const commandsParams = {
     }
   },
   'datastore.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt:{
+        from: query,
+        default: false
       }
     }
   },
   'datastorepool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'image.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -1840,10 +1906,15 @@ const commandsParams = {
       datastore: {
         from: postBody,
         default: 0
+      },
+      capacity:{
+        from: postBody,
+        default: false
       }
     }
   },
   'image.clone': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1861,6 +1932,7 @@ const commandsParams = {
     }
   },
   'image.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -1870,6 +1942,7 @@ const commandsParams = {
     }
   },
   'image.enable': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1883,6 +1956,7 @@ const commandsParams = {
     }
   },
   'image.persistent': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1896,6 +1970,7 @@ const commandsParams = {
     }
   },
   'image.chtype': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1909,6 +1984,7 @@ const commandsParams = {
     }
   },
   'image.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1926,51 +2002,53 @@ const commandsParams = {
     }
   },
   'image.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'image.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -1988,7 +2066,8 @@ const commandsParams = {
     }
   },
   'image.rename': {
-    httpMethod: GET,
+    // inspected
+    httpMethod: PUT,
     params: {
       id: {
         from: resource,
@@ -2001,6 +2080,7 @@ const commandsParams = {
     }
   },
   'image.snapshotdelete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2014,6 +2094,7 @@ const commandsParams = {
     }
   },
   'image.snapshotrevert': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2027,6 +2108,7 @@ const commandsParams = {
     }
   },
   'image.snapshotflatten': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2040,15 +2122,21 @@ const commandsParams = {
     }
   },
   'image.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      decrypt: {
+        from: query,
+        default: false
       }
     }
   },
   'image.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2062,6 +2150,7 @@ const commandsParams = {
     }
   },
   'image.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2071,11 +2160,12 @@ const commandsParams = {
     }
   },
   'imagepool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
         from: query,
-        default: -3
+        default: -1
       },
       start: {
         from: query,
@@ -2088,6 +2178,7 @@ const commandsParams = {
     }
   },
   'market.allocate': {
+    // inspected
     httpMethod: POST,
     params: {
       template: {
@@ -2097,6 +2188,7 @@ const commandsParams = {
     }
   },
   'market.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2106,6 +2198,7 @@ const commandsParams = {
     }
   },
   'market.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2118,73 +2211,76 @@ const commandsParams = {
       },
       update: {
         from: postBody,
-        default: 1
+        default: 0
       }
     }
   },
   'market.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'market.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userId: {
+      user_id: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group_id: {
         from: postBody,
         default: -1
       }
     }
   },
   'market.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2198,32 +2294,40 @@ const commandsParams = {
     }
   },
   'market.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
         from: resource,
         default: -1
+      },
+      decrypt:{
+        from: query,
+        default: false
       }
     }
   },
   'marketpool.info': {
+    // inspected
     httpMethod: GET,
     params: {}
   },
   'marketapp.allocate': {
+    // inspected
     httpMethod: PUT,
     params: {
-      id: {
-        from: resource,
-        default: 0
-      },
       template: {
         from: postBody,
         default: ''
+      },
+      id: {
+        from: resource,
+        default: 0
       }
     }
   },
   'marketapp.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
@@ -2233,6 +2337,7 @@ const commandsParams = {
     }
   },
   'marketapp.enable': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2246,6 +2351,7 @@ const commandsParams = {
     }
   },
   'marketapp.update': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2263,68 +2369,71 @@ const commandsParams = {
     }
   },
   'marketapp.chmod': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
     }
   },
   'marketapp.chown': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      userId: {
+      user_id: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group_id: {
         from: postBody,
         default: -1
       }
     }
   },
   'marketapp.rename': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2338,6 +2447,7 @@ const commandsParams = {
     }
   },
   'marketapp.info': {
+    // inspected
     httpMethod: GET,
     params: {
       id: {
@@ -2347,6 +2457,7 @@ const commandsParams = {
     }
   },
   'marketapp.lock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2360,6 +2471,7 @@ const commandsParams = {
     }
   },
   'marketapp.unlock': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2369,6 +2481,7 @@ const commandsParams = {
     }
   },
   'marketapppool.info': {
+    // inspected
     httpMethod: GET,
     params: {
       filter: {
@@ -2386,7 +2499,8 @@ const commandsParams = {
     }
   },
   'vrouter.allocate': {
-    httpMethod: PUT,
+    // inspected
+    httpMethod: POST,
     params: {
       template: {
         from: postBody,
@@ -2395,15 +2509,21 @@ const commandsParams = {
     }
   },
   'vrouter.delete': {
+    // inspected
     httpMethod: DELETE,
     params: {
       id: {
         from: resource,
         default: 0
+      },
+      images:{
+        from: query,
+        default: false
       }
     }
   },
   'vrouter.instantiate': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2414,7 +2534,7 @@ const commandsParams = {
         from: postBody,
         default: 1
       },
-      templateId: {
+      template_id: {
         from: postBody,
         default: 0
       },
@@ -2433,13 +2553,14 @@ const commandsParams = {
     }
   },
   'vrouter.attachnic': {
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
         from: resource,
         default: 0
       },
-      attribute: {
+      template: {
         from: postBody,
         default: ''
       }
@@ -2482,39 +2603,39 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
@@ -2527,11 +2648,11 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userId: {
+      user_id: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group_id: {
         from: postBody,
         default: -1
       }
@@ -3156,7 +3277,10 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      decrypt: false
+      decrypt: {
+        from: query,
+        default: false
+      }
     }
   },
   'zone.raftstatus': {
@@ -3252,39 +3376,39 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
@@ -3456,39 +3580,39 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userUse: {
+      user_use: {
         from: postBody,
         default: -1
       },
-      userManage: {
+      user_manage: {
         from: postBody,
         default: -1
       },
-      userAdmin: {
+      user_admin: {
         from: postBody,
         default: -1
       },
-      groupUse: {
+      group_use: {
         from: postBody,
         default: -1
       },
-      groupManage: {
+      group_manage: {
         from: postBody,
         default: -1
       },
-      groupAdmin: {
+      group_admin: {
         from: postBody,
         default: -1
       },
-      otherUse: {
+      other_use: {
         from: postBody,
         default: -1
       },
-      otherManage: {
+      other_manage: {
         from: postBody,
         default: -1
       },
-      otherAdmin: {
+      other_admin: {
         from: postBody,
         default: -1
       }
@@ -3501,11 +3625,11 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      userId: {
+      user_id: {
         from: postBody,
         default: -1
       },
-      groupId: {
+      group_id: {
         from: postBody,
         default: -1
       }
