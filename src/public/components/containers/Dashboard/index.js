@@ -7,7 +7,7 @@ const { dashboard } = constants;
 class Dashboard extends Component {
   render() {
     return (
-      <Row>
+      <Row className={classnames('no-gutters')}>
         <Col className={classnames('dashboard')}>{dashboard}</Col>
       </Row>
     );

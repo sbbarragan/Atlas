@@ -6,7 +6,7 @@ const initial = {
   templates: [],
   services: [],
   datastores: [],
-  virtualRoutes: [],
+  virtualRouters: [],
   vmGroups: [],
   images: [],
   files: [],
@@ -26,8 +26,8 @@ const initial = {
 const Opennebula = (state = initial, action) => {
   switch (action.type) {
     case 'SETUSER': {
-      const { user: userState } = state; // extract position and rename
-      const newUserState = { ...userState, ...action.payload }; // merge all data user with new
+      const { user } = state; // extract position and rename
+      const newUserState = { ...user, ...action.payload }; // merge all data user with new
       return {
         ...state,
         user: newUserState

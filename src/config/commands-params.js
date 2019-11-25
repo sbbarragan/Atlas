@@ -1884,7 +1884,7 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      decrypt:{
+      decrypt: {
         from: query,
         default: false
       }
@@ -1907,7 +1907,7 @@ const commandsParams = {
         from: postBody,
         default: 0
       },
-      capacity:{
+      capacity: {
         from: postBody,
         default: false
       }
@@ -2301,7 +2301,7 @@ const commandsParams = {
         from: resource,
         default: -1
       },
-      decrypt:{
+      decrypt: {
         from: query,
         default: false
       }
@@ -2516,7 +2516,7 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      images:{
+      images: {
         from: query,
         default: false
       }
@@ -2599,7 +2599,7 @@ const commandsParams = {
     }
   },
   'vrouter.chmod': {
-    //inspected
+    // inspected
     httpMethod: PUT,
     params: {
       id: {
@@ -2684,7 +2684,7 @@ const commandsParams = {
         from: resource,
         default: -1
       },
-      decrypt:{
+      decrypt: {
         from: query,
         default: false
       }
@@ -2900,7 +2900,7 @@ const commandsParams = {
         from: resource,
         default: -1
       },
-      decrypt:{
+      decrypt: {
         from: query,
         default: false
       }
@@ -3418,7 +3418,7 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      name:{
+      name: {
         from: postBody,
         default: ''
       }
@@ -3760,7 +3760,7 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      decrypt:{
+      decrypt: {
         from: query,
         default: false
       }
@@ -3868,7 +3868,7 @@ const commandsParams = {
         from: resource,
         default: 0
       },
-      decrypt:{
+      decrypt: {
         from: postBody,
         default: false
       }

@@ -1,15 +1,29 @@
 const initial = {
-  menu: true
+  displayMenu: true,
+  zone: 0
 };
 
 const General = (state = initial, action) => {
   switch (action.type) {
-    case 'SET_MENU': {
-      const { menu } = state; // extract position and rename
-      const newGeneralState = { ...menu, ...action.payload }; // merge all data user with new
+    case 'CHANGE_LANGUAGE': {
+      const { language } = action.payload;
       return {
         ...state,
-        user: newGeneralState
+        language
+      };
+    }
+    case 'CHANGE_ZONE': {
+      const { zone } = action.payload;
+      return {
+        ...state,
+        zone
+      };
+    }
+    case 'DISPLAY_MENU': {
+      const { displayMenu } = action.payload;
+      return {
+        ...state,
+        displayMenu
       };
     }
     default:

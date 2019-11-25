@@ -1,6 +1,7 @@
-$primary: #353735;
+$primary: #C7C9C8;
 $secondary: #FFF;
 $tertiary: #FAFAFA;
+$quaternary: #353735;
 
 $font_primary: #353735;
 $font_secondary: red;
@@ -13,5 +14,5 @@ $font_secondary: red;
 
 html, body{
   background-color: $secondary;
-  color: $primary
+  color: $font_primary
 }

@@ -6,3 +6,12 @@ export function setUser(name) {
     }
   };
 }
+
+export function showMenu(displayMenu) {
+  return {
+    type: 'DISPLAY_MENU',
+    payload: {
+      displayMenu
+    }
+  };
+}

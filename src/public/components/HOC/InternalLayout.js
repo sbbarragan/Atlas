@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col } from 'reactstrap';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import Header from '../containers/Header';
 import Footer from '../containers/Footer';
 import PrincipalMenu from '../containers/PrincipalMenu';
@@ -15,19 +17,25 @@ class InternalLayout extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, display } = this.props;
     return (
       <Fragment>
-        <Row>
-          <Col>
-            <Header />
-          </Col>
-        </Row>
+        <Header />
         <Row className={classnames('flex-grow-1')}>
-          <Col className={classnames('menu')}>
-            <PrincipalMenu />
+          <Col
+            className={classnames(
+              'menu',
+              { open: display },
+              { close: !display }
+            )}
+          >
+            <PerfectScrollbar>
+              <PrincipalMenu />
+            </PerfectScrollbar>
           </Col>
-          <Col className={classnames('content')}>{children}</Col>
+          <Col className={classnames('content')}>
+            <PerfectScrollbar>{children}</PerfectScrollbar>
+          </Col>
         </Row>
         <Row>
           <Col>
@@ -44,11 +52,25 @@ InternalLayout.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
     PropTypes.string
-  ])
+  ]),
+  display: PropTypes.bool
 };
 
 InternalLayout.defaultProps = {
-  children: []
+  children: [],
+  display: false
 };
 
-export default InternalLayout;
+const mapStateToProps = state => {
+  const { General } = state;
+  return {
+    display: General.displayMenu
+  };
+};
+
+const mapDispatchToProps = () => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InternalLayout);
