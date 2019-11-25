@@ -3,3 +3,4 @@ dist
 test
 .vscode/launch.json
 yarn-error.log
+.DS_Store
