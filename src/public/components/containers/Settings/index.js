@@ -4,14 +4,14 @@ import classnames from 'classnames';
 import { Translate } from '../../HOC';
 import constants from '../../../constants';
 
-const { dashboard } = constants;
-class Dashboard extends Component {
+const { settings } = constants;
+class Settings extends Component {
   render() {
     return (
       <Row className={classnames('no-gutters')}>
-        <Col className={classnames('dashboard')}>
+        <Col className={classnames('settings')}>
           <h2>
-            <Translate word={dashboard} />
+            <Translate word={settings} />
           </h2>
         </Col>
       </Row>
@@ -19,4 +19,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default Settings;

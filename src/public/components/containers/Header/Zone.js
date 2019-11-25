@@ -3,11 +3,10 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  Button
+  DropdownItem
 } from 'reactstrap';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
 const Zone = props => {
@@ -15,12 +14,12 @@ const Zone = props => {
   const toggle = () => setDisplay(!display);
   return (
     <Dropdown isOpen={display} toggle={toggle} size="sm">
-      <DropdownToggle color="outline-primary">pepe</DropdownToggle>
+      <DropdownToggle color="outline-primary">
+        <i className={classnames('fas', 'fa-globe', 'mr-1')} />
+        pepe
+      </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem divider />
-        <DropdownItem>
-          <Button>pepe!</Button>
-        </DropdownItem>
+        <DropdownItem>pepe!</DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

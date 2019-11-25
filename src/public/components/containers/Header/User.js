@@ -4,14 +4,17 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Button
+  Label
 } from 'reactstrap';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Translate } from '../../HOC';
 import constants from '../../../constants'; // aca se puede obtener el logo en base64
 
+const { Language } = constants;
 const User = props => {
+  const { SignOut } = constants;
   const [display, setDisplay] = useState(false);
   const toggle = () => setDisplay(!display);
   return (
@@ -21,13 +24,26 @@ const User = props => {
       toggle={toggle}
       size="sm"
     >
-      <DropdownToggle color="outline-primary">pepe</DropdownToggle>
+      <DropdownToggle color="outline-primary">
+        <i className={classnames('fas', 'fa-user', 'mr-1')} />
+        pepe
+      </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem divider />
-        <DropdownItem>
-          <Button color="danger" className={classnames('w-100')}>
-            pepe!
-          </Button>
+        <div className={classnames('drodown-item', 'col-12')}>
+          <Label for="changeLang">
+            <small>
+              <b>
+                <Translate word={Language} />
+              </b>
+            </small>
+          </Label>
+          <Translate />
+        </div>
+        <DropdownItem divider />
+        <DropdownItem className={classnames('text-center')}>
+          <i className={classnames('fas', 'fa-power-off', 'mr-1')} />
+          <Translate word={SignOut} />
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

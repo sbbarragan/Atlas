@@ -67,7 +67,9 @@ export const Translate = ({ word, values }) => {
       const languages = Object.keys(translations);
       return (
         <Input
+          bsSize="sm"
           type="select"
+          id="changeLang"
           onChange={e => handleChange(e, current.changeLang)}
         >
           {languages.map(language => (

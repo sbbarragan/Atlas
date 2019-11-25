@@ -15,7 +15,15 @@ import constants from '../../../constants';
 import { requestData, removeStoreData, storage } from '../../../utils';
 import { Translate, Tr } from '../../HOC';
 
-const { checkbox, classInputInvalid } = constants;
+const {
+  checkbox,
+  classInputInvalid,
+  SignIn,
+  Username,
+  Password,
+  keepLoggedIn,
+  Token2FA
+} = constants;
 
 class Login extends Component {
   constructor(props) {
@@ -107,7 +115,7 @@ class Login extends Component {
             className={classnames(classnameError)}
             type="password"
             autoComplete="off"
-            placeholder={Tr('2FA Token')}
+            placeholder={Tr(Token2FA)}
             value={token}
             onChange={e => {
               this.handleChange('token', e);
@@ -123,7 +131,7 @@ class Login extends Component {
               className={classnames(classnameError)}
               type="text"
               autoComplete="off"
-              placeholder={Tr('Username')}
+              placeholder={Tr(Username)}
               value={user}
               onChange={e => {
                 this.handleChange('user', e);
@@ -137,7 +145,7 @@ class Login extends Component {
               className={classnames(classnameError)}
               type="password"
               autoComplete="off"
-              placeholder={Tr('Password')}
+              placeholder={Tr(Password)}
               value={pass}
               onChange={e => {
                 this.handleChange('pass', e);
@@ -167,7 +175,7 @@ class Login extends Component {
                       this.handleChange('keepLogged', e);
                     }}
                   />
-                  <Translate word="Keep me logged in" />
+                  <Translate word={keepLoggedIn} />
                 </Label>
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
@@ -176,7 +184,7 @@ class Login extends Component {
                   className="login-form-button"
                   onClick={this.handleSubmit}
                 >
-                  <Translate word="Login" />
+                  <Translate word={SignIn} />
                 </Button>
               </Col>
             </FormGroup>

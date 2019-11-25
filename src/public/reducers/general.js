@@ -1,15 +1,16 @@
 const initial = {
   displayMenu: true,
-  zone: 0
+  zone: 0,
+  loading: true
 };
 
 const General = (state = initial, action) => {
   switch (action.type) {
-    case 'CHANGE_LANGUAGE': {
-      const { language } = action.payload;
+    case 'DISPLAY _LOADING': {
+      const { loading } = action.payload;
       return {
         ...state,
-        language
+        loading
       };
     }
     case 'CHANGE_ZONE': {
