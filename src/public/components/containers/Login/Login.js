@@ -65,6 +65,7 @@ class Login extends Component {
 
   handleSubmit(element = false) {
     const { jwtName, endpoints, reactEndpoints } = constants;
+    console.log(reactEndpoints, constants);
     const { user, pass, token, writeToken, keepLogged } = this.state;
     const { history } = this.props;
     const loginParams = {
@@ -89,7 +90,8 @@ class Login extends Component {
             } else if (id === 200 && opennebulaToken) {
               newState = { showError: false, writeToken: false };
               storage(jwtName, opennebulaToken, keepLogged);
-              history.push(reactEndpoints.home);
+              console.log(reactEndpoints.dashboard);
+              history.push(reactEndpoints.dashboard);
               return;
             }
             this.setState(newState);

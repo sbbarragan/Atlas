@@ -8,8 +8,8 @@ const initial = {
 const Zendesk = (state = initial, action) => {
   switch (action.type) {
     case 'SETTICKET': {
-      const { tickets } = state; // extract position and rename
-      const newUserState = { ...tickets, ...action.payload }; // merge all data user with new
+      const { tickets } = state;
+      const newUserState = { ...tickets, ...action.payload };
       return {
         ...state,
         tickets

@@ -1,4 +1,4 @@
-const constants = {
+module.exports = {
   checkbox: 'checkbox',
   classInputInvalid: 'is-invalid',
   NoFound: 'No found',
@@ -26,5 +26,3 @@ const constants = {
     settings: '/settings'
   }
 };
-
-export default constants;
