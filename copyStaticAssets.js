@@ -5,7 +5,7 @@ const pathNodeModules = 'node_modules/';
 
 const pathBootstrap = `${pathNodeModules}bootstrap/dist/css/`;
 const pathScrollbars = `${pathNodeModules}react-perfect-scrollbar/dist/css/`;
-const pathInternal = 'src/public/resources/';
+const pathInternal = 'src/public/assets/';
 const pathExternal = 'dist/public/';
 
 const config = {
