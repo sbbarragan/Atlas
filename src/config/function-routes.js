@@ -19,7 +19,7 @@ const {
   unauthorized,
   internalServerError
 } = require('../config/http-codes');
-const { from: fromData } = require('../config/commands-params');
+const { from: fromData } = require('../config/defaults');
 const { createToken } = require('../utils/jwt-functions');
 const {
   responseOpennebula,

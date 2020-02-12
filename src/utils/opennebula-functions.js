@@ -5,8 +5,9 @@ const xml2js = require('xml2js');
 const { Map } = require('immutable');
 const { sprintf } = require('sprintf-js');
 const httpCodes = require('../config/http-codes');
-const { commandsParams, from } = require('../config/commands-params');
+const commandsParams = require('../config/commands-params');
 const {
+  from,
   defaultNamespace,
   defaultMessageProblemOpennebula
 } = require('../config/defaults');
@@ -243,24 +244,15 @@ const paramsDefaultByCommandOpennebula = (command = '', httpCode = '') => {
 const generateNewTemplate = (
   current = {},
   addPositions = {},
-  removePositions = [],
+  removedPositions = [],
   wrapper = 'SUNSTONE=[%1$s]'
 ) => {
-  const allPositions = { ...current, ...addPositions };
-  const positions = Object.keys(allPositions);
-  let rtn = '';
-  positions.map(position => {
-    if (position && allPositions[position]) {
-      if (removePositions.includes(position)) {
-        delete allPositions[position];
-      }
-    }
-  });
-  const newPositions = Object.keys(allPositions);
-  newPositions.map(position => {
-    rtn += `${rtn ? ', ' : ''}${position}=${allPositions[position]}`;
-  });
-  return sprintf(wrapper, rtn);
+  const positions = Object.entries({ ...current, ...addPositions })
+    .filter(position => position && !removedPositions.includes(position))
+    .map(([position, value]) => `${position}=${value}`)
+    .join(', ');
+
+  return sprintf(wrapper, positions);
 };
 
 module.exports = {
