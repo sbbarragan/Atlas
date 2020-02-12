@@ -18,7 +18,7 @@ base for a new sunstone (Opennebula).
   it is a http request, return opennebula resource info or login this return a `JWT`.
 
   - Login: POST: `http://localhost:3000/api/auth` with params: `user` and `pass`.
-  - Other: check file `src/config/command-params.js`
+  - Other: check file `src/config/commands-params.js`
 
 - **zeroMQ**
   it is a websocket connection call to: `ws://127.0.0.1:3000/?token=JWT`
@@ -31,6 +31,8 @@ for this error run `sudo sysctl fs.inotify.max_user_watches=582222 && sudo sysct
 - Starting inspector on 127.0.0.1:9229 failed: address already in use
 for this error run  `killall -9 node` and start app again
 
+- Error 243: "npm run build" - `sudo npm -g npm` Check node was installed in /usr/bin or /usr/local/bin
+
 ## Project description
 
 - `disk`: this folder content the transpiled code.
@@ -38,7 +40,7 @@ for this error run  `killall -9 node` and start app again
 - `node_modules`: dependencies for backend (NODE).
 - `src`: non-transpiled code.
 - `src/config`: configuration files (please do not modify if you do not know how it works).
-- `src/config/command-params.js`: it contains the different commands with the possible opennebula parameters.
+- `src/config/commands-params.js`: it contains the different commands with the possible opennebula parameters.
 - `src/config/defaults.js`: it contains default string parameters.
 - `src/config/function-routes.js`: it contains routes that are not opennebula commands.
 - `src/config/http-codes.js`: it contains all http codes for routes.
