@@ -6,6 +6,11 @@ module.exports = {
     PUT: 'PUT',
     DELETE: 'DELETE'
   },
+  from: {
+    resource: 'RESOURCE',
+    query: 'QUERY',
+    postBody: 'POST_BODY'
+  },
   defaultOpennebulaZones: [
     {
       ID: 0,

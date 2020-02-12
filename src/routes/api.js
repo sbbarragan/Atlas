@@ -26,7 +26,7 @@ const {
 } = require('../config/defaults');
 
 const httpCodes = require('../config/http-codes');
-const { from: fromData } = require('../config/commands-params');
+const { from: fromData } = require('../config/defaults');
 
 const router = express.Router();
 
@@ -54,15 +54,11 @@ const clearStates = () => {
   passOpennebula = '';
 };
 
-const paramsToRoutes = () => {
-  let rtn = '/:resource?';
-  const keys = Object.keys(params);
-
-  keys.map(param => {
-    rtn += `/:${params[param]}?`;
-  });
-  return rtn;
-};
+const paramsToRoutes = () =>
+  Object.keys(params).reduce(
+    (resources, param) => String(resources).concat(`/:${params[param]}?`),
+    '/:resource?'
+  );
 
 const validateResource = (req, res, next) => {
   const { badRequest, unauthorized, serviceUnavailable } = httpCodes;
@@ -150,11 +146,9 @@ const getDataZone = () => {
     const { federation } = paramsState;
     rtn = opennebulaZones[0];
     if (federation !== null) {
-      rtn = opennebulaZones.find(zone => {
-        if (zone && zone.ID !== undefined) {
-          return String(zone.ID) === federation;
-        }
-      });
+      rtn = opennebulaZones.find(
+        zone => zone && zone.ID !== undefined && String(zone.ID) === federation
+      );
     }
   }
   return rtn;
@@ -227,11 +221,8 @@ router.all(
             passOpennebula,
             RPC
           );
-          connect(
-            command,
-            getOpennebulaMethod(dataSources),
-            (err, value) =>
-              responseOpennebula(updaterResponse, err, value, response, next)
+          connect(command, getOpennebulaMethod(dataSources), (err, value) =>
+            responseOpennebula(updaterResponse, err, value, response, next)
           );
         } else {
           next();
