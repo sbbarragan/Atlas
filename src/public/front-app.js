@@ -10,9 +10,11 @@ const preloadedState = root.__PRELOADED_STATE__;
 delete root.__PRELOADED_STATE__;
 
 const store = createStore(
-  rootReducer,
+  rootReducer(),
   preloadedState,
   root.__REDUX_DEVTOOLS_EXTENSION__ && root.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+document.getElementById('preloadState').remove();
 
 hydrate(<App store={store} />, document.getElementById('root'));

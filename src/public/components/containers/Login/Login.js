@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import {
   Row,
   Col,
+  Form,
   FormGroup,
   Label,
   Input,
@@ -10,6 +11,7 @@ import {
   Button
 } from 'reactstrap';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import constants from '../../../constants';
 import { requestData, removeStoreData, storage } from '../../../utils';
@@ -65,13 +67,13 @@ class Login extends Component {
 
   handleSubmit(element = false) {
     const { jwtName, endpoints, reactEndpoints } = constants;
-    console.log(reactEndpoints, constants);
     const { user, pass, token, writeToken, keepLogged } = this.state;
-    const { history } = this.props;
+    const { history, baseURL } = this.props;
     const loginParams = {
       data: { user, pass },
       method: 'POST',
-      authenticate: false
+      authenticate: false,
+      baseURL
     };
     if (writeToken && token) {
       loginParams.data.token = token;
@@ -165,7 +167,7 @@ class Login extends Component {
           md={{ size: 4, offset: 4 }}
           className={classnames('align-items-center', 'd-flex')}
         >
-          <div onSubmit={this.handleSubmit} className={classnames('col')}>
+          <Form onSubmit={this.handleSubmit} className={classnames('col')}>
             {inputs}
             <FormGroup row>
               <Col sm="12" md="6" className={classnames('text-center')}>
@@ -181,16 +183,12 @@ class Login extends Component {
                 </Label>
               </Col>
               <Col sm="12" md="6" className={classnames('text-center')}>
-                <Button
-                  type="primary"
-                  className="login-form-button"
-                  onClick={this.handleSubmit}
-                >
+                <Button type="primary" className="login-form-button">
                   <Translate word={SignIn} />
                 </Button>
               </Col>
             </FormGroup>
-          </div>
+          </Form>
         </Col>
       </Row>
     );
@@ -198,6 +196,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  baseURL: PropTypes.string,
   history: PropTypes.shape({
     push: PropTypes.func
   }),
@@ -210,6 +209,7 @@ Login.propTypes = {
 };
 
 Login.defaultProps = {
+  baseURL: '',
   history: {
     push: () => undefined
   },
@@ -221,4 +221,17 @@ Login.defaultProps = {
   }
 };
 
-export default Login;
+const mapStateToProps = state => {
+  const { System } = state;
+  console.log('JORGE', System);
+  return {
+    baseURL: System.baseURL
+  };
+};
+
+const mapDispatchToProps = () => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

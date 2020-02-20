@@ -56,7 +56,7 @@ export const requestData = (
   const config = {
     url,
     method: params.method,
-    baseURL: params.baseURL || root.baseURL,
+    baseURL: params.baseURL,
     headers: {},
     validateStatus: status => status >= 200 && status <= 401
   };

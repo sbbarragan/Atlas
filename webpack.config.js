@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const { getConfig } = require('./src/utils/yml-connect');
@@ -62,4 +61,19 @@ const clientConfig = {
   devtool
 };
 
-module.exports = [serverConfig, clientConfig];
+module.exports = env => {
+  let build = [];
+  if (env) {
+    switch (env) {
+      case 'front':
+        build.push(clientConfig);
+        break;
+      case 'node':
+        build.push(serverConfig);
+        break;
+    }
+  } else {
+    build = [serverConfig, clientConfig];
+  }
+  return build;
+};

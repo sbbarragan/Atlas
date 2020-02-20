@@ -4,7 +4,7 @@ import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
-import fs from 'fs';
+import fs from 'fs-extra';
 import { createServer as unsecureServer } from 'http';
 import { createServer as secureServer } from 'https';
 import bodyParser from 'body-parser';

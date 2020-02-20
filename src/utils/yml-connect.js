@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const YAML = require('yaml');
 const { defaultConfigFile } = require('../config/defaults');
 

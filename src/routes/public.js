@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import classnames from 'classnames';
 import rootReducer from '../public/reducers';
 import App from '../public/app';
-import frontVars from '../config/front-vars';
+import { getConfig } from '../utils/yml-connect';
 
 import {
   includeMAPSJSbyHTML,
@@ -25,7 +25,7 @@ router.get('*', (req, res) => {
     (root && root.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
   const store = createStore(
-    rootReducer,
+    rootReducer(getConfig),
     composeEnhancer(applyMiddleware(thunk))
   );
 
@@ -41,9 +41,6 @@ router.get('*', (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       ${includeCSSbyHTML(pathPublic)}
-      <script type="text/javascript">
-        var opennebulaConfig = ${JSON.stringify(frontVars)}
-      </script>
     </head>
     <body>
       <div id="root" class="${classnames(
@@ -53,7 +50,7 @@ router.get('*', (req, res) => {
         'min-vh-100',
         'justify-content-between'
       )}">${component}</div>
-      <script>
+      <script id="preloadState">
         window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(
           /</g,
           '\\u003c'

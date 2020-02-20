@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack --mode=production && concurrently \"npm run copy_static_assets\" \"npm run build:css\"",
+    "build-node":"webpack  --mode=production --env=node",
+    "build-front": "webpack  --mode=production --env=front && concurrently \"npm run copy_static_assets\" \"npm run build:css\"",
     "build:css": "node-sass src/public/scss/main.scss dist/public/app.css --output-style compressed",
     "dev": "webpack --mode=development && npm run copy_static_assets && concurrently \"webpack --watch\" \"npm run build:css\" \"nodemon --inspect dist\"",
     "start": "node dist/index",

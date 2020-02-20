@@ -6,6 +6,7 @@ import { TranslateProvider } from './components/HOC';
 import Routes from './components/routes';
 
 const App = ({ location, context, store }) => {
+  // browser build
   let rtn = (
     <BrowserRouter>
       <TranslateProvider>
@@ -14,6 +15,7 @@ const App = ({ location, context, store }) => {
     </BrowserRouter>
   );
 
+  // server build
   if (location && context) {
     rtn = (
       <StaticRouter location={location} context={context}>
