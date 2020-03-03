@@ -6,7 +6,14 @@ let initial = {
 
 const GetConfigSystem = config => {
   if (config) {
-    initial = { ...initial, ...config() };
+    const systemData = config();
+    console.log('X--> ', systemData);
+    if (systemData?.SYSTEM_DATA?.NO_AUTH) {
+      console.log('-->', systemData?.SYSTEM_DATA?.NO_AUTH);
+      
+    }
+
+    initial = { ...initial };
   }
   return (state = initial, action) => {
     switch (action.type) {
@@ -16,4 +23,4 @@ const GetConfigSystem = config => {
   };
 };
 
-export default GetConfigSystem;
+module.exports = GetConfigSystem;

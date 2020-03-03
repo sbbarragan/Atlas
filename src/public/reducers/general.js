@@ -32,4 +32,4 @@ const General = (state = initial, action) => {
   }
 };
 
-export default General;
+module.exports = General;

@@ -38,4 +38,4 @@ const Opennebula = (state = initial, action) => {
   }
 };
 
-export default Opennebula;
+module.exports = Opennebula;

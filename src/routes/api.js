@@ -221,7 +221,10 @@ router.all(
             passOpennebula,
             RPC
           );
-          connect(command, getOpennebulaMethod(dataSources), (err, value) =>
+          connect(
+            command, 
+            getOpennebulaMethod(dataSources
+          ), (err, value) =>
             responseOpennebula(updaterResponse, err, value, response, next)
           );
         } else {

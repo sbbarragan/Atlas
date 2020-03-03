@@ -4,7 +4,6 @@ import {
   TranslateContext,
   TranslateProvider,
   Translate,
-  TranslateChange,
   Tr
 } from './Translate';
 
@@ -14,6 +13,5 @@ export {
   TranslateContext,
   TranslateProvider,
   Translate,
-  TranslateChange,
   Tr
 };

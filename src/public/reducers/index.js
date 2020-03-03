@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import Opennebula from './opennebula';
-import Zendesk from './zendesk';
-import General from './general';
-import GetConfigSystem from './system';
+const  { combineReducers } = require('redux');
+const  Opennebula = require('./opennebula');
+const  Zendesk = require('./zendesk');
+const  General = require('./general');
+const  GetConfigSystem = require('./system');
 
 const rootReducers = config =>
   combineReducers({
@@ -12,4 +12,4 @@ const rootReducers = config =>
     General
   });
 
-export default rootReducers;
+module.exports = rootReducers;

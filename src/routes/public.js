@@ -1,19 +1,18 @@
-import React from 'react';
-import express from 'express';
-import { renderToString } from 'react-dom/server';
-import root from 'window-or-global';
-import { createStore, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import classnames from 'classnames';
-import rootReducer from '../public/reducers';
-import App from '../public/app';
-import { getConfig } from '../utils/yml-connect';
-
-import {
+const React = require('react');
+const express = require('express');
+const { renderToString } = require('react-dom/server');
+const root = require('window-or-global');
+const { createStore, compose, applyMiddleware } = require('redux');
+const thunk = require('redux-thunk').default;
+const classnames = require('classnames');
+const rootReducer = require('../public/reducers');
+const App = require('../public/app').default;
+const { getConfig } = require('../utils/yml-connect');
+const {
   includeMAPSJSbyHTML,
   includeJSbyHTML,
   includeCSSbyHTML
-} from '../utils';
+} = require('../utils');
 
 const router = express.Router();
 
@@ -68,5 +67,4 @@ router.get('*', (req, res) => {
     res.send(html);
   }
 });
-
 module.exports = router;

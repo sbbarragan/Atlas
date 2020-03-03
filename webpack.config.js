@@ -1,21 +1,26 @@
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const { getConfig } = require('./src/utils/yml-connect');
-const { defaultMode } = require('./src/config/defaults');
+const { defaultWebpackMode } = require('./src/config/defaults');
 
 const appConfig = getConfig();
 
 // settings
-const mode = appConfig.MODE || defaultMode;
-const devtool = mode === defaultMode ? 'inline-source-map' : '';
+const mode = appConfig.MODE || defaultWebpackMode;
+const devtool = mode === defaultWebpackMode ? 'inline-source-map' : '';
 const js = {
   test: /\.js$/,
   exclude: /node_modules/,
   use: {
     loader: 'babel-loader',
     options: {
-      presets: ['react', 'es2015'],
-      plugins: ['transform-class-properties', 'transform-object-rest-spread']
+      presets: ['@babel/preset-env', '@babel/preset-react'],
+      plugins: [
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-proposal-nullish-coalescing-operator',
+        '@babel/plugin-proposal-optional-chaining'
+      ]
     }
   }
 };

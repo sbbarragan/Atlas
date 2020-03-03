@@ -19,8 +19,10 @@ module.exports = {
     }
   ],
   defaultConfigFile: `${__dirname}/../config.yml`,
+  defaultTypeLog: 'prod',
+  defaultWebpackMode: 'development',
+  defaultConfigLog: '/var/log/one/atlas.log',
   defaultBaseURL: '',
-  defaultMode: 'development',
   defaultNamespace: 'one.',
   defaultMessageInvalidZone: 'Invalid Zone',
   default2FAIssuer: 'sunstone-UI',

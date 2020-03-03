@@ -20,4 +20,4 @@ const Zendesk = (state = initial, action) => {
   }
 };
 
-export default Zendesk;
+module.exports = Zendesk;

@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const params = require('../config/params');
-const { defaultMode } = require('../config/defaults');
+const { defaultTypeLog } = require('../config/defaults');
 const functionRoutes = require('../config/function-routes');
 const { validateAuth } = require('./jwt-functions');
 const { messageTerminal } = require('./general-functions');
@@ -10,7 +10,7 @@ const { getConfig } = require('./yml-connect');
 // user config
 const appConfig = getConfig();
 
-const mode = appConfig.MODE || defaultMode;
+const mode = appConfig.LOG || defaultTypeLog;
 
 const {
   responseOpennebula,
@@ -45,7 +45,7 @@ const createQueriesState = () => {
 
 const includeMAPSJSbyHTML = (path = '') => {
   let scripts = '';
-  if (mode === defaultMode) {
+  if (mode === defaultTypeLog) {
     fs.readdirSync(path).map(file => {
       if (file.match(/\w*\.js\.map+$\b/gi)) {
         scripts += `<script src="/static/${file}" type="application/json"></script>`;

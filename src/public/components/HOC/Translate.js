@@ -6,9 +6,9 @@ import root from 'window-or-global';
 import { translations, defaultLang } from '../../../config/defaults';
 
 const langDefault = defaultLang;
-export const TranslateContext = new CreateContext();
+const TranslateContext = new CreateContext();
 
-export class TranslateProvider extends Component {
+class TranslateProvider extends Component {
   constructor() {
     super();
     this.state = {
@@ -37,7 +37,7 @@ export class TranslateProvider extends Component {
   }
 }
 
-export const Tr = (str = '', fixedValues) => {
+const Tr = (str = '', fixedValues) => {
   let rtn = str;
   if (root && root.locale && root.locale[str]) {
     const translate = root.locale[str];
@@ -49,7 +49,7 @@ export const Tr = (str = '', fixedValues) => {
   return rtn;
 };
 
-export const Translate = ({ word, values }) => {
+const Translate = ({ word, values }) => {
   const handleChange = (e, changeLang) => {
     if (
       e &&
@@ -108,3 +108,5 @@ Translate.defaultProps = {
   word: '',
   values: ''
 };
+
+export { TranslateContext, TranslateProvider, Translate, Tr };
