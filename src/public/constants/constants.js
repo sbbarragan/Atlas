@@ -10,8 +10,6 @@ module.exports = {
   Token2FA: '2FA Token',
   SignOut: 'Sign Out',
   jwtName: 'SunstoneToken',
-  dashboard: 'Dashboard',
-  settings: 'Settings',
   by: {
     text: 'Opennebula Systems',
     url: 'https://opennebula.org/'
@@ -19,10 +17,5 @@ module.exports = {
   endpoints: {
     login: '/api/auth/',
     userInfo: '/api/user/info'
-  },
-  reactEndpoints: {
-    login: '/',
-    dashboard: '/dashboard',
-    settings: '/settings'
   }
 };

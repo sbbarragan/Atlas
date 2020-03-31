@@ -14,6 +14,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import constants from '../../../constants';
+import { endpoints as routerEndpoints } from '../../../components/router';
 import { requestData, removeStoreData, storage } from '../../../utils';
 import { Translate, Tr } from '../../HOC';
 
@@ -66,7 +67,7 @@ class Login extends Component {
   }
 
   handleSubmit(element = false) {
-    const { jwtName, endpoints, reactEndpoints } = constants;
+    const { jwtName, endpoints } = constants;
     const { user, pass, token, writeToken, keepLogged } = this.state;
     const { history, baseURL } = this.props;
     const loginParams = {
@@ -92,8 +93,9 @@ class Login extends Component {
             } else if (id === 200 && opennebulaToken) {
               newState = { showError: false, writeToken: false };
               storage(jwtName, opennebulaToken, keepLogged);
-              console.log(reactEndpoints.dashboard);
-              history.push(reactEndpoints.dashboard);
+              console.log(routerEndpoints.dashboard.path);
+              console.log(history);
+              history.push(routerEndpoints.dashboard.path);
               return;
             }
             this.setState(newState);
@@ -231,7 +233,4 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = () => ({});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
